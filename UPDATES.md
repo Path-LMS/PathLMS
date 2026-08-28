@@ -1,16 +1,18 @@
 # How updates work
 
-Nothing deploys itself. An update happens when you decide it does, and it is
-three image addresses in one file.
+Nothing deploys itself. An update happens when you decide it does, it takes three
+edited lines and one command, and your data stays where it is.
 
 ---
 
-## What a new version actually is
+## What moving to a new version costs you
 
-Every release publishes three container images and attaches the files you install
-it with to a release page. **Upgrading is changing the three image addresses at
-the top of your `.env` and restarting.** Nothing else in your settings moves,
-your data directory is untouched, and there is no build step.
+Three lines and a restart. Your settings do not move, your data directory is
+untouched, and there is no build step on the server.
+
+Every release publishes the container images PathLMS is made of and attaches the
+files you install it with to a release page. **Upgrading is changing the three
+image addresses at the top of your `.env` and starting the stack again.**
 
 Each address is pinned to an exact cryptographic fingerprint rather than to a
 tag, so the version you install is the version that was tested, and it stays that
@@ -28,12 +30,10 @@ What leaves your machine is a request for a public list of version numbers. No
 version, no address, no identifier, and nothing about this installation or the
 people using it.
 
-It fails silently and it fails closed, which are two separate promises. **Closed**
-means anything unexpected reports that the check could not run, never that you are
-up to date, because a deployment three versions behind that cannot reach the
-internet must not be told it is current. **Silently** means a deployment that is
-isolated on purpose sees one calm line on a page somebody chose to open, and no
-warning anywhere else.
+**If the check cannot run, it says so rather than saying you are up to date.** A
+deployment three versions behind that cannot reach the internet must never be
+told it is current. And a deployment isolated on purpose sees one line on a page
+somebody chose to open, with no warning anywhere else.
 
 Switch it off with `PATHLMS_UPDATE_CHECK=off` in your settings file. If you pull
 PathLMS from a mirror inside your own network, point
@@ -41,16 +41,15 @@ PathLMS from a mirror inside your own network, point
 
 ## What the Updates section does
 
-Open **Settings**, then **Updates** on the **General** tab. It shows:
+It answers "is this safe to do right now", and it takes the backup for you. Open
+**Settings**, then **Updates** on the **General** tab. It shows:
 
 - **The version you are running**, and whether a newer one has been published.
 - **Six safety checks**, always all six and always in the same order, whether
   they passed or not: that no upgrade is already running, that the database
   answers, that the cache answers, that the object store answers, that there is
-  free disk space, and that the backup destination can be reached. A screen that
-  shows only what is wrong teaches nobody what was looked at, and the moment that
-  matters most is the moment something has gone wrong and you are deciding
-  whether to trust the thing that told you.
+  free disk space, and that the backup destination can be reached. You see what
+  was looked at, not only what went wrong.
 - **A record of every step**, kept where a restart cannot erase it, so you can
   see afterwards what happened and in what order.
 
@@ -68,12 +67,10 @@ cannot.**
 This is a design decision rather than something unfinished. Creating a container
 accepts arbitrary bind mounts, so the right to create a container on a machine is
 the right to be root on that machine. Handing that authority to the process
-serving the internet would undo every bit of hardening in this stack. A
-compromised application container gains nothing from any of the work above,
-because none of it includes the power to start something new.
+serving the internet would undo the rest of the hardening in this stack.
 
-So the final swap is yours. Being told the last step is yours means you can plan
-for it. Finding out afterwards would mean you could not.
+So the final swap is yours, which is worth knowing before you start rather than
+in the middle.
 
 ## Doing the swap
 
@@ -100,8 +97,8 @@ On the server, in the directory holding `docker-compose.yml` and `.env`:
 
        docker compose logs -f api
 
-   Any migration the new version needs runs on its own at startup, in a
-   transaction, recorded so it cannot run twice.
+   Any change the new version needs to make to the database runs on its own at
+   startup, in a transaction, recorded so it cannot run twice.
 
 **Move all three addresses together, every time.** They are published from one
 job under one version, and mixing them is not something anybody tests. The
@@ -120,7 +117,8 @@ database is not something to attempt hopefully. That is what the backup taken
 before the update is for: restore it, and you are back where you were, having
 lost only whatever happened in between.
 
-Which is the real argument for testing a restore before you need one.
+Which is the real argument for testing a restore before you need one. [After it
+starts](AFTER-IT-STARTS.md) has the commands.
 
 ## Version numbers, and what they promise
 
