@@ -14,11 +14,10 @@ four things an Unraid server answers in its own way:
 3. Which port is opened, given that Unraid's own web interface has taken two.
 4. What backs it up, given that you almost certainly already back something up.
 
-**Three of those are general questions wearing Unraid clothes.** Every
-deployment has to decide where its data lives, which port it opens and what
-backs it up. Only the first is peculiar to this platform. Where a section is
-really the general question, it says so and points at the general answer rather
-than inventing a second one.
+**Only the first is peculiar to this platform.** Every deployment has to decide
+where its data lives, which port it opens and what backs it up. Where a section
+is really the general question, it says so and points at the general answer
+rather than inventing a second one.
 
 **What was checked, and how.** Every claim below about PathLMS itself was read
 out of the files this release ships, and you can check it against them. Every
@@ -43,29 +42,6 @@ server. Read that section before you rely on this one.
 
 ## 1. Use a Compose plugin, not Unraid's container templates
 
-**Unraid's Docker tab adds one container per template.** You press Add
-Container, choose a template, and get a container. There is no template
-mechanism for the three things this stack depends on:
-
-- **Waiting for another container to report healthy.** The application does not
-  start until the database says it is ready, and the web server does not start
-  until the application says it is. Both are written in the compose file as
-  `condition: service_healthy`.
-- **Running a container once, to completion, before another starts.** One
-  container sets the ownership of the uploads directory and exits. The object
-  store waits for it with `condition: service_completed_successfully`. Without
-  that ordering the object store starts, reports itself healthy, answers its
-  health check correctly, and cannot write a single byte. Every signal you have
-  is green while file upload is dead. The compose file says so in its own
-  comments, because it is a failure somebody already had.
-- **Three container networks**, two of them closed off from the internet
-  entirely, so that reaching one container is not reaching all of them. The
-  database and the cache sit where nothing outside can reach them.
-
-Rebuilding that as seven templates means creating the networks by hand,
-maintaining more than twenty environment values per container by hand, and
-losing the ordering outright. Do not.
-
 **Install Compose Manager Plus from Community Applications.** Open the Apps tab
 in the Unraid web interface, search for it, and install it. It puts the
 `docker compose` command on the server and adds a Compose tab to manage stacks
@@ -74,6 +50,26 @@ from.
 There is an older plugin called Docker Compose Manager. Its own author has
 deprecated it in favor of this one, and the newer plugin reads the same project
 folders, so having the old one installed already is not a problem.
+
+**Why not the Docker tab.** It adds one container per template, and there is no
+template mechanism for the three things this stack depends on:
+
+- **Waiting for another container to report healthy.** The application does not
+  start until the database says it is ready, and the web server does not start
+  until the application says it is.
+- **Running a container once, to completion, before another starts.** One
+  container sets the ownership of the uploads directory and exits. The object
+  store waits for it. Without that ordering the object store starts, reports
+  itself healthy, answers its health check correctly, and cannot write a single
+  byte. Every signal you have is green while file upload is dead. The compose
+  file says so in its own comments, because it is a failure somebody already had.
+- **Three container networks**, two of them closed off from the internet
+  entirely, so that reaching one container is not reaching all of them. The
+  database and the cache sit where nothing outside can reach them.
+
+Rebuilding that as seven templates means creating the networks by hand,
+maintaining more than twenty environment values per container by hand, and
+losing the ordering outright. Do not.
 
 ---
 
@@ -114,7 +110,10 @@ instead.
 
 ## 3. Where the data goes
 
-**Two settings decide everything here**, and both live in the environment file:
+**Put the data and the backups on different storage, so that losing one does not
+lose the other.** That is the whole of this section, and on Unraid the reason
+lands harder than anywhere else. Two settings decide it, and both live in the
+environment file:
 
 ```
 PATHLMS_DATA_DIR=/mnt/user/appdata/pathlms
@@ -122,10 +121,7 @@ PATHLMS_BACKUP_DIR=/mnt/user/backups/pathlms
 ```
 
 `PATHLMS_DATA_DIR` holds the database, the uploaded files and the cache.
-`PATHLMS_BACKUP_DIR` holds the backups. **They are two settings on purpose, and
-on Unraid the reason lands harder than anywhere else**: they should be on
-different storage, so that losing the storage the data is on does not also lose
-the recovery.
+`PATHLMS_BACKUP_DIR` holds the backups.
 
 ### Put the data on a pool, with no secondary storage
 
@@ -247,6 +243,10 @@ with a permission error, stop the stack, delete the `cache` directory under
 
 ### The port
 
+Leave PathLMS on port 3001 and let a proxy hold your certificate. That is what
+most Unraid servers already have, and it avoids the one change on this platform
+you do not want to make.
+
 PathLMS opens port 3001 on the server unless you say otherwise with
 `PATHLMS_PUBLISHED_PORT`. Unraid's own web interface uses ports 80 and 443 by
 default, so 3001 does not collide with a stock server. Check that nothing else
@@ -255,13 +255,12 @@ you run has taken it.
 **Do not publish PathLMS on 80 or 443 on a stock Unraid server.** Doing so means
 moving Unraid's own web interface first, under Settings then Management Access,
 which changes how you reach Unraid itself. That is a decision about your server
-rather than about this product, and there is a better answer below.
+rather than about this product.
 
-### Behind a reverse proxy, which is what most Unraid servers do
+### Behind a reverse proxy
 
-Leave `PATHLMS_PUBLISHED_PORT` at 3001. Point your proxy at
-`http://<your-server-address>:3001`, let the proxy hold the certificate, and set
-the address people type:
+Point your proxy at `http://<your-server-address>:3001`, let the proxy hold the
+certificate, and set the address people type:
 
 ```
 PATHLMS_PUBLIC_URL=https://learn.example.com
@@ -290,8 +289,8 @@ it offers to make you a security certificate you already have and do not want.
 Saying so once stops that.
 
 **What it does not do is reconfigure your deployment**, and the screen says so
-itself. It records your answer so the rest of the Settings screen stops
-guessing. It does not move your proxy, your certificate or your ports.
+itself. It records your answer. It does not move your proxy, your certificate or
+your ports.
 
 **One thing not to do**: if something in front already holds a certificate, do
 not also generate one inside PathLMS. A certificate the browser does not trust,
@@ -306,13 +305,13 @@ universal.
 
 ## 6. Backups
 
-**The stack backs itself up already.** One backup a day, kept for fourteen days,
-of both the database and the uploaded files, written into `PATHLMS_BACKUP_DIR`.
-The first one runs immediately rather than in twenty-four hours, deliberately,
-so that a directory nobody can write to is a problem you meet on day one. You
-can change the interval with `BACKUP_EVERY_SECONDS`, change how long backups are
-kept with `RETENTION_DAYS`, or switch the whole thing off with
-`BACKUP_EVERY_SECONDS=0`.
+**The stack backs itself up already**, so there is nothing to schedule. One
+backup a day, kept for fourteen days, of both the database and the uploaded
+files, written into `PATHLMS_BACKUP_DIR`. The first one runs immediately rather
+than in twenty-four hours, deliberately, so that a directory nobody can write to
+is a problem you meet on day one. You can change the interval with
+`BACKUP_EVERY_SECONDS`, change how long backups are kept with `RETENTION_DAYS`,
+or switch the whole thing off with `BACKUP_EVERY_SECONDS=0`.
 
 **What Unraid adds is where those files should sit.** Section 3 says to put them
 on a share whose primary storage is the array, so that parity covers them and
@@ -324,9 +323,8 @@ failing and does not survive the building.
 `appdata`. That does not conflict with anything here, and it is not a substitute
 either: it captures the files, while PathLMS's own backup captures a proper
 database dump alongside an inventory of every object in the database, so that a
-restore can report what it did not put back. Use both if you want the belt and
-the braces. Check that the plugin's schedule and the stack's own are not set to
-the same minute.
+restore can report what it did not put back. Using both is reasonable. Check that
+the plugin's schedule and the stack's own are not set to the same minute.
 
 **Restoring is a general matter rather than an Unraid one** and works the same
 way everywhere. The script that does it travels inside the database image, so
@@ -337,17 +335,19 @@ docker cp pathlms-db:/opt/pathlms/scripts/. ./pathlms-scripts/
 ```
 
 **A backup you have never restored is not a backup.** Restore one into a
-throwaway location before you need to, on a day when nothing is wrong.
+throwaway database before you need to, on a day when nothing is wrong. The
+release's own pages carry the commands.
 
 ---
 
 ## 7. Updating
 
+Upgrading is three lines in your environment file and starting the stack again.
 The release page for this product lists every version and reports three image
-addresses for each. Upgrading means putting those three addresses into your
-environment file and starting the stack again. PathLMS can also do it for you
-from inside the product, taking a backup first and putting everything back if
-anything fails.
+addresses for each; put those three addresses in, and start the stack. Inside the
+product, on the General tab of Settings, the Updates section checks whether it is
+safe to go ahead and takes a backup for you before you do. Replacing the
+containers is still your command to run, deliberately.
 
 **One Unraid detail worth knowing.** The Compose plugin can check for image
 updates on a schedule. It cannot move this deployment to a new version, because
