@@ -1,8 +1,7 @@
 # Contributing
 
 **Bug reports, questions and deployment experiences are welcome now. Code
-contributions cannot be accepted yet, and the reason is honest rather than
-procedural.**
+contributions cannot be accepted yet.**
 
 ---
 
@@ -59,5 +58,4 @@ Do not open a public issue for a security problem. See [SECURITY.md](SECURITY.md
 
 ## Code of conduct
 
-Be decent to people. This project is small, and the person reading your report is
-a person.
+Be decent to people.
