@@ -1,11 +1,11 @@
 # Reporting a security problem
 
-**Please report it privately, not in a public issue.**
+**Please report it privately, not in a public issue.** Somebody's live
+installation should be able to be fixed before the details are public.
 
 Use GitHub's private vulnerability reporting on this repository: open the
 **Security** tab and choose **Report a vulnerability**. That opens a private
-conversation visible only to the maintainer, which is what you want for anything
-that could be used against somebody's live installation before it is fixed.
+conversation visible only to the maintainer.
 
 If that is not available to you, open a public issue saying only that you have
 found a security problem and asking for a private channel. Do not put the details
@@ -43,8 +43,9 @@ move to it. [How updates work](UPDATES.md) covers that.
 These are documented limits rather than discoveries. Reporting them is welcome,
 and you will get this page back.
 
-- **Traffic is not encrypted** on an installation built from a release. It is
-  meant to sit behind something holding your certificate.
+- **Traffic is not encrypted** until somebody sets that up. A fresh installation
+  holds no certificate. Either something in front of it holds one, or you add the
+  one extra file a release attaches and PathLMS holds it itself.
 - **The session token is readable in browser storage.** This is a consequence of
   the point above; on a deployment reachable over an unencrypted connection, it
   is also readable in transit.
