@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1600 500" width="1600" height="500"
+     role="img" aria-labelledby="banner-title"
+     aria-label="PathLMS. A learning path drawn as five courses in order: two finished, the third open and raised above the rest because it is the one being worked through now, and two still to come.">
+
+  <title id="banner-title">PathLMS. A learning path drawn as five courses in order: two finished, the third open and raised above the rest because it is the one being worked through now, and two still to come.</title>
+
+  <defs>
+    <filter id="lift-wide" x="-25%" y="-25%" width="150%" height="165%">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+    <filter id="lift-close" x="-15%" y="-15%" width="130%" height="145%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <rect x="1" y="1" width="1598" height="498" rx="20"
+        fill="#FFFFFF" stroke="#E9E5DF" stroke-width="2"/>
+
+  <g stroke-linecap="round">
+    <line x1="354"  y1="336" x2="406"  y2="336" stroke="#3D8B9E" stroke-width="6"/>
+    <line x1="634"  y1="336" x2="678"  y2="336" stroke="#3D8B9E" stroke-width="6"/>
+    <line x1="922"  y1="336" x2="966"  y2="336" stroke="#968F85" stroke-width="4"/>
+    <line x1="1194" y1="336" x2="1246" y2="336" stroke="#968F85" stroke-width="4"/>
+  </g>
+
+  <g fill="#3D8B9E">
+    <rect x="140" y="270" width="200" height="132" rx="16"/>
+    <rect x="420" y="270" width="200" height="132" rx="16"/>
+  </g>
+  <g fill="#FFFFFF">
+    <rect x="166" y="322" width="140" height="7" rx="3.5" opacity="0.38"/>
+    <rect x="166" y="342" width="100" height="7" rx="3.5" opacity="0.24"/>
+    <rect x="446" y="322" width="140" height="7" rx="3.5" opacity="0.38"/>
+    <rect x="446" y="342" width="100" height="7" rx="3.5" opacity="0.24"/>
+  </g>
+
+  <g fill="#F5F3EF" stroke="#968F85" stroke-width="3">
+    <rect x="981.5" y="271.5" width="197" height="129" rx="16"/>
+    <rect x="1261.5" y="271.5" width="197" height="129" rx="16"/>
+  </g>
+
+  <rect x="692" y="266" width="216" height="168" rx="18" fill="#1C1B1A" opacity="0.20" filter="url(#lift-wide)"/>
+  <rect x="692" y="259" width="216" height="168" rx="18" fill="#1C1B1A" opacity="0.11" filter="url(#lift-close)"/>
+  <rect x="692" y="252" width="216" height="168" rx="18" fill="#146B80"/>
+  <g fill="#FFFFFF">
+    <rect x="722" y="306" width="152" height="8" rx="4" opacity="0.92"/>
+    <rect x="722" y="332" width="124" height="8" rx="4" opacity="0.70"/>
+    <rect x="722" y="358" width="88"  height="8" rx="4" opacity="0.45"/>
+  </g>
+
+  <path fill="#1C1B1A" d="M149.2 118V107.8H164.2Q167.2 107.8 169.6 106.6Q171.9 105.4 173.3 103.1Q174.7 100.9 174.7 97.7Q174.7 94.5 173.3 92.2Q171.9 89.9 169.6 88.7Q167.2 87.5 164.2 87.5H149.2V77.3H165.5Q171.7 77.3 176.6 79.8Q181.5 82.3 184.3 86.9Q187.2 91.4 187.2 97.7Q187.2 103.9 184.3 108.5Q181.5 113 176.6 115.5Q171.7 118 165.5 118ZM140 142V77.3H152.5V142ZM209.9 142.9Q203.8 142.9 199 139.9Q194.2 136.8 191.4 131.6Q188.6 126.4 188.6 119.9Q188.6 113.2 191.4 108Q194.2 102.8 199 99.7Q203.8 96.6 209.9 96.6Q214.7 96.6 218.5 98.6Q222.2 100.6 224.5 104Q226.8 107.4 227 111.8V127.8Q226.8 132.2 224.6 135.6Q222.3 139 218.5 141Q214.7 142.9 209.9 142.9ZM212.2 131.8Q217.2 131.8 220.3 128.4Q223.4 125 223.4 119.8Q223.4 116.2 222 113.5Q220.6 110.8 218.1 109.3Q215.6 107.8 212.2 107.8Q208.9 107.8 206.4 109.3Q203.8 110.8 202.4 113.5Q200.9 116.3 200.9 119.8Q200.9 123.3 202.4 126Q203.8 128.7 206.3 130.3Q208.9 131.8 212.2 131.8ZM222.8 142V130.1L224.8 119.2L222.8 108.5V97.6H234.8V142ZM250 142V79.1H262.1V142ZM239.6 108.1V97.6H272.4V108.1ZM307.1 142V116.5Q307.1 112.6 304.6 110.1Q302.2 107.6 298.3 107.6Q295.7 107.6 293.6 108.7Q291.6 109.8 290.5 111.9Q289.3 113.9 289.3 116.5L284.6 114.1Q284.6 108.9 286.8 105Q289 101.1 293 98.9Q296.9 96.6 301.9 96.6Q307 96.6 310.9 98.8Q314.8 101 317 104.9Q319.2 108.8 319.2 113.8V142ZM277.2 142V75.5H289.3V142ZM328.2 142V77.3H340.8V142ZM337.4 142V130.8H370.4V142ZM377.4 142V77.3H386.2L412.4 119.3H407.4L433.5 77.3H442.4V142H429.9V98.8L432.4 99.5L414.1 128.8H405.7L387.4 99.5L389.9 98.8V142ZM471 143Q463.2 143 457.7 140.3Q452.1 137.6 447.6 132.3L455.9 124Q458.8 127.8 462.5 129.8Q466.3 131.9 471.7 131.9Q476.6 131.9 479.5 130Q482.4 128 482.4 124.6Q482.4 121.7 480.7 119.8Q479.1 118 476.3 116.7Q473.6 115.5 470.4 114.4Q467.1 113.3 463.8 111.9Q460.6 110.5 457.9 108.5Q455.2 106.4 453.5 103.1Q451.8 99.9 451.8 94.9Q451.8 89.1 454.7 84.9Q457.6 80.8 462.5 78.6Q467.5 76.4 473.8 76.4Q480.4 76.4 485.7 78.8Q491.1 81.3 494.4 85.2L486.2 93.5Q483.3 90.4 480.3 88.9Q477.3 87.4 473.5 87.4Q469.2 87.4 466.8 89.1Q464.3 90.8 464.3 93.9Q464.3 96.6 466 98.2Q467.6 99.9 470.3 101Q473 102.2 476.3 103.3Q479.6 104.4 482.8 105.9Q486.1 107.3 488.8 109.5Q491.5 111.7 493.2 115.1Q494.8 118.5 494.8 123.6Q494.8 132.6 488.5 137.8Q482.1 143 471 143Z"/>
+
+  <text x="140" y="197"
+        font-family="'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+        font-size="32" font-weight="400" letter-spacing="0.15" fill="#6B6660">The hard work should be in the learning.</text>
+
+</svg>
