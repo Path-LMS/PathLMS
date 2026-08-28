@@ -1,10 +1,12 @@
 # Deploying PathLMS
 
-PathLMS runs anywhere Docker Compose runs. That is the whole story for most
-installations, and this page is arranged to match: **the general path below is
-the main road, and each environment afterwards is a short detour off it.** If you
-read only the general path and your environment is not listed, you have read
-everything you need.
+You end up with a system people can sign in to, on a machine you control, in
+about fifteen minutes. Most of that is the machine downloading things.
+
+Four decisions come first, because they are the ones you live with. Everything
+after them is the same on every machine, and the environment sections at the
+bottom cover only what a particular environment decides differently. If your
+environment is not listed, the general path is the whole install.
 
 Nothing here needs the source code, `git`, Node.js, or a build step on the
 server.
@@ -18,18 +20,20 @@ the Settings screen once you are in.
 
 ### 1. What address will people type?
 
-This is the single most consequential setting, and getting it wrong produces the
-most confusing failure PathLMS has. Four things derive from it: which pages a
-browser is answered from, the links inside password recovery mail, the address
-your uploaded files are signed against, and where company sign-in returns people
-to.
+Get this one right and everything else follows from it. Get it wrong and the
+sign-in page renders perfectly and then does nothing, with nothing on that screen
+pointing at the cause. It is the most confusing failure PathLMS has.
 
-If the address is wrong, the sign-in page renders perfectly and then does
-nothing, and nothing on that screen points at the cause.
+Four things derive from this setting: which pages a browser is answered from, the
+links inside password recovery mail, the address your uploaded files are signed
+against, and where company sign-in returns people to.
 
 Write it with the scheme and no path: `https://learn.example.com`.
 
 ### 2. Where will the data live?
+
+Two directories, which you choose, so that you can find your data with `ls` and
+so that losing one disk does not lose both copies.
 
 Everything PathLMS stores goes under one directory, which defaults to
 `/var/lib/pathlms`:
@@ -38,7 +42,7 @@ Everything PathLMS stores goes under one directory, which defaults to
 | --- | --- |
 | `<data>/database` | The database. Losing this loses everything. |
 | `<data>/uploads` | Every file anybody uploaded. |
-| `<backups>` | The nightly dumps, a **separate setting** on purpose. |
+| `<backups>` | The nightly copies, a **separate setting** on purpose. |
 
 Both are settings you can point anywhere:
 
@@ -50,8 +54,8 @@ are a separate setting for exactly this reason: an arrangement where the backup
 survives the disk holding the data is worth the five minutes it costs to set up.
 
 They are directories on your machine rather than Docker volumes so that you can
-find them with `ls`, and so that `docker compose down -v`, which people reach for
-when something has already gone wrong, cannot destroy your backups.
+find them, and so that `docker compose down -v`, which people reach for when
+something has already gone wrong, cannot destroy your backups.
 
 **You do not need to create or chown anything.** Docker creates the directories
 on first start, and the containers take ownership of the ones they own. Do check
@@ -61,9 +65,10 @@ them.
 
 ### 3. Which port is open, and what else is using it?
 
-PathLMS publishes exactly one port on the host, and it defaults to **3001**.
-Nothing else is exposed: the database, the cache and the object store sit on
-networks that cannot reach the internet and cannot be reached from it.
+PathLMS opens one port on your machine and nothing else, so the database, the
+cache and the object store cannot be reached from outside at all. The port
+defaults to **3001**. It is two ports rather than one only if you choose decision
+4 below and let PathLMS hold your certificate.
 
 To publish a different port:
 
@@ -89,20 +94,21 @@ from Docker rather than from PathLMS:
 
 ### 4. What sits in front of it?
 
-**An installation built from a release serves unencrypted HTTP unless you add
-one file.** Out of the box it holds no certificate and listens on no encrypted
-port. You have two ways to change that, and most people should take the first.
+Somebody has to hold your certificate, and until somebody does, **an installation
+built from a release serves unencrypted traffic.** Out of the box it holds no
+certificate and listens on no encrypted port. You have two ways to change that,
+and most people should take the first.
 
-**Put something in front of it.** A reverse proxy or a load balancer holding
-your certificate, pointed at the PathLMS port.
-Caddy, nginx, Traefik, HAProxy, or your cloud provider's load balancer all work.
-Nothing in the PathLMS settings file changes when you do this. Caddy, nginx,
-Traefik, HAProxy and every cloud load balancer are all fine.
+**Put something in front of it.** A reverse proxy or a load balancer holding your
+certificate, pointed at the PathLMS port. Caddy, nginx, Traefik, HAProxy and
+every cloud load balancer are all fine, and nothing in the PathLMS settings file
+changes when you use one. Set `PATHLMS_PUBLIC_URL` to the address people type at
+that proxy, which will be the `https://` one, and **not** to the machine and port
+behind it.
 
 **Or let PathLMS hold the certificate itself.** A release attaches a short file
-called `docker-compose.encryption.yml` for this. Put it beside your compose
-file, make sure your address begins with https, and start everything with both
-files:
+called `docker-compose.encryption.yml` for this. Put it beside your compose file,
+make sure your address begins with https, and start everything with both files:
 
     docker compose -f docker-compose.yml -f docker-compose.encryption.yml up -d
 
@@ -112,12 +118,9 @@ encrypted port is open and every attempt to use it fails, which is deliberate:
 refusing to start the whole system would take away the screen you need in order
 to fix it.
 
-Then set `PATHLMS_PUBLIC_URL` to the address people type at that proxy, which
-will be the `https://` one, and **not** to the machine and port behind it.
-
-Once you are signed in, the Network tab records which of these you chose, so the
-rest of the product stops guessing. [After it starts](AFTER-IT-STARTS.md) covers
-that screen.
+Once you are signed in, tell PathLMS which of these you chose, on the Network
+tab, and it stops offering to make you a certificate you already have. [After it
+starts](AFTER-IT-STARTS.md) covers that screen.
 
 ---
 
@@ -205,7 +208,7 @@ are the part of an instance that gets replaced when you resize, rebuild or
 migrate, and a database on one is a database you can lose to a routine operation.
 
 **What backs it up.** You have two layers and you want both. Your provider's
-volume snapshots protect you from losing the machine. The nightly dumps PathLMS
+volume snapshots protect you from losing the machine. The nightly copies PathLMS
 takes protect you from losing a table, and they are the only layer you can
 restore selectively from. Point `PATHLMS_BACKUP_DIR` at a path you also sync to
 object storage on a schedule, because a backup that only exists on the machine it
@@ -245,9 +248,9 @@ pair or a filesystem that does it for you. Put `PATHLMS_BACKUP_DIR` on a
 different physical disk, and copy those files to a different machine on a
 schedule.
 
-**Snapshots are not a substitute for the dumps.** A filesystem snapshot of a
-running database captures it mid-write. It will usually restore and it is not
-something to rely on. The nightly dump is taken by the database itself and is
+**Snapshots are not a substitute for the nightly copies.** A filesystem snapshot
+of a running database captures it mid-write. It will usually restore and it is
+not something to rely on. The nightly copy is taken by the database itself and is
 consistent by construction.
 
 **Which port is open.** Nothing publishes itself here, so open the one port
