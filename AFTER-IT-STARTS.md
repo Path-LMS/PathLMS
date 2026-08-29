@@ -64,8 +64,8 @@ you already have. Answering once stops that.
 which is true of yours depends on what you set up before you got here. Out of the
 box the stack serves unencrypted traffic and holds no certificate, so most
 installations are the middle answer: something in front holds it. The first
-answer needs one extra file a release attaches,
-`docker-compose.encryption.yml`, plus a certificate you generate or upload from
+answer needs nothing downloaded and nothing extra run: the encrypted port is
+already open, and what it waits for is a certificate you generate or upload from
 the Encryption section further down this same tab. [Deploying
 PathLMS](DEPLOYMENT.md) covers both.
 
@@ -166,8 +166,8 @@ Roughly, the order most people want is:
    standards most company identity providers use, OIDC and SAML.
 3. **Set your brand color and logo** on the Appearance screen. Set one color and
    the whole palette is generated from it. Have the logo ready as a PNG or a
-   WebP: uploads in SVG are refused, because that format can carry a program
-   inside it.
+   WebP: uploads in SVG are refused, because that format can carry running
+   software inside it.
 4. **Write a course.**
 5. **Enroll people**, which takes one pass: pick people or a whole group, pick
    the courses, done. It then names anybody it could not enroll and why.
