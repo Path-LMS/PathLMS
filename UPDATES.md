@@ -41,8 +41,8 @@ PathLMS from a mirror inside your own network, point
 
 ## What the Updates section does
 
-It answers "is this safe to do right now", and it takes the backup for you. Open
-**Settings**, then **Updates** on the **General** tab. It shows:
+It answers "is this safe to do right now". Open **Settings**, then **Updates** on
+the **General** tab. It shows:
 
 - **The version you are running**, and whether a newer one has been published.
 - **Six safety checks**, always all six and always in the same order, whether
@@ -56,8 +56,24 @@ It answers "is this safe to do right now", and it takes the backup for you. Open
 Starting one asks for your password, because an update outlives the session you
 started it in.
 
-**It backs up before it changes anything.** Nothing irreversible happens until
-the checks have passed and the backups exist.
+**IT DOES NOT TAKE A BACKUP, AND THIS PAGE SAID IT DID.** Corrected 2026-08-29.
+
+Pressing the button runs the six checks and writes down that you pressed it.
+That is all it does. It changes nothing, and it takes nothing.
+
+The backups are taken by the upgrade itself, and the upgrade is the step you run
+on the server, described further down this page. So on an ordinary installation,
+where you do the last step yourself, the backups happen when you run it and not
+when you press the button.
+
+**Take your own backup before you upgrade.** They are also taken for you once a
+day into your backup directory, so the shortest honest instruction is to look in
+that directory and check the newest one is from today before you start.
+
+Why this matters more than an ordinary wrong sentence: the section below on
+going back tells you to restore the backup taken before the update. Believing
+this page, you would have pressed the button, upgraded, hit trouble, and gone
+looking for a copy that was never made.
 
 ## The one step PathLMS will not take, and why
 
