@@ -54,11 +54,13 @@ and you will get this page back.
   of a hash are sent and nothing else.
 - **A version check reaches a public container registry**, carrying nothing about
   the installation, and it can be switched off.
-- **Packaged courses from another authoring tool do not play** on a release
-  installation. The route that would serve them checks the administrator's
-  setting before anything else and answers nothing while it is off.
+- **Imported course packages do not run** on a release installation. The support
+  is built and switched off by default, and the one web server file it needs is
+  not in the published image, so nothing of a package is served whichever way an
+  administrator sets the switch.
 
-All of these are covered in more detail in the [README](README.md).
+All of these are named in the list of what PathLMS does not do, in the
+[README](README.md).
 
 ## Please do not
 
