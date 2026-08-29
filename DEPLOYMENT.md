@@ -42,6 +42,7 @@ Everything PathLMS stores goes under one directory, which defaults to
 | --- | --- |
 | `<data>/database` | The database. Losing this loses everything. |
 | `<data>/uploads` | Every file anybody uploaded. |
+| `<data>/cache` | Working state the cache keeps. Losing this costs nobody anything. |
 | `<backups>` | The nightly copies, a **separate setting** on purpose. |
 
 Both are settings you can point anywhere:
@@ -101,22 +102,41 @@ and most people should take the first.
 
 **Put something in front of it.** A reverse proxy or a load balancer holding your
 certificate, pointed at the PathLMS port. Caddy, nginx, Traefik, HAProxy and
-every cloud load balancer are all fine, and nothing in the PathLMS settings file
-changes when you use one. Set `PATHLMS_PUBLIC_URL` to the address people type at
-that proxy, which will be the `https://` one, and **not** to the machine and port
-behind it.
+every cloud load balancer are all fine. Set `PATHLMS_PUBLIC_URL` to the address
+people type at that proxy, which will be the `https://` one, and **not** to the
+machine and port behind it. Then set `PATHLMS_TRUST_FORWARDED_PROTO=true`, which
+is what tells PathLMS to believe the proxy when the proxy says a visitor arrived
+over an encrypted connection. Without it, every request is treated as
+unencrypted no matter what your proxy did.
 
-**Or let PathLMS hold the certificate itself.** A release attaches a short file
-called `docker-compose.encryption.yml` for this. Put it beside your compose file,
-make sure your address begins with https, and start everything with both files:
+**The exact steps, a copyable nginx block, the Caddy equivalent, how to prove it
+worked, and how to stop somebody reaching around the proxy, are all on their own
+page: [Putting PathLMS behind a proxy you already run](deploy/BEHIND-A-PROXY.md).**
 
-    docker compose -f docker-compose.yml -f docker-compose.encryption.yml up -d
+**Or let PathLMS hold the certificate itself.** There is nothing to download and
+nothing extra to run. The stack already opens a second port, **3443** by default,
+which is the one browsers connect to and the one your firewall has to allow. Make
+sure your address begins with https, then sign in and, under Settings, Network,
+Encryption, either generate a certificate or upload one you already hold.
 
-Then sign in and, under Settings, Network, Encryption, either generate a
-certificate or upload one you already hold. Until you have added one, the
-encrypted port is open and every attempt to use it fails, which is deliberate:
-refusing to start the whole system would take away the screen you need in order
-to fix it.
+**Until you have added a certificate, that port is open and every attempt to use
+it fails.** Nothing is served on it and no browser gets a page, so there is
+nothing to click past. That is deliberate: refusing to start the whole system
+would take away the screen you need in order to fix it.
+
+**If port 3443 is already taken on that machine**, Docker will refuse to start
+and say so, naming the port. Put a free one in `PATHLMS_PUBLISHED_TLS_PORT` in
+your settings file and start again.
+
+**If something in front holds your certificate, put that port on the machine
+itself.** Set `PATHLMS_PUBLISHED_TLS_ADDRESS` to `127.0.0.1:`, with the trailing
+colon, and nothing outside the machine can open a connection to it. Two things
+that answers. Anybody who can reach that port directly goes around the thing in
+front and can believe their connection was encrypted when it was not. And with
+no certificate in place, every attempt writes a line to your log, which nothing
+can slow down because no request is ever completed, so a stranger can fill a log
+as fast as they can open connections. Leave it out and it follows whatever you
+set for the ordinary port.
 
 Once you are signed in, tell PathLMS which of these you chose, on the Network
 tab, and it stops offering to make you a certificate you already have. [After it
@@ -139,6 +159,7 @@ directory on the server:
 | `docker-compose.yml` | The stack. Do not edit it. |
 | `pathlms.env` | Your settings. You fill this in. |
 | `INSTALL.md` | Numbered steps, which the rest of this section follows. |
+| `set-port.sh` | Keep it. The Settings screen asks you to run this when somebody changes the port, and it puts the old port back by itself if the system does not answer on the new one. |
 
 A release also attaches one short page for each environment that decides
 something its own way. Take the one that matches yours, if there is one, and
@@ -242,11 +263,11 @@ comes back. Nothing about that is automatic.
 Your own hardware, or a virtual machine on your own hypervisor. The general path
 is the whole install. What is different is that every layer around it is yours.
 
-**Where the data lives.** You have the freest hand here and the most rope. Put
-`PATHLMS_DATA_DIR` on redundant storage, whether that is a RAID array, a mirrored
-pair or a filesystem that does it for you. Put `PATHLMS_BACKUP_DIR` on a
-different physical disk, and copy those files to a different machine on a
-schedule.
+**Where the data lives.** You have the freest hand here, and nothing above you
+will catch a bad choice. Put `PATHLMS_DATA_DIR` on redundant storage, whether
+that is a RAID array, a mirrored pair or a filesystem that does it for you. Put
+`PATHLMS_BACKUP_DIR` on a different physical disk, and copy those files to a
+different machine on a schedule.
 
 **Snapshots are not a substitute for the nightly copies.** A filesystem snapshot
 of a running database captures it mid-write. It will usually restore and it is
