@@ -32,9 +32,9 @@ Compose runs, and the only way anybody finds out where that is not true is when
 somebody says so. A note saying which provider, which instance type and what you
 had to do differently is genuinely useful.
 
-**Tell us where it is the wrong answer.** The README carries a list of situations
-where you should choose something else. If you were misled by it, or if there is
-a case it does not name, say so. That list works only while it is honest.
+**Tell us where a limit caught you out.** The README carries a list of what
+PathLMS does not do. If you were misled by it, or if it is missing a limit you
+ran into, say so. That list works only while it is honest.
 
 ## Reporting something well
 
