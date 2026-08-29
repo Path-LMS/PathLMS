@@ -2,8 +2,9 @@
 
 # PathLMS
 
-PathLMS is built around a deliberately simple idea: learning should be easy to
-create, easy to organize, and easy to understand.
+PathLMS is built around a deliberately simple idea: an environment for learning
+should be easy to create, easy to organize, easy to understand, and easy to take
+care of.
 
 A learning path is a sequence of courses. Courses contain modules, sections,
 lessons, and quizzes. That is the model. There are no extra layers to learn, no
@@ -11,7 +12,7 @@ complicated structures to maintain, and no need to reshape your training around
 the LMS.
 
 <!-- version -->
-**Version 0.71.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.81.6** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 Courses can be completely open, carefully sequenced, or anything in between. If
@@ -43,14 +44,20 @@ flexibility. Consistent everywhere else.
 
 - **Write a course.** Type it in a browser, arrange it into modules and lessons,
   publish it when it is ready. Your work is saved as you write it, and moving to
-  another lesson saves the one you were on first.
+  another lesson saves the one you were on first, so clicking away cannot lose a
+  paragraph.
 - **Put courses in order.** A learning path is several courses in a sequence, and
-  somebody can be enrolled in the whole thing at once.
+  somebody joins the whole sequence once rather than a course at a time.
 - **Ask questions.** Quizzes are marked for you, and the score is kept with the
   rest of that person's record.
+- **Give somebody proof they finished.** On courses where you switch it on, a
+  learner can open and print a certificate from their own record. A deployment
+  that has given itself a name issues a certificate of completion and says who
+  issued it. One that has not issues a record of completion and says so plainly,
+  rather than leaving a blank where a name should be.
 - **Group people the way your organization already works.** Groups sit inside
   other groups. Give a group a folder of courses and everyone in that group has
-  them.
+  them, so nobody is enrolled one person at a time.
 - **Enroll a group in one pass.** Pick people or a whole group, pick the courses,
   done. Then it names anybody it could not enroll, and why.
 - **Get the answer you were asked for.** Reports are the questions people
@@ -62,8 +69,9 @@ flexibility. Consistent everywhere else.
   one before, so a gap in it shows.
 - **Erase somebody when they ask.** Do it from the People screen, and it tells
   you what went and what was kept.
-- **Look like your organization.** Set one brand color and upload a logo. It
-  looks right in dark mode too, because dark is designed rather than inverted.
+- **Look like your organization.** Set one brand color and upload a logo. Nobody
+  has to be a designer, and nobody has to go back and check dark mode, because
+  dark is designed rather than inverted.
 
 ## PathLMS in action
 
@@ -94,132 +102,72 @@ showing none.*
 
 ## Who it is for
 
-The person this was built for is the one who ends up owning training without
-having applied for the job: an operations manager, an office manager, a safety
-coordinator, somebody in a small internal IT team. You need to know who still has
-not done the thing, you need the list ready when a client or an auditor asks, and
-you need to do it again next quarter for everybody who has joined since.
+PathLMS is for organizations that need learning management to be
+straightforward.
 
-It suits an organization that would rather run software itself than rent it, and
-that has somebody who can use a terminal for about half an hour, once. There is
-no per-person charge and no license fee, so nobody gets left out of the fire
-safety training to save money.
+It works especially well when the goal is simple: provide training, see who has
+completed it, follow up with those who have not, and produce a clear record when
+someone asks for it.
 
-## Where this is the wrong answer
+It is designed for recurring learning as much as one-time training, so
+onboarding new people, repeating required courses, and keeping completion
+records up to date does not become a separate administrative exercise.
 
-Every product named here is a good product that sensible people choose for good
-reasons.
+PathLMS also suits organizations that prefer to run their own software and keep
+control of their own environment. There are no per-user fees or license costs,
+so access does not have to be rationed according to headcount.
 
-- **You need annual or recurring refresher training.** Completion here is final
-  and cannot yet be reset, so "everybody does this again every year" is not
-  something PathLMS can do. Moodle, or any commercial platform.
-- **You are a school, college or university.** There are no terms, no timetables
-  and no LTI. Canvas, Moodle, Blackboard or D2L Brightspace.
-- **You run classroom or scheduled training.** There are no sessions, rooms,
-  attendance registers or waiting lists.
-- **You want somebody else to run the server.** This is self-hosted only. Docebo,
-  TalentLMS or hosted Canvas.
-- **You need a support contract.** There is nobody to escalate to.
-- **You are selling courses to the public.** Nothing here takes a payment.
-  Thinkific or Teachable.
-- **You need a license you can fork and pass on.** See [License](#license) below.
-  Moodle, Canvas or Open edX.
-- **You want a marketplace of extensions.** There is no plugin system, on
-  purpose.
+The result is an LMS that stays practical as the organization grows: easy to
+operate, easy to understand, and available to everyone who needs it.
 
 ## What it does not do
 
-These are the limits worth knowing before you commit, not after.
+PathLMS is intentionally focused. A few limits are worth knowing up front.
 
-**Training cannot repeat.** Completion is final. Enrolling somebody again on a
-course they have finished returns the record they already have rather than
-starting them over, and the expiry date an enrollment can carry is stored and
-never acted on. Due dates are shown and nothing chases anybody. **If your
-requirement is annual refresher training, this is the limit that matters most to
-you.**
+**No recurring training yet.** Completed courses stay complete. PathLMS does not
+currently reset, expire, or automatically reassign training.
 
-**Assignments cannot be handed in.** A course can contain an assignment block and
-an author can write one. There is no way for a learner to submit anything against
-it and nothing that records a submission. Treat it as a place to put
-instructions, not as a thing people turn in.
+**No assignment submissions.** Assignments can contain instructions, but learners
+cannot submit work against them.
 
-**Courses packaged by another authoring tool do not play.** Packages exported
-from Articulate, Captivate or similar will not run on an installation built from
-a release, even with the administrator's switch turned on. Everything else works.
-This is a missing feature rather than a security hole: with the switch off,
-nothing of a package is served at all.
+**Imported course packages do not run on a release installation yet.** Support
+for content from tools such as Articulate or Captivate is built and switched off
+by default, and the one web server rule it needs is not in the compose file a
+release ships. No setting inside the product can conjure that rule, so such a
+deployment serves nothing whatever the switch says.
 
-**One of the seven reports is not written yet.** "How are quizzes performing?"
-opens and tells you so in as many words. Your data is not missing; that
-particular report has not been built.
+**Quiz reporting is incomplete.** Quiz data is recorded, but the dedicated
+quiz-performance report is not yet available.
 
-**There is no two-step sign-in.** Nothing in the browser reaches it, so nobody
-can turn it on. Signing in with an account people already have, through the two
-standards most company identity providers speak, does have screens for setting it
-up. Test it against your own provider on a deployment you can throw away before
-you depend on it.
+**No built-in two-step authentication.** PathLMS can instead use your existing
+identity provider.
 
-**One copy on one machine.** PathLMS cannot be scaled out. Report exports, their
-download links and one of the rate limits live in a single running process's
-memory, so a second copy behind a load balancer would break downloads and
-multiply that limit. The stack prevents that outright rather than letting
-somebody try it and find out.
+**Single-instance deployment.** PathLMS is designed to run as one application
+instance, not as a clustered service.
 
-**Encryption is something you set up, not something you get.** A fresh
-installation serves unencrypted traffic on one port, and you choose one of two
-ways to change that. Most deployments put a reverse proxy or a load balancer in
-front holding the certificate, and nothing in the PathLMS settings changes when
-you do. Or PathLMS holds the certificate itself and answers browsers directly,
-using one you generate or upload from the Settings screen, which takes one extra
-file that comes with the release. There is nothing to build or compile either
-way. Tell PathLMS which of the two you chose, on the Network tab, and it stops
-offering to make you a certificate you already have.
+**HTTPS is configured during deployment.** Use your existing reverse proxy or let
+PathLMS handle the certificate directly.
 
-**Updates happen when you decide.** Nothing deploys itself. PathLMS tells you
-when a newer release exists, runs its own safety checks, takes a backup and
-records every step. The last step, replacing the running containers, is yours: it
-deliberately will not do that, because anything able to create a container on a
-machine can do anything else on that machine too, and the part of PathLMS facing
-the internet is the last thing that should hold that power. In practice it is
-three lines in a file and one command. See [Updates](UPDATES.md).
+**Updates are administrator-controlled.** PathLMS checks, backs up, and prepares
+the update, but never replaces its own running containers.
 
-**No accessibility audit and no screen reader testing has been recorded.** What
-is checked automatically, on every change, before anything ships: text against
-its background in six brand colors in both light and dark, with the build
-stopping on a pair nobody could read; every control large enough to tap; a focus
-outline you can see when you tab to something, including under Windows High
-Contrast; and motion that stops for anybody whose computer asks for less. Nobody
-has sat down with a screen reader and no outside expert has reviewed it, so
-WCAG 2.2 AA is the target rather than a claim.
+**Accessibility is a target, not a certification claim.** Contrast, a focus
+outline you can see, a name on every control and a tap target big enough for a
+finger are checked in a real browser before every change is accepted, and a
+failure stops the build. Nobody has sat down with a screen reader and no outside
+expert has reviewed it, so WCAG 2.2 AA is the target rather than a claim.
 
-**Two things leave the machine on their own, and nothing else does.** No learner
-data, no names, no email addresses and no identifier of any kind is sent
-anywhere.
+**Very little leaves the installation.** Learner data stays local. PathLMS only
+checks breached passwords and available software versions, and the version check
+can be disabled.
 
-- **A breached-password check.** When somebody sets a password, the first five
-  characters of its hash go to a public service that reports whether the password
-  appears in known breaches. The full password is never sent, and the service
-  cannot tell which password was asked about. There is no setting to switch this
-  off. On a network with no route out it times out and lets the password through.
-- **A check for newer versions.** Every few hours, the deployment asks a public
-  container registry which versions of PathLMS have been published. What leaves
-  the machine is a request for a public list of version numbers, carrying nothing
-  about this installation. Nothing is downloaded and nothing is installed. Set
-  `PATHLMS_UPDATE_CHECK=off` to stop it. On a network with no route out it fails
-  quietly rather than raising an alarm.
+**Keep a second administrator account.** If the only administrator forgets their
+password without email recovery configured, recovery means somebody writing a new
+one straight into the database. The lockout that follows failed sign-in attempts
+is not this: it clears itself.
 
-One more thing can leave the machine, and only because somebody asked it to: when
-an administrator types this deployment's own address into the Settings screen,
-PathLMS tries to reach that address to tell them whether it works.
-
-**Losing the only administrator's password locks you out, and nothing in the
-product will let you back in.** The step that creates the first administrator
-runs only while there are no accounts at all, and resetting a password needs
-email, which is not configured by default. Getting back in from there means
-somebody with access to the database writing a new password directly into it.
-Create a second administrator on your first day. [After it
-starts](AFTER-IT-STARTS.md) says this again, louder, because it is the one
-mistake with no button to undo it.
+These are the current boundaries of PathLMS, not features reserved for another
+edition.
 
 ## What you need
 
@@ -258,7 +206,7 @@ The short version:
 | `docker-compose.yml` | The whole stack. Do not edit it. |
 | `pathlms.env` | Every setting you must supply, with this release's image addresses already filled in and everything else deliberately empty. |
 | `INSTALL.md` | Numbered steps from an empty directory to a signed-in administrator. |
-| `docker-compose.encryption.yml` | Optional. Add it if you want PathLMS to hold your certificate and answer browsers directly. Leave it out if something in front of it already does. |
+| `set-port.sh` | Keep it beside the others. The Settings screen asks you to run this when somebody changes the port, and it puts the old port back by itself if the system does not answer on the new one. |
 
 A release also attaches one short page for each environment that decides
 something its own way, so you can read it without leaving the download.
@@ -311,8 +259,10 @@ you need it. [After it starts](AFTER-IT-STARTS.md) has the commands.
 The database itself decides who may read which rows, by a large set of rules the
 application checks at every start. If any of them is missing or has been
 weakened, it refuses to boot rather than serving somebody else's data quietly.
-Nobody but the person themselves can rewrite a completion record, and nothing but
-a maintenance task can delete one.
+A learner's lesson progress and quiz attempts can be written by nobody but that
+learner or a maintenance task. The enrollment record carrying their completion
+adds administrators and managers, because a real screen writes it. Nothing but a
+maintenance task can delete any of it.
 
 ## License
 
@@ -322,8 +272,8 @@ The intention is to release PathLMS as open source, and that decision has not
 been made. Until it is, nobody has permission to fork this, redistribute it, or
 build on it. You may install and run it.
 
-If you need software you can fork and pass on, that is a genuine reason to choose
-Moodle, Canvas or Open edX instead, and this page would rather tell you now.
+If you need software you can fork and pass on, PathLMS is not that yet, and this
+page would rather tell you now than after you have built on it.
 
 See [LICENSE.md](LICENSE.md).
 
