@@ -4,29 +4,29 @@
 instructions.**
 
 `INSTALL.md`, which came with the same release as this file, is the general
-install. Follow it, with one substitution: the Compose plugin holds both files
-for you, so section 2 below replaces its first two steps, about making a
-directory and renaming the settings file. Every other step is correct as
-written. Come here for the four things an Unraid server answers in its own way:
+install. Follow it, with one change: the Compose plugin holds both files for you,
+so section 2 below replaces its first two steps, about making a directory and
+renaming the settings file. Every other step is correct as written. Come here for
+the four things an Unraid server answers in its own way:
 
-1. How a stack of seven containers is run at all, since Unraid's own Docker tab
-   adds one container at a time.
+1. How a stack of eight containers is run at all, since Unraid's own Docker tab
+   adds one container at a time. Seven keep running; the eighth sets up the file
+   storage once and exits.
 2. Where the data goes, given an array and one or more pools. On this platform
    that is the question with the most durable consequences.
-3. Which port is opened, given that Unraid's own web interface has taken two.
+3. Which ports are opened, given that Unraid's own web interface has taken two.
 4. What backs it up, given that you almost certainly already back something up.
 
 **Only the first is peculiar to this platform.** Every deployment has to decide
-where its data lives, which port it opens and what backs it up. Where a section
+where its data lives, which ports it opens and what backs it up. Where a section
 is really the general question, it says so and points at the general answer
 rather than inventing a second one.
 
-**What was checked, and how.** Every claim below about PathLMS itself was read
-out of the files this release ships, and you can check it against them. Every
-claim about Unraid came from Unraid's own documentation or from the plugin's own
-documentation. The ones that came from neither are listed in the last section,
-which is called "What is not verified here". Nobody who wrote this has an Unraid
-server. Read that section before you rely on this one.
+**Part of this was watched on a real Unraid server on 2026-08-30, and the rest
+was not.** Every screen and control named in sections 1 and 2 was observed being
+used. Everything else came from this release's own files or from Unraid's own
+documentation. The last section, "What is not verified here", draws the line
+item by item. Read it before you rely on this one.
 
 ---
 
@@ -38,7 +38,9 @@ server. Read that section before you rely on this one.
 - **You need the files from the release page.** `docker-compose.yml`,
   `pathlms.env`, `INSTALL.md` and this file. One more comes with them and you
   want it: `set-port.sh`, which the Settings screen asks you to run if anybody
-  changes the port.
+  changes the port. Copy that one onto the server yourself, into the stack's own
+  folder, which section 2 names. Nothing runs it until you change a port, and
+  when you do, the Settings screen prints the exact command.
 - **You need a terminal on the server at some point.** The command that
   generates your credentials, in step 3 of `INSTALL.md`, runs there.
 
@@ -46,10 +48,17 @@ server. Read that section before you rely on this one.
 
 ## 1. Use a Compose plugin, not Unraid's container templates
 
-**Install Compose Manager Plus from Community Applications.** Open the Apps tab
-in the Unraid web interface, search for it, and install it. It puts the
+**Install Compose Manager Plus from Community Applications.** It puts the
 `docker compose` command on the server and adds a Compose tab to manage stacks
 from.
+
+1. In the Unraid web interface, click the **Apps** tab in the top row.
+2. Type `Compose Manager Plus` into the search box and press Enter.
+3. Click **Install** on the result of that name.
+4. Wait for the install to finish and close the window it opened.
+5. Look at the top row of tabs again. There is now a **Compose** tab, or a
+   Compose section under the Docker tab depending on your Unraid version. That
+   is where everything in section 2 happens.
 
 There is an older plugin called Docker Compose Manager. Its own author has
 deprecated it in favor of this one, and the newer plugin reads the same project
@@ -71,7 +80,7 @@ template mechanism for the three things this stack depends on:
   entirely, so that reaching one container is not reaching all of them. The
   database and the cache sit where nothing outside can reach them.
 
-Rebuilding that as seven templates means creating the networks by hand,
+Rebuilding that as eight templates means creating the networks by hand,
 maintaining more than twenty environment values per container by hand, and
 losing the ordering outright. Do not.
 
@@ -79,19 +88,119 @@ losing the ordering outright. Do not.
 
 ## 2. Create the stack
 
-1. On the Compose tab, add a new stack and call it `pathlms`.
+1. On the Compose tab, add a new stack and call it `pathlms`, **all lowercase**,
+   and leave the Stack Directory box on `default`.
 
-2. Open its compose file editor and paste in the whole of `docker-compose.yml`
-   from the release. Do not edit it.
+   **The lowercase matters and the reason is not the one you would guess.** The
+   containers are named `pathlms-api` and so on either way, because the compose
+   file pins that name itself and it does not come from this box. What the name
+   decides is the folder your two files land in, which is
+   `/boot/config/plugins/compose.manager/projects/<what you typed>/`. Every
+   command on this page that you run in a terminal uses that path in lowercase,
+   including the one that checks the deployment is alive and the one that
+   gathers evidence when something is wrong. Type it with capitals and each of
+   those is wrong by one letter, on a system where that matters.
 
-3. Open its environment file editor and paste in the whole of `pathlms.env` from
-   the release. This is the file you fill in, and steps 3 and 4 of `INSTALL.md`
-   say how. Come back here for the two storage settings, which are section 3
-   below.
+   The dialog also has an Advanced section holding a Stack Directory box, which
+   reads `default`. Leave it. It decides where the plugin keeps stacks in
+   general rather than anything about this one.
 
-4. **Turn on autostart for the stack.** Unraid's Docker tab has its own
-   autostart switches and they do not govern a Compose stack, so a server that
-   reboots comes back with PathLMS stopped unless you set this in the plugin.
+   **The compose file editor is behind the cog beside the stack's name.** It
+   names the file it is editing across the top of the page, and it has a CANCEL
+   and a SAVE CHANGES button. Nothing you type is written until you press SAVE
+   CHANGES. (Observed on a real server, 2026-08-30.)
+
+   **The same cog also offers an editor for the settings file, and it writes
+   straight to `.env`.** Its heading reads `.../projects/pathlms/.env`, so the
+   renaming step that the rest of this page insists on is already done for you.
+   You never handle a file called `pathlms.env` on Unraid at all: you copy what
+   is inside it into that editor.
+
+   (Both editors, and the `.env` in that heading, observed on a real server on
+   2026-08-30. This page said twice that day that the settings editor might not
+   exist. It does.)
+
+2. Open the compose file editor and paste in the whole of `docker-compose.yml`
+   from the release. Do not edit it. Press SAVE CHANGES.
+
+   **Check the heading before you paste**: it must end in `docker-compose.yml`.
+   Pasting the compose file into the environment editor, or the other way round,
+   is the mistake this page warns about twice below, and the heading is where you
+   catch it in one glance.
+
+   You will know the paste landed because the first line of the file reads
+   `# ===...` and the text a few lines down says the stack is the one an
+   administrator receives rather than the one a developer runs.
+
+3. Open the settings editor behind the same cog, paste in the whole of
+   `pathlms.env` from the release, and press SAVE CHANGES. Check its heading ends
+   in `.env` before you paste. This is the file you fill in, and steps 3 and 4 of
+   `INSTALL.md` say how. Come back here for the two storage settings, which are
+   section 3 below.
+
+4. **Turn on autostart for the stack**, using the AUTO START switch at the right
+   of the stack's own row on the Compose tab. It arrives OFF. Unraid's Docker tab
+   has its own autostart switches and they do not govern a Compose stack, so a
+   server that reboots comes back with PathLMS stopped unless you set this one.
+   (Switch and its position observed on a real server, 2026-08-30.)
+
+### Every setting goes in that one file, and you edit it in a browser
+
+**You do not need a terminal to change a PathLMS setting on Unraid.** The
+settings editor behind the cog beside the stack is the form: open it, add or
+change a line, and press SAVE CHANGES. Everything on this page that says
+"settings file" means that editor.
+
+**Then use the stack row's COMPOSE UP control.** The row for your stack carries
+four things on the right: COMPOSE UP, COMPOSE DOWN, UPDATE STACK, and an AUTO
+START switch. COMPOSE UP is the one that creates the containers again from the
+file you just changed, and it is what every instruction below means by "bring the
+stack up again".
+
+**There is no Start control on this row**, which is worth saying because it is
+what an earlier version of this page warned you about. Observed on a real server
+on 2026-08-30: the three buttons are the ones named above and nothing else. If
+your plugin version does show a Start as well, it is the wrong one: a container
+keeps the settings it was created with, so starting a stopped one applies nothing
+you have just typed.
+
+**UPDATE STACK is not the one you want either**, unless you are deliberately
+pulling newer images. It is next to COMPOSE UP and does a different job.
+
+**Unraid's own Docker tab builds a container from a template, and a template is
+where you would otherwise add a variable. That is not the route here**, for a
+reason that is about Compose rather than about Unraid and that decides where
+every future setting goes: most PathLMS settings are read by Compose while it
+reads `docker-compose.yml`, before any container exists. They are not values a
+container holds, so there is nowhere on a container to put them.
+
+Unraid marks the containers it created itself and offers a template only for
+those, so these seven should show no template at all. **If the Docker tab does
+offer you an edit form on one of them, do not use it.** It is not governing
+these containers, and anything typed there would not reach the stack. The
+troubleshooting section at the end of this page says the same thing about
+starting and stopping them.
+
+| Setting | What reads it, and when |
+| --- | --- |
+| The three image addresses | Compose, to decide which image to pull |
+| `PATHLMS_DATA_DIR`, `PATHLMS_BACKUP_DIR` | Compose, to decide which directory to mount |
+| `PATHLMS_PUBLISHED_PORT`, `PATHLMS_PUBLISHED_ADDRESS`, `PATHLMS_PUBLISHED_TLS_PORT`, `PATHLMS_PUBLISHED_TLS_ADDRESS` | Compose, to decide which port to open |
+| `PATHLMS_PUBLIC_URL`, `PATHLMS_TRUST_FORWARDED_PROTO` | Compose, which then passes them on to a container |
+| Every password, key and address | The application, which is handed the whole file |
+
+**Two of them are worth singling out**, because a value set on a container would
+half work and the half that fails is the invisible half.
+`PATHLMS_PUBLISHED_PORT` and `PATHLMS_PUBLISHED_ADDRESS` are read twice: by
+Compose, to decide which port is opened, and by the application, so the Ports
+section of the Network tab can report which port you are on. Set on a container
+only, that screen would report a port nothing had opened.
+
+**The passwords settle it on their own.** The application container is handed
+the settings file whole, by name, so the file has to exist and has to be called
+`.env` no matter what else you do. There is no arrangement in which you do not
+have that file. On Unraid the plugin makes it for you under that name, which the
+next section is about.
 
 ### The settings file has to be called `.env`, and this is the step that breaks installs quietly
 
@@ -113,13 +222,29 @@ called `pathlms` your two files end up there as:
 /boot/config/plugins/compose.manager/projects/pathlms/.env
 ```
 
-If you use the plugin's own environment file editor, paste the contents in and
-it writes the file for you. If you copy the file to the server yourself, over
-the network or with a terminal, **rename it on the way**:
+**On Unraid the plugin does the renaming for you, and this is the one place this
+page is easier than the general instructions.** The settings editor behind the
+cog writes to `.env` directly: its heading says so. Open it, paste the contents
+of `pathlms.env` in, press SAVE CHANGES, and the file is correct by
+construction. There is no step where a file called `pathlms.env` sits on the
+server waiting to be renamed, because you never put one there.
+
+**If you copied the file onto the server some other way**, over the network or
+with a file manager, rename it on the way in:
 
 ```
 cp pathlms.env /boot/config/plugins/compose.manager/projects/pathlms/.env
 ```
+
+**And if you would rather use a terminal anyway**, Unraid opens one from the icon
+that looks like `>_` at the top right of its own web page:
+
+```
+cd /boot/config/plugins/compose.manager/projects/pathlms
+nano .env
+```
+
+Paste, then press Ctrl+O, Enter, Ctrl+X. That is write, confirm, and leave.
 
 **Check it before starting the stack**, because this costs one command and saves
 an hour:
@@ -149,7 +274,7 @@ out. Compose looks for `.env` **beside the compose file**, in the same folder,
 and nowhere else. Move it and the application gets no settings at all, which is
 the same silent failure as naming it wrongly.
 
-**Whether the plugin can be told to hand Compose an environment file from
+**Whether the plugin can be told to hand Compose a settings file from
 another path is not verified here**, and it is not the same thing as moving the
 file. If you want that, establish it against your own server first, on an
 installation that is already working, so that you can tell a settings problem
@@ -162,8 +287,8 @@ excluding the folder from whatever backup worries you, is the smaller change.
 
 **Put the data and the backups on different storage, so that losing one does not
 lose the other.** That is the whole of this section, and on Unraid the reason
-lands harder than anywhere else. Two settings decide it, and both live in the
-environment file:
+lands harder than anywhere else. Two settings decide it, and both live in
+`.env`:
 
 ```
 PATHLMS_DATA_DIR=/mnt/user/appdata/pathlms
@@ -175,12 +300,16 @@ PATHLMS_BACKUP_DIR=/mnt/user/backups/pathlms
 
 ### Put the data on a pool, with no secondary storage
 
-Set the share `PATHLMS_DATA_DIR` sits in, which is `appdata` above, to:
+The share `PATHLMS_DATA_DIR` sits in is `appdata`, from the setting above.
 
-| Share setting | Value |
-| --- | --- |
-| Primary storage | your pool, usually `cache` |
-| Secondary storage | **None** |
+1. In the Unraid web interface, click the **Shares** tab in the top row. This is
+   Unraid's own settings for storage and has nothing to do with the Compose
+   plugin.
+2. Click **appdata** in the list.
+3. Set **Primary storage** to your pool, which is usually called `cache`. A pool
+   is your solid state drives rather than the array.
+4. Set **Secondary storage** to **None**.
+5. Click **Apply**.
 
 **Secondary storage set to None is the setting that matters, and this is why.**
 When a share has secondary storage, Unraid's mover shifts files between the two
@@ -204,7 +333,11 @@ the slowest thing this product can be asked to do.
 
 ### Put the backups on the array, where parity covers them
 
-Set the share `PATHLMS_BACKUP_DIR` sits in to primary storage of **Array**.
+1. On the same **Shares** tab, click the share `PATHLMS_BACKUP_DIR` sits in,
+   which is `backups` if you used the setting above as written. If it is not
+   there yet, click **Add Share**, name it `backups`, and then open it.
+2. Set **Primary storage** to **Array**.
+3. Click **Apply**.
 
 **Pools are not parity protected.** Unraid's documentation is explicit that
 redundancy in a pool comes from mirroring rather than from parity, and that a
@@ -232,8 +365,8 @@ path you use.
 So `/mnt/user/appdata/pathlms` is the conventional choice and is what this page
 recommends. If you would rather address the pool directly you can, and the trade
 is worth knowing first. A `/mnt/cache/...` path names one specific pool, so
-moving the data to a different pool later means editing this setting and
-restarting the stack, and Unraid's share settings no longer route it for you.
+moving the data to a different pool later means editing this setting and bringing
+the stack up again, and Unraid's share settings no longer route it for you.
 
 ### What happens if you get this wrong
 
@@ -291,7 +424,7 @@ with a permission error, stop the stack, delete the `cache` directory under
 
 ## 5. How it is reached
 
-### The port
+### The ports
 
 Leave PathLMS on port 3001 and let a proxy hold your certificate. That is what
 most Unraid servers already have, and it avoids the one change on this platform
@@ -323,7 +456,8 @@ lives with the rest of the deployment documentation under
 `docs/public-repo/deploy/`. What follows here is the short version.
 
 Point your proxy at `http://<your-server-address>:3001`, let the proxy hold the
-certificate, and set two values in your settings file:
+certificate, and add two lines to your settings file. That means the editor
+for `.env` in a browser, as above, rather than a terminal:
 
 ```
 PATHLMS_PUBLIC_URL=https://learn.example.com
@@ -337,18 +471,39 @@ proxy when the proxy says a visitor arrived over an encrypted connection. Only
 turn it on when something really is in front, because with nothing in front it
 would let any visitor make that claim about themselves.
 
-**Then close the ports nobody should be reaching around the proxy to.** On
-Unraid the proxy is very often on the same server, and in that case two more
-settings shut both ports to everything except the machine itself:
+**Then close the ports nobody should be reaching around the proxy to. Which
+answer is right depends on how your proxy runs, and on Unraid it is usually the
+second one.**
+
+**If the proxy is a Docker container**, which is what Nginx Proxy Manager, SWAG
+and Traefik are on Unraid, **do not use the two settings below.** Inside a
+container `127.0.0.1` means that container rather than the server, so setting
+them would leave your proxy unable to reach PathLMS at all. Restrict the two
+ports with a firewall rule, or on your router, so that only the proxy can reach
+them.
+
+**If the proxy runs directly on the server**, or on a different machine that you
+reach over the network, these two settings shut both ports to everything except
+the server itself:
 
 ```
 PATHLMS_PUBLISHED_ADDRESS=127.0.0.1:
 PATHLMS_PUBLISHED_TLS_ADDRESS=127.0.0.1:
 ```
 
-The trailing colon on each is required and is not a typo. If your proxy runs on
-a different machine, leave these alone and use a firewall rule to allow port
-3001 from the proxy's address only. The proxy page covers both cases.
+The trailing colon on each is required and is not a typo. If your proxy is on a
+different machine, leave these alone as well and use a firewall rule to allow
+port 3001 from the proxy's address only. The proxy page covers every case.
+
+**Then press COMPOSE UP on the stack's row, and this matters more than it
+looks.** A container keeps the settings it was created with, so stopping and
+starting one applies nothing you have just typed. The containers have to be
+created afresh from the changed file, which is what COMPOSE UP does. If a
+setting looks as though it was ignored, this is almost always why.
+
+The web container writes down on every start whether it is believing the
+forwarded claim, and the proxy page has the one command that reads that back, so
+you can tell the setting arrived without inspecting a response header.
 
 **Get that address right before the first start.** It decides which pages a
 browser is answered from, the links inside recovery mail, the address file links
@@ -361,17 +516,29 @@ nothing on that screen pointing at a setting.
 Once you have signed in as the administrator, go to **Settings**, then the
 **Network** tab, and choose one of three:
 
+The section is called **How this system is reached**, and the three answers are
+worded on screen exactly like this:
+
 | Option | When |
 | --- | --- |
-| This system handles encryption itself | Browsers connect straight to PathLMS and it holds the certificate. |
-| Something else handles encryption in front of this system | You run nginx, Caddy, Traefik or a load balancer in front. This is the usual Unraid answer. |
+| PathLMS handles encryption itself | Browsers connect straight to PathLMS and it holds the certificate. |
+| A reverse proxy in front of PathLMS handles encryption | You run nginx, Caddy, Traefik or a load balancer in front. This is the usual Unraid answer. |
 | Nothing encrypts the traffic | Nothing is encrypted at any point on the way. Reasonable only on a closed network that nobody outside can reach. |
+
+Pick one and press **Record this answer**.
 
 **If you choose the first option, there is nothing extra to add to the stack.**
 The encrypted port, 3443 by default, is already open, and what it waits for is a
-certificate. Generate or upload one in the Encryption section of this same tab.
-Unraid's own firewall and any router in front of it have to allow that port,
-which is the part an Unraid server answers in its own way.
+certificate. Once you have recorded that first answer, a heading called **The
+security certificate** appears in this same section, offering **Make a security
+certificate here** and **I already have a certificate**.
+
+**Recording the answer is what makes those two buttons appear**, and they are
+not drawn under the other two answers, because under those there is nothing to
+press. So looking for a certificate control before choosing is looking for
+something that is not there yet. Unraid's own firewall and any router in front
+of it have to allow that port, which is the part an Unraid server answers in its
+own way.
 
 **Choosing the middle option is the point of this step for most Unraid
 servers.** Until you do, PathLMS has to work it out from the address alone, so
@@ -388,10 +555,11 @@ be able to change what the server enforces.
 itself. It records your answer. It does not move your proxy, your certificate or
 your ports.
 
-**One thing not to do**: if something in front already holds a certificate, do
+**One thing not to do**: if your reverse proxy already holds a certificate, do
 not also generate one inside PathLMS. A certificate the browser does not trust,
-served with a policy telling browsers to insist on encryption, is how somebody
-locks themselves out of their own system with no way back from inside it.
+served together with an instruction telling browsers to insist on encryption, is
+how somebody locks themselves out of their own system with no way back from
+inside it.
 
 **This is not an Unraid question.** Every deployment behind a proxy answers it
 the same way. It is here because on an Unraid server a reverse proxy is close to
@@ -405,11 +573,20 @@ Four checks. They are in this order because each one rules out a whole class of
 problem before the next one can confuse you, and because the last two prove
 things a page loading successfully does not.
 
+Checks 1 and 4 are commands. Run them in a terminal on the Unraid server, in the
+stack's own folder, which is
+`/boot/config/plugins/compose.manager/projects/pathlms/`. Checks 2 and 3 are done
+in a browser.
+
 1. **Ask whether the application is ready**, at exactly this address:
 
    ```
-   curl -sS http://<your-server-address>:3001/api/health/ready
+   curl -sS http://localhost:3001/api/health/ready
    ```
+
+   Use `localhost` rather than the server's network address, so that this check
+   still works if you closed the ports in section 5. If you moved the port, use
+   the number you set in `PATHLMS_PUBLISHED_PORT`.
 
    **The path matters and a shorter one will lie to you.** The web server
    answers requests for the site itself even when the application behind it is
@@ -451,8 +628,10 @@ things a page loading successfully does not.
    ```
 
    Use whatever you set `PATHLMS_BACKUP_DIR` to. You are looking for a file
-   whose name begins with `pathlms-` and ends in `.sql.gz`, alongside two
-   smaller files beside it.
+   whose name begins with `pathlms-` and ends in `.sql.gz`. That is the
+   database. Several more files sit beside it, holding the uploaded files and a
+   list of what the backup contained. An empty directory is the answer that
+   means something went wrong.
 
    **The first backup runs immediately rather than in twenty-four hours, and
    that is deliberate**, so that a directory nobody can write to is a problem
@@ -496,43 +675,74 @@ you can take a copy without needing anything else:
 docker cp pathlms-db:/opt/pathlms/scripts/. ./pathlms-scripts/
 ```
 
-**A backup you have never restored is not a backup.** Restore one into a
-throwaway database before you need to, on a day when nothing is wrong. Make the
-database first, because the script restores into one and does not create it:
+**A backup you have never restored is not a backup.** Rehearse one before you
+need to, on a day when nothing is wrong. There is a flag for exactly this, and
+it is one command:
 
 ```
-docker exec pathlms-db psql -U postgres -c "CREATE DATABASE pathlms_restore_test"
-
 export BACKUP_DIR=/mnt/user/backups/pathlms
-DB_NAME=pathlms_restore_test ./pathlms-scripts/restore-database.sh --latest
-
-docker exec pathlms-db psql -U postgres -c "DROP DATABASE pathlms_restore_test"
+bash ./pathlms-scripts/restore-database.sh --latest --verify-only
 ```
 
 `BACKUP_DIR` is wherever you pointed `PATHLMS_BACKUP_DIR`, and `--latest` picks
-the most recent copy in it. Naming a database on that line puts the restored copy
-beside your live database instead of on top of it. Leaving it out restores over the live one,
-which is what you want on a bad day and never on a rehearsal. It asks you to type
-the word `RESTORE` either way, and the two lines above that prompt name the file
-and the database, so read them before you answer.
+the most recent copy in it.
+
+**`--verify-only` is what makes this a rehearsal rather than a restore.** The
+script always loads the dump into a new, empty database of its own and checks it
+completely; the only question is whether it then swaps that copy into place.
+With `--verify-only` it never swaps, says so before it starts, and finishes with
+`Nothing was replaced, because this was a --verify-only run.` Your live database
+is not touched at any point.
+
+**Do not create a database first.** The script creates what it needs, including
+on a machine where nothing exists yet. Making an empty one beforehand does not
+help it and gives it an empty shell to copy its text settings from.
+
+It asks you to type the word `RESTORE` before it does anything, and it names the
+file it is about to read and the database it is about to write into a few lines
+above that prompt. Read them before you answer. When you do a real restore, leave
+`--verify-only` off: that replaces the live database, and it renames the old one
+aside rather than deleting it, so there is still a way back.
 
 ---
 
 ## 7. Updating
 
-Upgrading is three lines in your environment file and starting the stack again.
-The release page for this product lists every version and reports three image
-addresses for each; put those three addresses in, and start the stack. Inside the
+**By default PathLMS installs its own upgrades and you do none of this.** An
+administrator presses a button, and the safety checks, the backups, the new
+containers and the check that the new version really answers all happen without
+anybody at a terminal. `INSTALL.md` covers it under "The easy way, which is how
+this arrives". Read what it says about the trade: the extra container it runs can
+replace the containers on this machine, which is the same authority as being an
+administrator of the machine itself.
+
+**This section is the other way, for a deployment that switched that off.** You
+switch it off by putting a `#` in front of these two lines in `.env` and pressing
+COMPOSE UP:
+
+```
+COMPOSE_PROFILES=updater
+PATHLMS_UPDATER_ENABLED=yes
+```
+
+Upgrading by hand is four edited lines and one control. The release page for this
+product lists every version and reports four image addresses for each. Put those
+four addresses into the editor for `.env`, save, and press **COMPOSE UP** on the
+stack's row. UPDATE STACK is a different job and will not do this. Inside the
 product, on the General tab of Settings, the Updates section checks whether it is
-safe to go ahead. Replacing the containers is still your command to run,
-deliberately.
+safe to go ahead; replacing the containers is still yours to do, deliberately.
+
+**The fourth address is the one people forget.** Three of them are the
+application, the web server and the database. The fourth, `PATHLMS_UPDATER_IMAGE`,
+is the extra container that installs upgrades. Leave it behind and the next
+restart brings that container back on the version you have just left.
 
 **That section does not take a backup, and this page said it did until
 2026-08-29.** It runs its checks and writes down that you pressed it. Nothing
 else. Take your own copy before you upgrade, or check that the one taken for you
-each day into your backup directory is from today. The paragraph on going back
-tells you to restore the copy taken beforehand, and believing the old sentence
-you would have gone looking for one that was never made.
+each day into your backup directory is from today. The section on going back,
+below, tells you to restore the copy taken beforehand, and believing the old
+sentence you would have gone looking for one that was never made.
 
 **One Unraid detail worth knowing.** The Compose plugin can check for image
 updates on a schedule. It cannot move this deployment to a new version, because
@@ -540,6 +750,55 @@ the three addresses name digests, and a digest identifies exact bytes and cannot
 be repointed at anything else. That is deliberate: it is what makes two
 installations of one version provably the same software. Upgrading is always
 those three lines.
+
+### Going back
+
+**Going back is the update run backwards, and it is the same four lines.** Put
+the four image addresses you replaced back into the editor for `.env`, save, and
+press COMPOSE UP again. That is why the paragraph above says
+to write down what they were before you change them.
+
+**That is the whole of it when the new version changed nothing in the
+database**, which is the ordinary case. Your data is not part of it. Putting the
+database container back on an earlier image does not change what is stored, so
+long as it is the same major version of PostgreSQL, which an ordinary update
+does not change.
+
+**When the new version did change the database, older software cannot undo
+that.** It does not know a column has gone; it fails on the first query that
+wants one. Going back across a change like that means restoring the copy taken
+before you updated, with the restore script from section 6, and everything
+anybody did since that copy is lost. Work out which of the two you are in before
+you touch anything.
+
+**Uploaded files are never part of going back.** An update changes software and
+the shape of the database. It does not touch the documents and pictures people
+have uploaded, so putting the file archive back would delete every file added
+since the update and gain nothing at all. `restore-files.sh` is the tool for the
+separate case where files really were lost. It is attached to every release, and
+it also travels in the database image, so the `docker cp` in section 6 gets you
+a copy of it. This reads the newest archive back and checks it is usable, which
+is worth doing on a good day rather than a bad one:
+
+```
+BACKUP_DIR=/mnt/user/backups/pathlms bash restore-files.sh --verify
+```
+
+Drop `--verify` to put the uploaded files back.
+
+**That script has to be told where your backups are**, unlike the other three,
+and it is the one thing about it that wastes people's time. It looks in
+`./backups` unless `BACKUP_DIR` says otherwise, and it does not read your
+settings file. Without it you get `no file archives found in ./backups`, which
+names a directory that has never held anything rather than telling you it looked
+in the wrong place. Use whatever you set `PATHLMS_BACKUP_DIR` to.
+
+**`rollback.sh` is attached to every release and it cannot help on this route.**
+It reads a record that only the upgrade script writes, and updating the way this
+page describes writes no such record. Run it and it will say there is no record
+of an update to undo, and change nothing. That is worth knowing in advance, so
+that a refusal on a bad day reads as the tool working rather than as one more
+thing broken.
 
 ---
 
@@ -575,10 +834,13 @@ These are the Unraid ones:
 - **A port is already in use.** Something else on the server has 3001 or 3443.
   Docker refuses to start and names the port. Change
   `PATHLMS_PUBLISHED_PORT` for the plain one or `PATHLMS_PUBLISHED_TLS_PORT` for
-  the encrypted one, and start the stack again.
+  the encrypted one, and bring the stack up again.
 - **The address answers, but the browser is refused and pages do not fill in.**
-  `PATHLMS_PUBLIC_URL` does not match the address you typed. Fix it and start
-  the stack again.
+  `PATHLMS_PUBLIC_URL` does not match the address you typed. Fix it and bring the
+  stack up again.
+- **You changed a setting and nothing happened.** You pressed Start rather than
+  Compose Up. Start reuses the containers you already have, and a container keeps
+  the settings it was created with.
 - **The containers appear on the Docker tab looking unmanaged.** That is
   expected. They were created by Compose rather than from an Unraid template.
   Start, stop and update them from the Compose tab, not from the Docker tab.
@@ -593,8 +855,22 @@ These are the Unraid ones:
 
 ## What is not verified here
 
-**Nobody who wrote this has an Unraid server.** That matters, so here is the
-line, drawn honestly.
+**Part of this was watched on a real Unraid server and part of it was not.**
+That matters, so here is the line, drawn item by item.
+
+**Watched on a real server on 2026-08-30**, and worth more than anything else on
+this page: that the Compose tab's Add New Stack dialog takes a name and an
+Advanced section holding a Stack Directory box; that the stack's folder is
+`/boot/config/plugins/compose.manager/projects/<the name you typed>/`; that a cog
+beside the stack's name opens an editor for the file saying which containers
+exist and an editor for `.env`; that each editor names the file it is editing
+across the top and writes nothing until SAVE CHANGES is pressed; that the editor
+for the settings file writes to `.env` directly, so no renaming is needed; and
+that the stack's row carries exactly four controls, COMPOSE UP, COMPOSE DOWN,
+UPDATE STACK and an AUTO START switch which arrives off.
+
+**There is no Start control on that row**, which is worth stating because two
+earlier versions of this page warned at length about pressing one.
 
 **Taken from Unraid's own documentation**, and quoted above where it is load
 bearing: that a share has primary storage, secondary storage and a mover action;
@@ -609,7 +885,7 @@ automated flash backup copies plugin configuration off the flash drive.
 is installed from Community Applications; that it supersedes the deprecated
 Docker Compose Manager and reads the same project folders; that stacks live
 under `/boot/config/plugins/compose.manager/projects` by default; that a stack
-can have its own environment file; and that per-stack autostart exists.
+can have its own settings file; and that per-stack autostart exists.
 
 **Taken from this product's own files**, and checkable against the
 `docker-compose.yml` you downloaded: everything about ports, storage settings,
@@ -635,6 +911,12 @@ container users, ownership, ordering, networks, backups and digests.
   secondary storage to None.
 - What a PostgreSQL data directory does when the mover moves part of it. Which
   is the whole reason this page tells you not to let that happen.
+
+**Not watched, and the biggest gap on this page**: nothing below section 2 has
+been done on a real Unraid server. The stack has never been started there, no
+port has been opened there, no backup has been written there and no upgrade has
+been pressed there. Sections 3 to 7 are reasoned from this release's own files
+and from Unraid's documentation, which is not the same as having seen them work.
 
 If you run this on Unraid and find any of the above to be different from what is
 written here, that is worth reporting. A guess in a document that ships with
