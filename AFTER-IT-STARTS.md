@@ -28,7 +28,8 @@ What to do about it, which takes a minute:
 2. **Create a second administrator account that somebody else controls.** Two
    administrators means one can always restore the other.
 3. If real people are going to sign in, set up email as well, so that ordinary
-   password resets work for everybody rather than for nobody.
+   password resets work for everybody rather than for nobody. See the section on
+   it below, because there is no screen for this one.
 
 If it has already happened, the installation is not lost, but recovering it means
 somebody with access to the database writing a new password hash directly into
@@ -37,11 +38,17 @@ product will not walk you through it.
 
 ## 2. Remove the first administrator's password from the settings file
 
-Open `.env` and empty the `INITIAL_ADMIN_PASSWORD` line. It has done its job: it
-acts only while there are no accounts at all, so from now on it is a working
-password sitting in a file for no reason.
+Your settings file is the one named `.env`, in the same directory as
+`docker-compose.yml` on the server. Empty the `INITIAL_ADMIN_PASSWORD` line, so
+that it reads `INITIAL_ADMIN_PASSWORD=` and nothing after it, and save.
 
-Deleting it changes nothing about your ability to sign in.
+On a storage appliance that runs the stack for you, the same file is the settings
+or environment editor inside that appliance's own stack screen. Empty the line
+there.
+
+It has done its job: it acts only while there are no accounts at all, so from now
+on it is a working password sitting in a file for no reason. Deleting it changes
+nothing about your ability to sign in, and there is nothing to restart.
 
 ## 3. Tell PathLMS how it is reached
 
@@ -63,11 +70,13 @@ you already have. Answering once stops that.
 **All three answers are available to an installation built from a release**, and
 which is true of yours depends on what you set up before you got here. Out of the
 box the stack serves unencrypted traffic and holds no certificate, so most
-installations are the middle answer: something in front holds it. The first
-answer needs nothing downloaded and nothing extra run: the encrypted port is
-already open, and what it waits for is a certificate you generate or upload from
-the Encryption section further down this same tab. [Deploying
-PathLMS](DEPLOYMENT.md) covers both.
+installations are the middle answer: a reverse proxy or load balancer holds the
+certificate. The first answer needs nothing downloaded and nothing extra run:
+port 3443 is already open, and what it waits for is a certificate you generate or
+upload from the Encryption section further down this same tab. [Deploying
+PathLMS](DEPLOYMENT.md) gives the order to do that in, which matters: changing
+your address to the `https://` one before the certificate exists leaves you
+nowhere to sign in.
 
 The three sections beneath it are **Web address**, **Ports** and **Encryption**,
 which is the order you will want them in.
@@ -88,8 +97,8 @@ people type to reach this deployment. It is the same value as
 - the address every uploaded file's link is signed against;
 - where company sign-in returns people to.
 
-If something sits in front holding your certificate, this is the address at that
-proxy, not the machine and port behind it.
+If a reverse proxy or load balancer holds your certificate, this is the address
+at that proxy, not the machine and port behind it.
 
 ## 5. Confirm a backup actually landed
 
@@ -98,13 +107,25 @@ database and the uploaded files are copied once a day by default, kept for
 fourteen days, and the first copy runs immediately rather than after a day,
 precisely so that you find out now if the directory is not writable.
 
-Look in your backup directory and check there is a file in it.
+Look in your backup directory and check there is a file in it. That directory is
+whatever you set `PATHLMS_BACKUP_DIR` to, and `/var/lib/pathlms/backups` if you
+set nothing:
+
+    ls -l /var/lib/pathlms/backups
+
+You want a file whose name begins with `pathlms-` and ends in `.sql.gz`, which is
+the database, with several more beside it holding the uploaded files and a list
+of what the backup contained. An empty directory means the backup could not
+write, and that is worth fixing today.
 
 Then do the thing almost nobody does: **restore one somewhere and check it comes
 back.** A backup you have never restored is not a backup, and the moment you find
 out otherwise is the worst possible moment.
 
 ### How to restore one
+
+Run everything in this section in a terminal on the server, in the directory
+holding `docker-compose.yml`.
 
 The restore script travels inside the database image, because a server has no
 copy of the source for it to come from. Copy it out once, onto the machine:
@@ -143,11 +164,36 @@ database once lost a piece of it and reported success.
 
 Two more things worth arranging while you are here:
 
-- **Copy the backups off the machine.** They are on a schedule, and they are on
-  the same machine as the thing they are protecting until you move them. Point
-  `PATHLMS_BACKUP_DIR` at a path that something else syncs elsewhere.
+- **Copy the backups off the machine.** They are taken on a schedule, and until
+  you move them they sit on the same machine as the thing they are protecting.
+  Point `PATHLMS_BACKUP_DIR` at a directory that a backup tool or sync job you
+  already run copies off the machine.
 - **Check who owns the files** with `ls -l` before you write that sync job, so it
   has permission to read them.
+
+### If you move the backup directory, set the second name too
+
+There are two names for it and they are read by different things. Set only the
+first and everything looks right until the day it matters.
+
+`PATHLMS_BACKUP_DIR`, in the settings file, is where the automatic copies land.
+`BACKUP_DIR` is what every script you run by hand reads, including the restore
+above and the upgrade. It defaults to `./backups` beside your `docker-compose.yml`
+and it does not follow `PATHLMS_BACKUP_DIR`.
+
+So if you point `PATHLMS_BACKUP_DIR` somewhere else and change nothing else, the
+upgrade writes its own backup and the note it needs to undo itself into
+`./backups`, while every daily copy goes to the disk you chose. Both directories
+exist, both have files in them, and nothing tells you they are different ones.
+The copy you would go looking for after a bad upgrade is the one in the place you
+have not been checking.
+
+Set `BACKUP_DIR` to the same directory before you run anything by hand:
+
+    export BACKUP_DIR=/mnt/your-backup-disk/pathlms
+
+Putting that line in the shell profile of whoever runs the upgrade is the way to
+stop having to remember it.
 
 ---
 
@@ -162,8 +208,8 @@ Roughly, the order most people want is:
 1. **Set up your groups**, because a person's place in the structure can decide
    what they are given.
 2. **Add people**, or connect company sign-in so they arrive on their own. The
-   **SSO / Authentication** tab in Settings sets that up, and speaks the two
-   standards most company identity providers use, OIDC and SAML.
+   **Sign-in** tab in Settings sets that up, and speaks the two standards most
+   company identity providers use, OIDC and SAML.
 3. **Set your brand color and logo** on the Appearance screen. Set one color and
    the whole palette is generated from it. Have the logo ready as a PNG or a
    WebP: uploads in SVG are refused, because that format can carry running
@@ -172,8 +218,41 @@ Roughly, the order most people want is:
 5. **Enroll people**, which takes one pass: pick people or a whole group, pick
    the courses, done. It then names anybody it could not enroll and why.
 
-**Set up email early if real people will use this.** Without it, nobody can reset
-their own password, including you.
+## Set up email early if real people will use this
+
+Without it, nobody can reset their own password, including you.
+
+**There is no screen for this.** Email is set in the same `.env` settings file as
+everything else, and it takes effect when the containers are created again with
+`docker compose up -d`. These are the lines:
+
+    SMTP_HOST=smtp.example.com
+    SMTP_PORT=587
+    SMTP_SECURE=false
+    SMTP_USER=your-account
+    SMTP_PASSWORD=your-password
+    MAIL_FROM=pathlms@example.com
+
+`SMTP_HOST` and `MAIL_FROM` are the two that are always required. `SMTP_PORT`
+defaults to 587. `SMTP_SECURE` is for a server that is encrypted from the first
+byte, which usually means port 465; leave it out for the ordinary case.
+`SMTP_USER` and `SMTP_PASSWORD` go together: set one and you must set the other,
+and leave both out for a relay that accepts mail from this network without a
+password. There is nothing to set for the links inside the messages: they are
+built from the address you already gave.
+
+Leave every line out and PathLMS runs normally, and tells anybody who has
+forgotten a password to ask an administrator.
+
+**Set some of them and not the rest and PathLMS will not start**, on purpose. A
+half-configured mail server that started anyway would accept every password
+reset and deliver none of them. The refusal names the missing line and it is
+only in the log, so read it with:
+
+    docker compose logs api
+
+The same six lines are at the foot of the settings file the download came with,
+commented out, so you can uncomment the ones you need rather than typing them.
 
 ## What to read next
 
