@@ -64,79 +64,102 @@ the ownership of the backup directory with `ls -l` before you write whatever
 copies those files off the machine, because that job needs permission to read
 them.
 
-### 3. Which port is open, and what else is using it?
+### 3. Which ports are open, and what else is using them?
 
-PathLMS opens one port on your machine and nothing else, so the database, the
-cache and the object store cannot be reached from outside at all. The port
-defaults to **3001**. It is two ports rather than one only if you choose decision
-4 below and let PathLMS hold your certificate.
+**PathLMS opens two ports on your machine, and both are opened on every
+installation.** Port **3001** is the plain one and port **3443** is the encrypted
+one. Nothing else is opened, so the database, the cache and the object store
+cannot be reached from outside at all.
 
-To publish a different port:
+Check both are free before you start. If one is taken, the failure comes from
+Docker rather than from PathLMS: it refuses to start the container, and names the
+port.
+
+    ss -tlnp | grep -E ':(3001|3443)\b'
+
+To publish either one somewhere else, put these in your settings file:
 
     PATHLMS_PUBLISHED_PORT=8080
+    PATHLMS_PUBLISHED_TLS_PORT=8443
 
-**The container always listens on 3001 inside itself and never moves.** That is
-deliberate: it means the web server never needs extra privileges even when you
-publish it on port 80.
+**Inside the container the web server always listens on 3001 and 3443, and never
+moves.** That is deliberate: it means the web server never needs extra privileges
+even when you publish it on port 80.
 
-A second setting decides which of the machine's networks that port is opened on.
-Empty, which is the default, means all of them. To open it on one address only,
-which matters when something else in front holds your certificate:
+Two more settings decide which of the machine's network interfaces those ports
+are opened on. Empty, which is the default, means all of them. To open them on
+the machine itself only, which is what you want when a reverse proxy running
+directly on this machine holds your certificate:
 
     PATHLMS_PUBLISHED_ADDRESS=127.0.0.1:
+    PATHLMS_PUBLISHED_TLS_ADDRESS=127.0.0.1:
 
-The trailing colon is required. The two settings are joined together, so an
-address without it runs into the port number.
+The trailing colon on each is required. The address and the port number are
+joined together, so an address written without it runs into the port. Set only
+the first and the second follows it.
 
-Check the port is free before you start, because the failure otherwise arrives
-from Docker rather than from PathLMS:
-
-    ss -tlnp | grep -E ':(3001|8080)\b'
+**Do not set either one if your reverse proxy is itself a Docker container.**
+Inside a container `127.0.0.1` means that container rather than the machine, so a
+proxy running in a container can no longer reach PathLMS. Restrict the ports with
+a firewall rule instead, as [Putting PathLMS behind a proxy you already
+run](deploy/BEHIND-A-PROXY.md) describes.
 
 ### 4. What sits in front of it?
 
 Somebody has to hold your certificate, and until somebody does, **an installation
-built from a release serves unencrypted traffic.** Out of the box it holds no
-certificate and listens on no encrypted port. You have two ways to change that,
-and most people should take the first.
+built from a release serves unencrypted traffic.** Port 3443 is listening from
+the first start, but it holds no certificate, so nothing is served on it. You
+have two ways to change that, and most people should take the first.
 
-**Put something in front of it.** A reverse proxy or a load balancer holding your
-certificate, pointed at the PathLMS port. Caddy, nginx, Traefik, HAProxy and
-every cloud load balancer are all fine. Set `PATHLMS_PUBLIC_URL` to the address
-people type at that proxy, which will be the `https://` one, and **not** to the
-machine and port behind it. Then set `PATHLMS_TRUST_FORWARDED_PROTO=true`, which
-is what tells PathLMS to believe the proxy when the proxy says a visitor arrived
-over an encrypted connection. Without it, every request is treated as
-unencrypted no matter what your proxy did.
+**Put a reverse proxy in front of it**, holding your certificate and pointed at
+port 3001. Caddy, nginx, Traefik, HAProxy and every cloud load balancer are all
+fine. Set `PATHLMS_PUBLIC_URL` to the address people type at that proxy, which
+will be the `https://` one, and **not** to the machine and port behind it. Then
+set `PATHLMS_TRUST_FORWARDED_PROTO=true`, which tells PathLMS to believe the
+proxy when the proxy says a visitor arrived over an encrypted connection. Without
+it, every request is treated as unencrypted no matter what your proxy did.
 
 **The exact steps, a copyable nginx block, the Caddy equivalent, how to prove it
 worked, and how to stop somebody reaching around the proxy, are all on their own
 page: [Putting PathLMS behind a proxy you already run](deploy/BEHIND-A-PROXY.md).**
 
 **Or let PathLMS hold the certificate itself.** There is nothing to download and
-nothing extra to run. The stack already opens a second port, **3443** by default,
-which is the one browsers connect to and the one your firewall has to allow. Make
-sure your address begins with https, then sign in and, under Settings, Network,
-Encryption, either generate a certificate or upload one you already hold.
+nothing extra to run. Port **3443** is already open. That is the one browsers
+connect to and the one your firewall has to allow.
 
-**Until you have added a certificate, that port is open and every attempt to use
-it fails.** Nothing is served on it and no browser gets a page, so there is
-nothing to click past. That is deliberate: refusing to start the whole system
+**Do it in this order.** `PATHLMS_PUBLIC_URL` is the only address a browser is
+answered from, so setting it to your `https://` address before a certificate
+exists leaves you nowhere to sign in: the encrypted port has nothing to serve
+yet, and the plain port now refuses your browser because it is a different
+address.
+
+1. Set `PATHLMS_PUBLIC_URL` to the plain address you can reach today, for example
+   `http://192.0.2.10:3001`, and start the stack.
+2. Sign in at that address. Under **Settings**, then **Network**, then
+   **Encryption**, generate a certificate or upload one you already hold.
+3. Change `PATHLMS_PUBLIC_URL` to the encrypted address, including the port
+   unless it is 443, for example `https://learn.example.com:3443`.
+4. Run `docker compose up -d` again, and use the new address from then on.
+
+Until step 2 is done, port 3443 is open and every attempt to use it fails.
+Nothing is served on it and no browser gets a page, so there is nothing for
+anybody to click past. That is deliberate: refusing to start the whole system
 would take away the screen you need in order to fix it.
 
 **If port 3443 is already taken on that machine**, Docker will refuse to start
 and say so, naming the port. Put a free one in `PATHLMS_PUBLISHED_TLS_PORT` in
 your settings file and start again.
 
-**If something in front holds your certificate, put that port on the machine
-itself.** Set `PATHLMS_PUBLISHED_TLS_ADDRESS` to `127.0.0.1:`, with the trailing
-colon, and nothing outside the machine can open a connection to it. Two things
-that answers. Anybody who can reach that port directly goes around the thing in
-front and can believe their connection was encrypted when it was not. And with
-no certificate in place, every attempt writes a line to your log, which nothing
-can slow down because no request is ever completed, so a stranger can fill a log
-as fast as they can open connections. Leave it out and it follows whatever you
-set for the ordinary port.
+**If a reverse proxy or load balancer holds your certificate, close port 3443 to
+everything but the machine itself.** Set `PATHLMS_PUBLISHED_TLS_ADDRESS` to
+`127.0.0.1:`, with the trailing colon. Leave it out and it follows whatever you
+set for the plain port.
+
+That closes two holes. Anybody who can reach port 3443 directly is going around
+your proxy, and can claim their connection was encrypted when it was not. And
+while no certificate is in place, every connection attempt writes a line to your
+log, which nothing slows down because no request is ever completed, so a stranger
+can fill a log as fast as they can open connections.
 
 Once you are signed in, tell PathLMS which of these you chose, on the Network
 tab, and it stops offering to make you a certificate you already have. [After it
@@ -152,7 +175,8 @@ Everything from here is identical in every environment.
 
 Download the files attached to the [latest
 release](https://github.com/path-lms/pathlms/releases/latest) into an empty
-directory on the server:
+directory on the server. Every command on this page is run in that directory,
+from a terminal on the server:
 
 | File | What it is |
 | --- | --- |
@@ -171,10 +195,10 @@ It is short and it is the authority, because it ships with the release and names
 that release's exact image fingerprints. In outline it has you:
 
 - rename `pathlms.env` to `.env`, so Compose finds it;
-- run one command that generates every password and key this installation needs.
-  That command runs inside the image you are about to deploy, so nothing extra
-  has to be installed on the server, and the values it prints are made fresh for
-  you and written down nowhere else;
+- run one command, in a terminal on the server, that generates every password and
+  key this installation needs. It runs inside the image you are about to deploy,
+  so nothing extra has to be installed on the server, and the values it prints are
+  made fresh for you and written down nowhere else;
 - fill in the three things it cannot generate: your address, your email address,
   and a password you choose for the first administrator;
 - apply your answers to decisions 2, 3 and 4 above;
@@ -235,11 +259,11 @@ restore selectively from. Point `PATHLMS_BACKUP_DIR` at a path you also sync to
 object storage on a schedule, because a backup that only exists on the machine it
 came from is not one.
 
-**Which port is open.** Keep 3001 closed to the internet in the security group or
-firewall rules. Open only the load balancer's port, and let the load balancer
-reach the instance on 3001 over the private network. On a single instance with no
-load balancer, run a reverse proxy on the same machine, publish the proxy on 443,
-and leave PathLMS bound where it is.
+**Which ports are open.** Keep 3001 and 3443 closed to the internet in the
+security group or firewall rules. Open only the load balancer's port, and let the
+load balancer reach the instance on 3001 over the private network. On a single
+instance with no load balancer, run a reverse proxy on the same machine, publish
+the proxy on 443, and leave PathLMS where it is.
 
 **What sits in front.** The provider's load balancer is the natural place for the
 certificate, and its managed certificate service means one less thing to renew.
@@ -271,31 +295,36 @@ different machine on a schedule.
 
 **Snapshots are not a substitute for the nightly copies.** A filesystem snapshot
 of a running database captures it mid-write. It will usually restore and it is
-not something to rely on. The nightly copy is taken by the database itself and is
-consistent by construction.
+not something to rely on. The nightly copy is taken by the database itself, which
+is what makes it complete.
 
-**Which port is open.** Nothing publishes itself here, so open the one port
-deliberately and check nothing already holds it:
+**Which ports are open.** Nothing opens a firewall for you here, so decide
+deliberately which of the two ports the network may reach, and check that nothing
+already holds either:
 
-    ss -tlnp | grep ':3001'
+    ss -tlnp | grep -E ':(3001|3443)\b'
 
 If this machine is reachable from outside your network, put a firewall rule in
-front rather than relying on the port being obscure.
+front rather than relying on the ports being obscure.
 
 **What sits in front.** A reverse proxy on the same machine is the simplest thing
 that works. Caddy will obtain and renew a certificate for you with almost no
 configuration; nginx or Traefik will too with a little more. Point it at
 `127.0.0.1:3001`.
 
-When the proxy is on the same machine, bind PathLMS to the loopback interface
-only, so nothing on the network can reach around the proxy. That is a **second
-setting**, alongside the port rather than replacing it:
+When the proxy runs directly on this machine, bind PathLMS to the loopback
+interface only, so nothing on the network can reach around the proxy. That is a
+**second setting**, alongside the port rather than replacing it:
 
     PATHLMS_PUBLISHED_ADDRESS=127.0.0.1:
 
 **The trailing colon is required and is not a typo.** Leave
 `PATHLMS_PUBLISHED_PORT` as it is; the two are joined together, so an address
 written without the colon runs into the port number.
+
+**Skip this if the proxy runs in a Docker container**, even on this same machine.
+`127.0.0.1` inside a container is that container, so the proxy would lose PathLMS.
+Use a firewall rule on port 3001 instead.
 
 Once you are signed in there is a screen for this as well: the **Ports** section
 on the **Network** tab offers **Every network on this machine** or **One address
@@ -311,8 +340,8 @@ assuming it.
 ## A home or small-office server appliance
 
 An appliance brings its own application manager, its own idea of where shares
-live, and its own web interface already holding a port. Those change the shape of
-the install in ways the general path does not cover.
+live, and its own web interface already holding a port. Each of those changes a
+step the general path takes for granted.
 
 **Unraid has a guide of its own: [Running PathLMS on Unraid](deploy/UNRAID.md).**
 
@@ -347,8 +376,8 @@ Generate your own, as `INSTALL.md` step 3 does.
 **The sign-in page appears and nothing on it works.** `PATHLMS_PUBLIC_URL` does
 not match the address you typed in the browser. Fix it and run
 `docker compose up -d` again. If something sits in front holding your
-certificate, this setting is the address at that proxy, not the machine behind
-it.
+certificate, this setting is the address at that proxy, not the machine and port
+behind it.
 
 **Uploaded pictures do not appear, but everything else works.** Same cause,
 different symptom: file links are signed against the address in
