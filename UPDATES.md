@@ -122,6 +122,44 @@ database image in particular is not just a schema: it also carries the backup an
 restore scripts your deployment runs, so leaving it behind leaves your backup
 code behind with it.
 
+## The "Back in a moment" page, and how to end it
+
+While an update runs, everybody visiting PathLMS meets a page saying it will be
+back in a moment. That page is deliberate. An update takes two safety copies,
+one of the database and one of the uploaded files, and a copy taken while people
+are still saving work is a copy that misses things. The page is what stops that.
+
+**It is not a fault, and you do not normally have to do anything.** It ends
+three ways:
+
+- The update takes it down when it finishes.
+- If the update stopped part way through and PathLMS came back without it,
+  PathLMS notices that it is serving again and takes the page down by itself,
+  usually within a minute of coming back. It does that only when it can observe
+  that the update reached the point of replacing the containers and that the
+  PathLMS now answering is not the one that put the page up, so it can never end
+  a pause while a safety copy or a restore is still running.
+- Every notice carries a deadline in any case, so even one PathLMS cannot make
+  sense of ends within a day at the very most.
+
+**To end it now, the page tells you how.** While a deployment is paused, the
+"Back in a moment" page carries a paragraph addressed to whoever looks after the
+system, naming the exact command to run on the server. It is written for the
+person locked out, so it is on the one screen that person can still reach. The
+install instructions that come with every release carry the same command.
+
+**If PathLMS will not start at all**, so that command has nothing to talk to,
+removing the file it reads does the same job and needs nothing running:
+
+```bash
+docker run --rm -v pathlms_upgrade-state:/state alpine rm -f /state/paused.json
+```
+
+**Do not end it while an update is genuinely running.** The page itself names
+the step the update is on, so read it before you decide. Waiting costs minutes.
+Ending it early can cost you a safety copy that turns out to be incomplete on
+the day you need it.
+
 ## Going back
 
 Put the three previous addresses back in `.env` and run `docker compose up -d`
