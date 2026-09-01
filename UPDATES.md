@@ -75,18 +75,61 @@ going back tells you to restore the backup taken before the update. Believing
 this page, you would have pressed the button, upgraded, hit trouble, and gone
 looking for a copy that was never made.
 
-## The one step PathLMS will not take, and why
+## Who replaces the containers, and how to tell which it is here
 
-**PathLMS does not replace its own containers, and it is built so that it
-cannot.**
+**CORRECTED 2026-08-31. This section used to say "PathLMS does not replace its
+own containers, and it is built so that it cannot", and then told you the final
+swap was yours. On a deployment installed from a release, that is wrong, and it
+is wrong in the direction that matters: it describes a safety property your
+deployment may not have.**
 
-This is a design decision rather than something unfinished. Creating a container
-accepts arbitrary bind mounts, so the right to create a container on a machine is
-the right to be root on that machine. Handing that authority to the process
-serving the internet would undo the rest of the hardening in this stack.
+Half of it is still exactly true and is worth keeping. **The container that
+serves the internet cannot create containers and is built so that it cannot.**
+Creating a container accepts arbitrary bind mounts, so the right to create one on
+a machine is the right to be root on that machine, and handing that to the part
+facing the internet would undo the rest of the hardening in this stack.
 
-So the final swap is yours, which is worth knowing before you start rather than
-in the middle.
+What was missing is that a **separate small updater container** holds exactly
+that authority and does nothing else, and that **the settings file a release
+produces switches it on for you.** Two lines near the bottom of your `.env`, both
+uncommented:
+
+```
+COMPOSE_PROFILES=updater
+PATHLMS_UPDATER_ENABLED=yes
+```
+
+With both present, pressing the button in Settings is the whole of an update.
+PathLMS checks, pauses, takes the backups, and the updater replaces the
+containers. Nobody goes to the server.
+
+**What you are accepting, said once and plainly.** Whoever controls the published
+PathLMS images can change this deployment with nobody here approving it. That is
+not a side effect, it is the feature. What keeps the trade small is that the
+updater never takes an image address from PathLMS, only a version number it
+checks itself, and it reads PathLMS's own record without being able to write to
+it, keeping its memory somewhere PathLMS cannot reach.
+
+**What it does hold, said rather than glossed over.** It holds the container
+service, which is the authority described above. It holds your backup directory,
+and it writes there, because taking the backups during an update is its job, and
+those backups are complete copies of your database and of every uploaded file. It
+is on no internal network, so it has no route to the database, the cache or the
+file store while they are running, but that is a statement about reachability and
+not about what it can read from disk.
+
+**To have the swap be yours instead**, remove either line, or comment it out, and
+bring the stack up again. Pressing the button then runs the safety checks and
+writes the update down, and **nothing else happens until somebody runs the
+upgrade here.** That command is what takes the backups and replaces the
+containers, and the steps for it are below and do not change.
+
+**The screen does not currently tell anybody that**, which is worth knowing
+before you turn the updater off. It says the next step takes the backups, and on
+this arrangement the next step is a person going to the server.
+
+**To find out which of the two you are in right now**, run `check-my-settings.sh`
+beside your compose file. It reports the answer in a sentence and judges nothing.
 
 ## Doing the swap
 
