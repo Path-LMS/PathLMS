@@ -82,6 +82,21 @@ To publish either one somewhere else, put these in your settings file:
     PATHLMS_PUBLISHED_PORT=8080
     PATHLMS_PUBLISHED_TLS_PORT=8443
 
+**Upgrading from a version before 0.89.0? Replace your compose file first.**
+Older ones do not tell PathLMS which encrypted port they publish, so on a
+deployment holding its own certificate the Network screen reports the number of a
+port nobody uses, and changing the port moves one nobody arrives on. The new file
+is attached to the release. Your settings file is untouched by this.
+
+**Or change it from the Settings screen, which is easier and safer**, under
+Network. PathLMS works out which of the two ports people actually arrive on,
+which follows the answer you gave about who holds your certificate, checks what
+it can, and then names one command to run here. That command opens the port
+before it changes anything, and puts the old one back by itself if the system
+does not answer on the new one. Editing the settings file by hand does none of
+that, so a wrong number leaves you with nothing serving and nothing to tell you
+why.
+
 **Inside the container the web server always listens on 3001 and 3443, and never
 moves.** That is deliberate: it means the web server never needs extra privileges
 even when you publish it on port 80.
