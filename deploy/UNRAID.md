@@ -256,6 +256,54 @@ ls -la /boot/config/plugins/compose.manager/projects/pathlms/
 You want to see `.env` in that listing. If you see `pathlms.env` instead,
 nothing has read it yet.
 
+### Pasting into the browser editor can add an invisible character to every line, and it stops updates
+
+**This is worth two minutes now because it costs an evening later, and it is
+invisible in every editor including the one you paste into.**
+
+Windows ends every line of a text file with two characters where Linux uses one.
+A file that has passed through a Windows machine, a browser saving it, or a
+copy and paste, can arrive with the extra one on every line. Nothing on screen
+shows it and the stack starts perfectly.
+
+**What it breaks is the update.** The part of PathLMS that carries out an update
+reads the file listing your containers before it does anything. To find its own
+section of that file it looks for a line that ends in a colon, and with the extra
+character on the end it never does. So it refuses to act, parks itself, and
+writes the reason into its own log where nobody is looking. Pressing update then
+does nothing at all, for ever, with no explanation on any screen.
+
+**Check both files in one command**, on the Unraid terminal:
+
+```
+# counts the invisible characters in the two files that make up the stack
+tr -dc '\r' < /boot/config/plugins/compose.manager/projects/pathlms/docker-compose.yml | wc -c
+tr -dc '\r' < /boot/config/plugins/compose.manager/projects/pathlms/.env | wc -c
+```
+
+**Zero from both is what you want.** Any other number means the file has them.
+
+**Fix it with one command per file**, and it changes nothing else:
+
+```
+sed -i 's/\r$//' /boot/config/plugins/compose.manager/projects/pathlms/docker-compose.yml
+sed -i 's/\r$//' /boot/config/plugins/compose.manager/projects/pathlms/.env
+```
+
+**Then restart the stack** so the change is picked up.
+
+**The checker a release attaches finds this for you**, along with several other
+things that are easy to get wrong when pasting into a text box. It changes
+nothing and takes seconds:
+
+```
+cd /boot/config/plugins/compose.manager/projects/pathlms
+bash check-my-settings.sh
+```
+
+Run it before your first start, and again any time you edit either file in the
+browser editor.
+
 ### Both of those files are on the flash drive, and one of them holds every secret
 
 `/boot` is the USB flash drive Unraid starts from. That is fine for the compose
