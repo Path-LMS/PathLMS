@@ -531,6 +531,54 @@ assume comes along with it.
   The only thing separating that from anybody on the internet writing their own
   address into your activity trail is section 7, and nothing does section 7 for
   you.
+- **It does not cover the few seconds during an update when nothing answers.**
+  This one is worth reading rather than skimming, because somebody hit it on the
+  first upgrade of a real deployment.
+
+  While PathLMS is updating it shows a page saying so, which reloads itself at
+  five, ten, twenty, thirty and sixty seconds until the system is back. That page
+  is drawn by PathLMS's own web server, and near the end of an update that web
+  server is itself replaced. For those seconds nothing on the machine answers at
+  all, so your proxy draws its own error page.
+
+  **The harm is not the seconds. It is that your proxy's error page does not
+  reload itself**, so somebody who lands in that moment loses the retry that
+  would have carried them through and sits on a dead page until they refresh by
+  hand. Over a five minute update that page reloads about nine times on its own,
+  and each one is a chance to land in it.
+
+  **What to do about it, in nginx or anything built on it.** Handle only the
+  codes your proxy produces when it cannot reach PathLMS, and pass everything
+  else through untouched:
+
+  ```nginx
+  # Only the codes this proxy makes itself when PathLMS is not answering.
+  # 503 is deliberately absent: that is PathLMS's own update page, which is
+  # better than this one and should be passed through unchanged.
+  error_page 502 504 = @pathlms_updating;
+
+  location @pathlms_updating {
+      default_type text/html;
+      add_header Cache-Control "no-store" always;
+      add_header Retry-After 10 always;
+      return 503 '<!doctype html><meta charset="utf-8"><title>PathLMS is updating</title><meta http-equiv="refresh" content="10"><style>body{font-family:system-ui,sans-serif;margin:0;min-height:100vh;display:grid;place-items:center;background:#faf9f7;color:#1c1b1a}main{max-width:30rem;padding:2rem;text-align:center}h1{font-weight:600;font-size:1.5rem}p{line-height:1.7;color:#57534e}</style><main><h1>PathLMS is updating</h1><p>It is installing a new version and will come back on its own in a moment. This page checks again every ten seconds, so there is nothing to do.</p></main>';
+  }
+  ```
+
+  The line that refreshes every ten seconds is the whole point of the block. It
+  puts back the retry PathLMS's own page would have done.
+
+  **In Caddy there is a better answer**, because Caddy can avoid showing anything
+  at all. `lb_try_duration 30s` with `lb_try_interval 1s` inside the
+  `reverse_proxy` block makes it keep retrying instead of giving up on the first
+  refused connection, so a visitor sees their page take a couple of seconds
+  longer and nothing else. Put a `handle_errors` block underneath it for the case
+  where PathLMS is down for a longer reason, because holding a request open for
+  thirty seconds is the wrong answer to a real outage.
+
+  **Test it before you need it.** Stop the PathLMS web container by hand and load
+  your address. You should get your holding page, refreshing itself. Start the
+  container again afterwards.
 - **It does not let PathLMS run as more than one copy.** This product runs as a
   single instance. Put exactly one behind your proxy, and use the proxy for its
   certificate rather than for spreading load. Two copies break report downloads.
