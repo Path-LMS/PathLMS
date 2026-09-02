@@ -88,15 +88,6 @@ deployment holding its own certificate the Network screen reports the number of 
 port nobody uses, and changing the port moves one nobody arrives on. The new file
 is attached to the release. Your settings file is untouched by this.
 
-**Or change it from the Settings screen, which is easier and safer**, under
-Network. PathLMS works out which of the two ports people actually arrive on,
-which follows the answer you gave about who holds your certificate, checks what
-it can, and then names one command to run here. That command opens the port
-before it changes anything, and puts the old one back by itself if the system
-does not answer on the new one. Editing the settings file by hand does none of
-that, so a wrong number leaves you with nothing serving and nothing to tell you
-why.
-
 **Inside the container the web server always listens on 3001 and 3443, and never
 moves.** That is deliberate: it means the web server never needs extra privileges
 even when you publish it on port 80.
@@ -118,6 +109,24 @@ Inside a container `127.0.0.1` means that container rather than the machine, so 
 proxy running in a container can no longer reach PathLMS. Restrict the ports with
 a firewall rule instead, as [Putting PathLMS behind a proxy you already
 run](deploy/BEHIND-A-PROXY.md) describes.
+
+**Changing a port after the install is an edit to the same settings file and one
+command, and it has three traps in it.** Which of the two ports people actually
+arrive on depends on who holds your certificate. The address people type is a
+separate setting that does not move with the port, and a page that draws and then
+does nothing is what you get when it is left behind. And narrowing the plain port
+to one network narrows the encrypted port with it.
+
+All three, and what to do when the system does not come back on the new port, are
+on their own page: [Changing the port people arrive
+on](deploy/CHANGING-THE-PORT.md). **Read it before you change a port rather than
+after**, because its recovery section is written for somebody who can no longer
+reach any screen.
+
+**The Ports section of the Network tab reports these settings and does not change
+them.** Nothing running inside a container can move a port on the machine: Docker
+opens it when the container is created, which is why this is an edit to a file
+and a command rather than a button.
 
 ### 4. What sits in front of it?
 
@@ -198,7 +207,7 @@ from a terminal on the server:
 | `docker-compose.yml` | The stack. Do not edit it. |
 | `pathlms.env` | Your settings. You fill this in. |
 | `INSTALL.md` | Numbered steps, which the rest of this section follows. |
-| `set-port.sh` | Keep it. The Settings screen asks you to run this when somebody changes the port, and it puts the old port back by itself if the system does not answer on the new one. |
+| `CHANGING-THE-PORT.md` | Keep it beside the others. It is how you move the port later, and its recovery section is written to be read on the day PathLMS is not answering. |
 
 A release also attaches one short page for each environment that decides
 something its own way. Take the one that matches yours, if there is one, and
