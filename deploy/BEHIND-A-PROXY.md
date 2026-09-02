@@ -497,10 +497,11 @@ everywhere else. On a cloud provider that is a security group rule. Do this
 rather than hoping, because it is the only thing standing between an open port
 and the internet.
 
-Once you are signed in there is a screen for this too. The **Ports** section of
-the **Network** tab offers **Every network on this machine** or **One address
-only**, and it reads the real settings, so it can tell you which you actually
-have.
+Once you are signed in, the **Ports** section of the **Network** tab reports
+which of these you actually have, because it reads the same two settings. It
+reports them; it does not change them. Both are changed in your settings file,
+and [Changing the port people arrive on](CHANGING-THE-PORT.md) covers the rest of
+what moves with them.
 
 ---
 
