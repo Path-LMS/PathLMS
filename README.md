@@ -12,7 +12,7 @@ complicated structures to maintain, and no need to reshape your training around
 the LMS.
 
 <!-- version -->
-**Version 0.91.3** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.92.0** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 Courses can be completely open, carefully sequenced, or anything in between. If
@@ -206,7 +206,7 @@ The short version:
 | `docker-compose.yml` | The whole stack. Do not edit it. |
 | `pathlms.env` | Every setting you must supply, with this release's image addresses already filled in and everything else deliberately empty. |
 | `INSTALL.md` | Numbered steps from an empty directory to a signed-in administrator. |
-| `set-port.sh` | Keep it beside the others. The Settings screen asks you to run this when somebody changes the port, and it puts the old port back by itself if the system does not answer on the new one. |
+| `CHANGING-THE-PORT.md` | Keep it beside the others. It is how you move the port later, and its recovery section is written to be read on the day PathLMS is not answering. |
 
 A release also attaches one short page for each environment that decides
 something its own way, so you can read it without leaving the download.
