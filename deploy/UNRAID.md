@@ -37,10 +37,9 @@ item by item. Read it before you rely on this one.
   choose live on storage the array provides.
 - **You need the files from the release page.** `docker-compose.yml`,
   `pathlms.env`, `INSTALL.md` and this file. One more comes with them and you
-  want it: `set-port.sh`, which the Settings screen asks you to run if anybody
-  changes the port. Copy that one onto the server yourself, into the stack's own
-  folder, which section 2 names. Nothing runs it until you change a port, and
-  when you do, the Settings screen prints the exact command.
+  want it on the server: `CHANGING-THE-PORT.md`, which is how you move a port
+  later. Copy it into the stack's own folder, which section 2 names, so that it
+  is there on the day PathLMS is not answering and you need it.
 - **You need a terminal on the server at some point.** The command that
   generates your credentials, in step 3 of `INSTALL.md`, runs there.
 
