@@ -81,6 +81,14 @@ nowhere to sign in.
 The three sections beneath it are **Web address**, **Ports** and **Encryption**,
 which is the order you will want them in.
 
+**The Ports section reports; it does not change anything.** It shows which ports
+this deployment was told it publishes and which networks they are open on, so you
+can check them against what you meant. Moving a port is an edit to your settings
+file and one command, and it is worth reading [Changing the port people arrive
+on](deploy/CHANGING-THE-PORT.md) before rather than after, because the section
+about a deployment that does not come back is written for somebody who can no
+longer reach this screen.
+
 ## 4. Check the address is right
 
 A wrong address here fails in a way that does not look like a wrong address: the
