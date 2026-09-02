@@ -218,8 +218,10 @@ PATHLMS_TRUST_FORWARDED_ADDRESS_FROM=172.18.0.0/16
 
 **Write the address your proxy comes from, not the address people type and not
 this machine's own address.** On a stack like this one the proxy usually
-arrives over a Docker network, so a whole network is the honest answer. This
-command prints yours:
+arrives over a Docker network, so a whole network is the honest answer.
+
+The range shown above is the one Docker gives its own networks by default, so it
+is a good guess rather than yours. This command prints yours:
 
 ```
 docker network inspect pathlms_frontend --format '{{range .IPAM.Config}}{{.Subnet}}{{end}}'
