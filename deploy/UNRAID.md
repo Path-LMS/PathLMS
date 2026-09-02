@@ -782,8 +782,21 @@ safe to go ahead; replacing the containers is still yours to do, deliberately.
 
 **The fourth address is the one people forget.** Three of them are the
 application, the web server and the database. The fourth, `PATHLMS_UPDATER_IMAGE`,
-is the extra container that installs upgrades. Leave it behind and the next
-restart brings that container back on the version you have just left.
+is the extra container that installs upgrades. Leave it behind and your
+deployment carries on installing upgrades, and taking its safety copies, with
+the tools it had before, because those tools live inside that container.
+
+**Setting that line is not enough on its own, and this page said otherwise until
+2026-09-01.** It said the next restart of the machine would bring the new one
+up. It does not. Restarting starts the container that is already there, from the
+image it already has, and Docker reads neither `.env` nor the compose file to do
+it. Pressing COMPOSE UP is what replaces it, and only because you have set the
+line first.
+
+**None of this applies if you left the easy way switched on**, which is how a
+release arrives. There the extra container brings its own replacement up the
+next time it starts, and says in its log which of the two it is running. This
+section is only for a deployment that turned that off.
 
 **That section does not take a backup, and this page said it did until
 2026-08-29.** It runs its checks and writes down that you pressed it. Nothing
