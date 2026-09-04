@@ -50,16 +50,17 @@ Both are settings you can point anywhere:
     PATHLMS_DATA_DIR=/srv/pathlms
     PATHLMS_BACKUP_DIR=/mnt/backup-disk/pathlms
 
-**The uploads folder has to sit on a disk that supports extended
-attributes.** The file store keeps a small label on every file it holds, and
-it refuses to write a file it cannot label. Any ordinary Linux disk (ext4, xfs,
-btrfs) does this. A Windows drive letter or a Mac folder shared into Docker
-Desktop may not, and neither may a network share, and the failure looks like a
-running store that refuses every upload. On Docker Desktop, keep the data
-directory inside Docker's own Linux filesystem, for example the default
-`/var/lib/pathlms`, rather than on a drive letter. The Updates card on the
-Settings screen runs a check called "Uploaded files can be written" that says
-so when this is wrong, and names the log to read.
+**Any folder works for the uploads, since 0.99.1.** The file store keeps a
+small label on every file it holds. Until 0.99.1 it kept them as extended
+attributes, which Unraid's `/mnt/user` share layer, a Windows drive or a Mac
+folder shared into Docker Desktop, and some network shares cannot hold, and on
+those the store started, reported healthy, and refused every upload. It now
+keeps them in ordinary files under `<data>/uploads/labels`, beside the
+objects under `<data>/uploads/objects`, and the one-shot container that runs
+at every start lays that out and moves an older installation's files into
+place once. The Updates card on the Settings screen still runs a check called
+"Uploaded files can be written" and names the log to read if the store ever
+refuses.
 
 **Put the backups on a different disk from the data if you possibly can.** They
 are a separate setting for exactly this reason: an arrangement where the backup
