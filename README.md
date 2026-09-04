@@ -12,7 +12,7 @@ complicated structures to maintain, and no need to reshape your training around
 the LMS.
 
 <!-- version -->
-**Version 0.102.4** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.102.5** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 Courses can be completely open, carefully sequenced, or anything in between. If
