@@ -396,7 +396,7 @@ the backups are somewhere else.
 The stack takes a backup of its own accord, once a day, keeping fourteen days.
 Section 6 covers it.
 
-### The data folder: `/mnt/cache/...` is recommended, and `/mnt/user/...` works since 0.99.1
+### The data folder: `/mnt/cache/...` is recommended, and `/mnt/user/...` works since 0.100.0
 
 **Corrected 2026-09-03, after an installation that followed the previous
 version of this page could not upload a file and then could not update.**
@@ -408,7 +408,7 @@ write. Nothing uploads, the Updates card's "Uploaded files can be written"
 check fails, and a new version that needs the database changed waits on that
 check.
 
-Since 0.99.1 the store keeps those labels in ordinary files instead, so
+Since 0.100.0 the store keeps those labels in ordinary files instead, so
 `/mnt/user` works again. This page still recommends the same folder addressed
 directly on the pool, `/mnt/cache/appdata/pathlms`: a database is better off on
 a plain filesystem than behind the share layer, which is long-standing community
