@@ -45,11 +45,17 @@ It answers "is this safe to do right now". Open **Settings**, then **Updates** o
 the **General** tab. It shows:
 
 - **The version you are running**, and whether a newer one has been published.
-- **Six safety checks**, always all six and always in the same order, whether
-  they passed or not: that no upgrade is already running, that the database
-  answers, that the cache answers, that the object store answers, that there is
-  free disk space, and that the backup destination can be reached. You see what
-  was looked at, not only what went wrong.
+- **Seven safety checks**, always all seven and always in the same order,
+  whether they passed or not: that something is able to carry the update out,
+  that no upgrade is already running, that the database answers, that the cache
+  answers, that the object store answers, that there is free disk space, and
+  that the backup destination can be reached. You see what was looked at, not
+  only what went wrong. The first check does not take the settings file's word
+  for it: the updater, while it runs, reports every five minutes whether it can
+  act, and the check repeats what it said, in its own words, when it cannot. A
+  press the updater cannot honor is declined within a minute with that reason
+  on the screen. Once every check has passed, the list folds away under its
+  heading, and so does the record of the last update once it is over.
 - **A record of every step**, kept where a restart cannot erase it, so you can
   see afterwards what happened and in what order.
 
