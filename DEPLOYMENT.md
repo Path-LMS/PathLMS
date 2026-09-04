@@ -50,8 +50,8 @@ Both are settings you can point anywhere:
     PATHLMS_DATA_DIR=/srv/pathlms
     PATHLMS_BACKUP_DIR=/mnt/backup-disk/pathlms
 
-**Any folder works for the uploads, since 0.99.1.** The file store keeps a
-small label on every file it holds. Until 0.99.1 it kept them as extended
+**Any folder works for the uploads, since 0.100.0.** The file store keeps a
+small label on every file it holds. Until 0.100.0 it kept them as extended
 attributes, which Unraid's `/mnt/user` share layer, a Windows drive or a Mac
 folder shared into Docker Desktop, and some network shares cannot hold, and on
 those the store started, reported healthy, and refused every upload. It now
