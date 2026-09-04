@@ -338,7 +338,7 @@ lands harder than anywhere else. Two settings decide it, and both live in
 `.env`:
 
 ```
-PATHLMS_DATA_DIR=/mnt/user/appdata/pathlms
+PATHLMS_DATA_DIR=/mnt/cache/appdata/pathlms
 PATHLMS_BACKUP_DIR=/mnt/user/backups/pathlms
 ```
 
@@ -396,24 +396,30 @@ the backups are somewhere else.
 The stack takes a backup of its own accord, once a day, keeping fourteen days.
 Section 6 covers it.
 
-### About `/mnt/user` against `/mnt/cache`
+### The data folder: `/mnt/cache/...` is recommended, and `/mnt/user/...` works since 0.99.1
 
-The paths above go through `/mnt/user`, which is Unraid's share layer: it
-presents the pool and the array as one tree and routes each write according to
-the share settings you have just set.
+**Corrected 2026-09-03, after an installation that followed the previous
+version of this page could not upload a file and then could not update.**
+This page used to recommend `/mnt/user/appdata/pathlms`, Unraid's share
+layer, which presents the pool and the array as one tree. That layer does not
+support extended attributes, and the file store keeps a small label on every
+file it holds: on `/mnt/user` it starts, reports healthy, and refuses every
+write. Nothing uploads, the Updates card's "Uploaded files can be written"
+check fails, and a new version that needs the database changed waits on that
+check.
 
-Some long-standing community advice says to point database containers at a pool
-directly, as `/mnt/cache/appdata/pathlms`, rather than through `/mnt/user`.
-**That advice is not in Unraid's own documentation and has not been tested
-against PathLMS by anybody here.** The documented hazard it grew up around is
-the mover, and setting secondary storage to None removes that hazard whichever
-path you use.
+Since 0.99.1 the store keeps those labels in ordinary files instead, so
+`/mnt/user` works again. This page still recommends the same folder addressed
+directly on the pool, `/mnt/cache/appdata/pathlms`: a database is better off on
+a plain filesystem than behind the share layer, which is long-standing community
+advice this project has not measured, and with secondary storage set to None, as
+the steps above require, the two paths name the same files, so changing the
+setting moves nothing.
 
-So `/mnt/user/appdata/pathlms` is the conventional choice and is what this page
-recommends. If you would rather address the pool directly you can, and the trade
-is worth knowing first. A `/mnt/cache/...` path names one specific pool, so
-moving the data to a different pool later means editing this setting and bringing
-the stack up again, and Unraid's share settings no longer route it for you.
+The one trade: a `/mnt/cache/...` path names one specific pool, so moving the
+data to a different pool later means editing this setting and bringing the stack
+up again. The backups folder has no such requirement and may stay on
+`/mnt/user`.
 
 ### What happens if you get this wrong
 
