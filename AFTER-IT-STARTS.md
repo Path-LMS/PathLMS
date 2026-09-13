@@ -213,8 +213,8 @@ five and work in whatever order suits you.
 
 Roughly, the order most people want is:
 
-1. **Set up your groups**, because a person's place in the structure can decide
-   what they are given.
+1. **Set up your groups**, because the groups a person belongs to can
+   decide what they are given.
 2. **Add people**, or connect company sign-in so they arrive on their own. The
    **Sign-in** tab in Settings sets that up, and speaks the two standards most
    company identity providers use, OIDC and SAML.
