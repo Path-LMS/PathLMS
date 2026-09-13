@@ -15,7 +15,7 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.114.2** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.115.2** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 **[Download the latest release →](https://github.com/path-lms/pathlms/releases/latest)**
@@ -63,7 +63,7 @@ PathLMS is designed around the problems that make modern LMS platforms harder th
 - Organize people into nested groups that reflect real teams, departments, or cohorts.
 - Enroll individuals or groups across multiple courses at once.
 - Track completions, progress, overdue training, course performance, and group performance.
-- Export reports with personally identifying information excluded by default.
+- Export reports with names and email addresses excluded by default.
 - Keep a tamper-evident audit history of significant actions.
 - Delete a person's data through the application and see what was removed or retained.
 - Brand the experience with your logo and color without rebuilding the interface.
