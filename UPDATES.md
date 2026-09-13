@@ -215,7 +215,7 @@ Put the three previous addresses back in `.env` and run `docker compose up -d`
 again. That is the whole of it for the software.
 
 **The data is the part that does not simply revert.** A newer version may have
-changed the shape of the database, and going back to older software over a newer
+changed the database's schema, and going back to older software over a newer
 database is not something to attempt hopefully. That is what the backup taken
 before the update is for: restore it, and you are back where you were, having
 lost only whatever happened in between.
