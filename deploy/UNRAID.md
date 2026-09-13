@@ -564,7 +564,7 @@ are signed against, and where company sign-in sends people back to. A wrong
 value gives you a sign-in page that draws perfectly and then does nothing, with
 nothing on that screen pointing at a setting.
 
-### Then tell PathLMS which shape it is in
+### Then tell PathLMS how it is reached
 
 Once you have signed in as the administrator, go to **Settings**, then the
 **Network** tab, and choose one of three:
@@ -838,7 +838,7 @@ anybody did since that copy is lost. Work out which of the two you are in before
 you touch anything.
 
 **Uploaded files are never part of going back.** An update changes software and
-the shape of the database. It does not touch the documents and pictures people
+the database's schema. It does not touch the documents and pictures people
 have uploaded, so putting the file archive back would delete every file added
 since the update and gain nothing at all. `restore-files.sh` is the tool for the
 separate case where files really were lost. It is attached to every release, and
