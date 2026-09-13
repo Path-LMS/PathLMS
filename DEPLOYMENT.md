@@ -391,8 +391,8 @@ unchanged.
 
 ## Other ways of running containers
 
-**Docker Compose is the supported way to run PathLMS**, and it is the only shape
-the containers are tested and released in.
+**Docker Compose is the supported way to run PathLMS**, and it is the only way
+the containers are tested and released.
 
 Podman with its Compose support is close enough that people succeed with it, and
 it is not something anybody here has verified. Kubernetes is a poor fit and not
