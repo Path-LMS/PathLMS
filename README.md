@@ -15,7 +15,7 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.116.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.117.1** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 **[Download the latest release →](https://github.com/path-lms/pathlms/releases/latest)**
@@ -26,11 +26,11 @@ You still get the things an organization needs: branding, reporting, audit histo
 
 PathLMS is designed around the problems that make modern LMS platforms harder than they need to be.
 
-- **Clear structure.** Courses contain modules, sections, lessons, and quizzes. Learning paths put courses in sequence. No extra hierarchy to learn.
+- **Clear structure.** Courses contain modules, sections, lessons, topics and quizzes. Learning paths put courses in order. There is nothing else to learn.
 - **Less administration.** Organize people into groups, assign training in bulk, and let PathLMS explain anything it could not complete.
 - **Useful reporting.** Reports start with the question you are trying to answer: who completed what, who is overdue, how learners are progressing, and more.
 - **A better learner experience.** Prerequisites are clear, progress is easy to understand, and the interface stays focused on learning.
-- **Your organization, not ours.** Add your logo and brand color while PathLMS keeps the surrounding visual system consistent and accessible.
+- **Your organization, not ours.** Add your logo, brand color and tab icon. PathLMS keeps the rest of the screen readable and easy to use.
 - **Your environment and your data.** Run PathLMS on your own infrastructure, keep learner data local, and integrate with OIDC or SAML for company sign-in.
 - **No per-user pricing.** Access does not become more expensive simply because more people need training.
 
@@ -56,18 +56,17 @@ PathLMS is designed around the problems that make modern LMS platforms harder th
 
 ## What you can do
 
-- Create and publish courses directly in the browser.
-- Build learning paths and control prerequisites where sequencing matters.
-- Run quizzes and keep scores with the learner record.
-- Issue printable completion certificates when enabled for a course.
-- Organize people into nested groups that reflect real teams, departments, or cohorts.
-- Enroll individuals or groups across multiple courses at once.
-- Track completions, progress, overdue training, course performance, and group performance.
-- Export reports with names and email addresses excluded by default.
-- Keep a tamper-evident audit history of significant actions.
-- Delete a person's data through the application and see what was removed or retained.
-- Brand the experience with your logo and color without rebuilding the interface.
-- Use OIDC or SAML with your existing identity provider.
+- **Learning paths at the center.** Put courses in order, enroll a whole group once, and PathLMS keeps everyone's progress right when the path changes.
+- **Your servers, your data, no per-user fees.** Install it yourself. Backups run on their own, and updates happen when you choose.
+- **A record nobody can quietly change.** Important actions are logged, and the log shows if anyone tampers with it.
+- **Repeating training that runs itself.** Yearly training goes out again on time. People are warned before it goes out of date. You can see who is out of date.
+- **Reports that answer questions.** See who finished what, who is overdue, and how each course and group is doing. Exports leave out names and emails unless you ask.
+- **Privacy you can act on.** Delete a person's data from inside PathLMS. See exactly what was removed and what was kept.
+- **Enroll whole groups at once.** Groups sit inside groups to match your organization. Everyone gets all the courses they need in one step.
+- **Build courses in the browser.** Add lessons, topics, quizzes and certificates. No separate authoring tool needed.
+- **Company sign-in.** People use the account they already have, through OIDC or SAML.
+
+See **[everything PathLMS can do](FEATURES.md)**.
 
 ## Who it is for
 
@@ -79,14 +78,13 @@ It is especially well suited to organizations that want to run their own platfor
 
 ## Current boundaries
 
-PathLMS is intentionally focused, and the current release has a few limits worth knowing up front:
+A few things PathLMS does not do yet:
 
-- Completed courses do not yet reset, expire, or automatically reassign for recurring training.
-- Assignment blocks can contain instructions, but learners cannot submit work against them yet.
-- Imported course packages from tools such as Articulate or Captivate are not yet supported in a standard release deployment.
-- PathLMS runs as a single application instance rather than a clustered service.
-- Built-in MFA is not included; use OIDC or SAML with an identity provider that provides it.
-- WCAG 2.2 AA is the accessibility target, not a certification claim.
+- Learners cannot hand in work for an assignment. An assignment can hold instructions only.
+- Course packages made in tools such as Articulate or Captivate cannot be used in a standard installation.
+- PathLMS runs as one copy on one server. It cannot be spread across several servers.
+- There is no built-in second sign-in step, such as a code from a phone. Use OIDC or SAML with a sign-in service that has one.
+- PathLMS is built to meet WCAG 2.2 AA, the usual accessibility standard. It has not been certified.
 
 These are product boundaries, not features held back for a paid edition.
 
