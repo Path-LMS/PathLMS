@@ -65,6 +65,8 @@ PathLMS is designed around the problems that make modern LMS platforms harder th
 - **Enroll whole groups at once.** Groups sit inside groups to match your organization. Everyone gets all the courses they need in one step.
 - **Build courses in the browser.** Add lessons, topics, quizzes and certificates. No separate authoring tool needed.
 - **Company sign-in.** People use the account they already have, through OIDC or SAML.
+- **A second sign-in step.** People who use a PathLMS password can add an authenticator app and save recovery codes.
+- **Uploaded courses.** A standard installation is prepared for uploaded courses. They start off, and an administrator can turn them on.
 
 See **[everything PathLMS can do](FEATURES.md)**.
 
@@ -81,9 +83,7 @@ It is especially well suited to organizations that want to run their own platfor
 A few things PathLMS does not do yet:
 
 - Learners cannot hand in work for an assignment. An assignment can hold instructions only.
-- Course packages made in tools such as Articulate or Captivate cannot be used in a standard installation.
 - PathLMS runs as one copy on one server. It cannot be spread across several servers.
-- There is no built-in second sign-in step, such as a code from a phone. Use OIDC or SAML with a sign-in service that has one.
 - PathLMS is built to meet WCAG 2.2 AA, the usual accessibility standard. It has not been certified.
 
 These are product boundaries, not features held back for a paid edition.
@@ -108,7 +108,7 @@ See **[Deploying PathLMS](DEPLOYMENT.md)** for the full installation guide and *
 | Database | PostgreSQL 18 with enforced row-level security |
 | Cache | Valkey 8 |
 | Files | S3-compatible object storage on your own disk |
-| Sign-in | Ed25519 tokens, Argon2id passwords, OIDC and SAML |
+| Sign-in | Ed25519 tokens, Argon2id passwords, authenticator apps, OIDC and SAML |
 | Deployment | Docker Compose across isolated container networks |
 
 Security controls are enforced below the interface as well as inside it. PathLMS checks its database access policies at startup and refuses to serve if those protections are missing or weakened.

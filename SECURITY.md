@@ -54,13 +54,11 @@ and you will get this page back.
   of a hash are sent and nothing else.
 - **A version check reaches a public container registry**, carrying nothing about
   the installation, and it can be switched off.
-- **Imported course packages do not run** on a release installation. The support
-  is built and switched off by default, and the one web server file it needs is
-  not in the published image, so nothing of a package is served whichever way an
-  administrator sets the switch.
+- **Uploaded courses are off by default.** An administrator can turn them on in
+  Settings. PathLMS keeps their files apart from the rest of the application and
+  applies separate browser security rules when they open.
 
-All of these are named in the list of what PathLMS does not do, in the
-[README](README.md).
+The current product boundaries are summarized in the [README](README.md).
 
 ## Please do not
 

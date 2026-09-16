@@ -12,7 +12,9 @@ done. The [README](README.md) has the short version.
 - Add topics anywhere in a course: inside a lesson, before one, or inside another topic. Each topic holds its own content, and learners get credit for finishing it.
 - Build a whole course using only the keyboard.
 - Run quizzes and keep each score on the learner's record.
+- Choose the pass mark for a quiz.
 - Give out printable certificates for any course that has them turned on.
+- A standard installation is prepared for uploaded courses. They start off, and an administrator can turn them on.
 - Put courses in order as a learning path, and choose which ones must be done first.
 - Add a word list to a course or learning path. Learners see what a word means in that course, right where it appears.
 - Copy a word list in from a Moodle file in a few minutes. You see every word before anything is added.
@@ -55,6 +57,8 @@ done. The [README](README.md) has the short version.
 
 - Let people sign in with the company account they already have, through OIDC or SAML.
 - Give each person one of five roles: administrator, manager, instructor, author or learner.
+- People who use a PathLMS password can add an authenticator app and save recovery codes.
+- An installation administrator can reset somebody's authenticator app.
 
 ## Run it yourself
 
@@ -68,9 +72,7 @@ done. The [README](README.md) has the short version.
 ## What PathLMS does not do yet
 
 - Learners cannot hand in work for an assignment. An assignment can hold instructions only.
-- Course packages made in tools such as Articulate or Captivate cannot be used in a standard installation.
 - PathLMS runs as one copy on one server. It cannot be spread across several servers.
-- There is no built-in second sign-in step, such as a code from a phone. Use OIDC or SAML with a sign-in service that has one.
 - PathLMS is built to meet WCAG 2.2 AA, the usual accessibility standard. It has not been certified.
 
 These are limits of the product today. None of them is held back for a paid edition.
