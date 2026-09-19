@@ -105,28 +105,36 @@ Recommendation: if a whole group is really one team, keep it as a group.
 Use a cohort only when you need a smaller, named slice of a group with its
 own manager, since it is easy to lose track of a screen with no link to it.
 
-## Enrolling people or groups on a course or a path
+## Enrolling people or groups on a learning path
 
-Why: this is the fastest way to get training in front of the right people.
-Instead of adding one person at a time, you can put a whole group on a
-course or a learning path in one action, and the dialog tells you plainly
-if anyone could not be added.
+Why: this is the fastest way to get a set of courses in front of the right
+people. Instead of adding one person at a time, you put a whole group on a
+learning path in one action, and the dialog tells you plainly if anyone could
+not be added.
 
-1. Open the course or learning path you want to enroll people on.
-2. On the **Enrollees** tab, click **Enroll people or groups**.
+![The Enroll people dialog, step one of three, with tabs for individual people and whole groups](images/manager-enroll-dialog.png)
+
+1. Open the learning path you want to put people on, and switch to its
+   **People** side.
+2. Click **Enroll people or groups**.
 3. Choose the **People** tab to pick individuals, or the **Whole groups**
    tab to pick one of your groups.
 4. Confirm the enrollment.
 
-What happens: everyone you chose is enrolled. If anyone could not be, the
-dialog tells you exactly who and why, such as an inactive account, a
-suspended account, or someone already enrolled. It never just quietly
-skips someone and calls it done.
+What happens: everyone you chose is enrolled in every course the path holds. If
+anyone could not be, the dialog tells you exactly who and why, such as an
+inactive account, a suspended account, or someone already enrolled. It never
+just quietly skips someone and calls it done.
 
-Recommendation: for a whole team taking the same course, enroll the group
-rather than picking people out one at a time. It is faster, and anyone who
-joins the group later still needs to be enrolled separately, so check back
-after adding new people.
+Two other ways to get courses to a group. Open the folder the courses live in
+and use **Who is on this folder**, which puts the group on everything in it and
+keeps them in step as you add more (see [courses, folders and learning
+paths](courses-folders-and-paths.md)). Enrolling people onto a single course on
+its own is an administrator's job.
+
+Recommendation: for a whole team, enroll the group rather than picking people
+out one at a time. Anyone who joins the group later still needs enrolling
+separately, so check back after adding new people.
 
 ## Building folders of courses
 
