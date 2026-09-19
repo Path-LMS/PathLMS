@@ -63,7 +63,7 @@ done. The [README](README.md) has the short version.
 ## Run it yourself
 
 - Install it with Docker Compose on Intel or ARM servers.
-- Back up automatically, and restore from a backup.
+- Back up the database and every uploaded file automatically, and restore from a backup on the same machine.
 - Update when you choose, from a button.
 - Use your own web proxy for HTTPS, or let PathLMS handle it.
 
@@ -71,8 +71,43 @@ done. The [README](README.md) has the short version.
 
 ## What PathLMS does not do yet
 
+This list is long on purpose. Read it once and you will know whether PathLMS fits, without finding out later.
+
+### Course content
+
 - Learners cannot hand in work for an assignment. An assignment can hold instructions only.
+- Quizzes have three kinds of question: pick one, pick several, and true or false. There is no written answer, no matching and no number answer.
+- Nobody can mark work against a rubric or a marking guide.
+- There is no forum and no way for people to talk to each other inside a course.
+- There are no announcements of their own. People get notifications instead.
+- There is no wiki.
+- There are no surveys and no feedback forms.
+- You can take a course out of PathLMS as a file. You cannot bring one in.
+
+### People
+
+- You cannot load a list of people from a spreadsheet. Accounts are made one at a time.
+- People cannot sign themselves up for an account. Somebody has to make it for them. Once they have one, they can put themselves on a course.
+- There are no badges and no achievements.
+- There are no competency frameworks.
+- There is no calendar and there are no events.
+
+### Money
+
+- Nothing takes a payment. You cannot charge for a course.
+
+### Running it
+
+- Backups run on their own, but moving one to a different machine is a job for somebody comfortable at a command line. There is no button for it yet, and the key that opens your stored secrets is kept outside the backup, so it has to be carried across by hand.
 - PathLMS runs as one copy on one server. It cannot be spread across several servers.
+- There is no way for anyone else to add to PathLMS. What is here is what there is.
+- There is no published way for another system to talk to PathLMS.
+- PathLMS does not connect to other learning tools through LTI.
+
+### Getting to it
+
+- PathLMS is in English only.
+- There is no phone app. The website works on a phone.
 - PathLMS is built to meet WCAG 2.2 AA, the usual accessibility standard. It has not been certified.
 
 These are limits of the product today. None of them is held back for a paid edition.
