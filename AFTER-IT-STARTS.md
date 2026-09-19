@@ -1,25 +1,19 @@
 # After it starts
 
 Five things on your first day, in this order. The first one takes two minutes and
-prevents the only failure in PathLMS that has no button, no command and no script
-to get you out of.
+saves you an unpleasant afternoon.
 
 ---
 
 ## 1. Create a second administrator. Today.
-
-**There is no supported way to recover the first administrator's password, and
-being the only administrator who has forgotten it can lock your organization out
-permanently.**
 
 Here is the trap, stated plainly because it is easy to walk into.
 
 The step that creates the first administrator runs **only while there are no
 accounts at all**. Once you have signed in, an account exists, so that step never
 fires again. Resetting a password requires the system to send email, and **email
-is not configured by default**. So if you are the only administrator, you forget
-the password, and no mail server is set up, nothing in the product will let you
-back in.
+is not configured by default**. Administrators also need an authenticator app,
+and phones get lost.
 
 What to do about it, which takes a minute:
 
@@ -27,14 +21,50 @@ What to do about it, which takes a minute:
    the same machine.
 2. **Create a second administrator account that somebody else controls.** Two
    administrators means one can always restore the other.
-3. If real people are going to sign in, set up email as well, so that ordinary
+3. **Add an authenticator app to your own account**, because administrator
+   screens ask for one. My settings, then Authenticator app, then Set up. The
+   button that updates this installation is on one of those screens, so do this
+   before your first update rather than during it.
+4. If real people are going to sign in, set up email as well, so that ordinary
    password resets work for everybody rather than for nobody. See the section on
    it below, because there is no screen for this one.
 
-If it has already happened, the installation is not lost, but recovering it means
-somebody with access to the database writing a new password hash directly into
-the users table. That is a job for whoever administers the server, and the
-product will not walk you through it.
+### If it has already happened: the rescue command
+
+There is a way back, and you can only run it on the machine PathLMS is installed
+on. Nobody can reach it over the internet, and there is no page in the product
+that does it.
+
+    docker exec -it pathlms-api pathlms-rescue you@your-company.example --yes
+
+It makes a new password, prints it once, and signs that account out everywhere.
+Copy the password before you close the window, because it is not stored anywhere
+and will not be shown again. Then sign in and change it.
+
+It also removes that account's company sign-in link, if it had one, because
+signing in that way does not ask for an authenticator app and would be a way
+back in that this password does not close. And if the account was suspended, it
+makes it active again and says so, because a new password on a suspended account
+lets nobody in.
+
+If the phone is the problem rather than the password, add `--forget-the-phone`.
+That throws away their authenticator app and recovery codes as well, so they can
+set up a new one.
+
+Two things worth knowing, both stated carefully.
+
+**It gives nobody a power they did not have.** Anybody who can run a command on
+that server can already read the whole database and set a password by hand. What
+this changes is how easy it is: it turns an hour of careful work into one line
+that also prints a working password. That matters if somebody has a way in to
+that server without knowing the product well, so treat access to it as access to
+every account.
+
+**Every honest use leaves a line in the activity log**, at the highest severity,
+and it cannot be taken out afterwards. That is a record, not an alarm. Nobody is
+notified, and somebody setting a password by hand instead leaves no line at all.
+It is there so that a rescue cannot be done quietly by somebody who is meant to
+be trusted, not so that it catches an intruder.
 
 ## 2. Remove the first administrator's password from the settings file
 
