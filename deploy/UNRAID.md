@@ -398,23 +398,23 @@ Section 6 covers it.
 
 ### The data folder: `/mnt/cache/...` is recommended, and `/mnt/user/...` works since 0.100.0
 
-**Corrected 2026-09-03, after an installation that followed the previous
-version of this page could not upload a file and then could not update.**
-This page used to recommend `/mnt/user/appdata/pathlms`, Unraid's share
-layer, which presents the pool and the array as one tree. That layer does not
-support extended attributes, and the file store keeps a small label on every
-file it holds: on `/mnt/user` it starts, reports healthy, and refuses every
-write. Nothing uploads, the Updates card's "Uploaded files can be written"
-check fails, and a new version that needs the database changed waits on that
-check.
+**Put the data folder on a cache pool, addressed as `/mnt/cache/...`, not on
+Unraid's `/mnt/user` share layer.** Both work since 0.100.0, but the cache pool
+is faster for a database and avoids an older trap worth understanding.
 
-Since 0.100.0 the store keeps those labels in ordinary files instead, so
-`/mnt/user` works again. This page still recommends the same folder addressed
-directly on the pool, `/mnt/cache/appdata/pathlms`: a database is better off on
-a plain filesystem than behind the share layer, which is long-standing community
-advice this project has not measured, and with secondary storage set to None, as
-the steps above require, the two paths name the same files, so changing the
-setting moves nothing.
+The `/mnt/user` layer presents the pool and the array as one tree, and it does
+not support extended attributes. Before 0.100.0 the file store kept a small label
+on every file as an extended attribute, so on `/mnt/user` it started, reported
+healthy, and then refused every upload, and a new version that needed the
+database changed waited on the "Uploaded files can be written" check. Since
+0.100.0 the store keeps those labels in ordinary files instead, so `/mnt/user`
+works, but a cache pool is still the better home for a database.
+
+Address it directly on the pool, `/mnt/cache/appdata/pathlms`: a database is
+better off on a plain filesystem than behind the share layer, long-standing
+community advice this project has not measured, and with secondary storage set to
+None, as the steps above require, the two paths name the same files, so changing
+the setting moves nothing.
 
 The one trade: a `/mnt/cache/...` path names one specific pool, so moving the
 data to a different pool later means editing this setting and bringing the stack
