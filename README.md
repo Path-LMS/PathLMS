@@ -15,10 +15,10 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.121.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.121.0** · [Releases](https://github.com/Path-LMS/PathLMS/releases)
 <!-- /version -->
 
-**[Download the latest release →](https://github.com/path-lms/pathlms/releases/latest)**
+**[Download the latest release →](https://github.com/Path-LMS/PathLMS/releases/latest)**
 
 ---
 
@@ -80,13 +80,35 @@ It is especially well suited to organizations that want to run their own platfor
 
 ## Current boundaries
 
-A few things PathLMS does not do yet:
+Things PathLMS does not do yet. The list is deliberately full, so you can read it
+once and know whether it fits before you install anything.
 
 - Learners cannot hand in work for an assignment. An assignment can hold instructions only.
+- There is no forum and no way for people to talk to each other.
+- Quizzes have three question types: pick one, pick several, and true or false. There is no written answer.
+- Nobody can mark work against a rubric.
+- You cannot load a list of people from a spreadsheet. Accounts are made one at a time.
+- You can take a course out of PathLMS, but you cannot bring one in.
+- Nothing takes a payment.
+- People cannot sign themselves up for an account. Somebody makes it for them; they can then enroll themselves on a course.
+- PathLMS is in English only.
+- There is no phone app. The website works on a phone.
+- There is no way for anyone else to extend PathLMS.
 - PathLMS runs as one copy on one server. It cannot be spread across several servers.
 - PathLMS is built to meet WCAG 2.2 AA, the usual accessibility standard. It has not been certified.
 
-These are product boundaries, not features held back for a paid edition.
+These are product boundaries, not features held back for a paid edition. The full
+list of what it does and does not do is in **[everything PathLMS can do](FEATURES.md)**.
+
+## Learn how to use it
+
+Every role has a guide written to teach, not to list features. Each task starts
+with why you would do it, then shows you the screen and the exact steps.
+
+**Start here: [Using PathLMS](guide/README.md).** It points you to the guide for
+your role, whether you take training, build it, get it to people, or run the
+platform. Two guides sit at the heart of it: [courses, folders and learning
+paths](guide/courses-folders-and-paths.md), and [the glossary](guide/glossary.md).
 
 ## Run it your way
 
@@ -99,6 +121,9 @@ See **[Deploying PathLMS](DEPLOYMENT.md)** for the full installation guide and *
 [How updates work](UPDATES.md) covers what an update costs, how you are told one exists, and what the Updates section inside the product does.
 
 ## Under the hood
+
+For the technically curious, here is what PathLMS is built on. You do not need any
+of this to run it.
 
 | Part | What it is |
 | --- | --- |
