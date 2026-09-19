@@ -67,6 +67,8 @@ meaning in a course does nothing for the people reading that course.
 The natural place to do this is while you are writing the lesson, because you can
 see the word in the sentence it appears in.
 
+![A lesson open in the course builder, with the editor toolbar that marks a word as a glossary term](images/glossary-mark-in-lesson.png)
+
 1. Open the course in the course builder and edit a lesson.
 2. Select the word in the text.
 3. On the toolbar that appears, choose to mark it as a term. This sits beside the
