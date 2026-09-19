@@ -269,8 +269,13 @@ to give a load balancer, a cloud health probe, or your own monitoring.
 ### 5. Sign in and secure the account
 
 Open your address, sign in with the email address and password from step 2, then
-read [After it starts](AFTER-IT-STARTS.md) before you do anything else. It is two
-minutes and it prevents the one failure that has no button to undo it.
+read [After it starts](AFTER-IT-STARTS.md) before you do anything else. It takes
+two minutes and it saves you an unpleasant afternoon.
+
+Two things on that page matter on day one. Set up a code from an app on your
+phone, because administrator screens ask for one. And note the rescue command,
+which is how somebody with access to this server gets an administrator back in
+when nobody can sign in.
 
 ---
 
