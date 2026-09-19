@@ -208,6 +208,8 @@ never edited or removed.
    the date you finished it and what it counted toward.
 3. Where a course awards one, press **Certificate** under that entry to open it.
 
+![A record of completion for a finished course, with a Print or save as PDF button](images/learner-certificate.png)
+
 4. On the certificate page, press **Print or save as PDF** to get a copy you
    can keep or hand to somebody who needs proof.
 
