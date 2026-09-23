@@ -1,7 +1,11 @@
 # How updates work
 
-An update means changing three lines in your settings file and restarting.
-Your data stays where it is. Nothing updates itself unless you turn that on.
+The easy way is the button on the Updates screen. It does everything below for
+you, including the parts you would otherwise have to look up. Your data stays
+where it is. Nothing updates itself unless you turn that on.
+
+Doing it by hand means changing a few lines in your settings file and
+restarting. Both ways are here.
 
 If you have not installed PathLMS yet, start with [Deployment](DEPLOYMENT.md).
 
@@ -16,19 +20,29 @@ If anything goes wrong, you restore that backup. See "Going back" below.
 
 On the server, in the directory holding `docker-compose.yml` and `.env`:
 
-1. Write down your current three image addresses. This is your way back.
+1. Write down your current image addresses. This is your way back.
 2. Open the [release page](https://github.com/Path-LMS/PathLMS/releases/latest)
-   for the version you want, and copy the three addresses it lists.
-3. Replace the three lines in `.env`:
+   for the version you want, and copy the addresses it lists.
+3. Replace those lines in `.env`:
 
        PATHLMS_API_IMAGE=...
        PATHLMS_WEB_IMAGE=...
        PATHLMS_DB_IMAGE=...
 
-   Change all three together. They are published as one set, and mixing
+   Change them all together. They are published as one set, and mixing
    versions is not something anybody tests. The database image also carries
    the backup and restore scripts, so leaving it behind leaves those tools
    behind too.
+
+   Two more parts may be named as well, the cache and the file store:
+
+       PATHLMS_CACHE_IMAGE=...
+       PATHLMS_OBJECT_STORE_IMAGE=...
+
+   PathLMS does not build those two. It carries the versions it was tested
+   with, and the release page lists them when they have moved. If your
+   settings file does not name them at all, you are on the versions the
+   compose file names, and that is fine. The button does this part for you.
 
 4. Start it:
 
@@ -43,6 +57,48 @@ On the server, in the directory holding `docker-compose.yml` and `.env`:
 
    Any database change the new version needs runs on its own, safely, when
    it starts.
+
+## When an update moves the database to a new version
+
+Now and then an update carries a new major version of the database. PathLMS
+tells you before it starts, and it does the whole thing itself.
+
+It takes a copy. It builds the new database beside the old one, which stays
+exactly where it is. It loads the copy in. Then it counts everything, every
+table, every row, every account, every value it keeps locked away, and only
+switches over when the counts match. If anything does not match, or anything
+fails part way, it puts the old database back and comes up on the version you
+were already on.
+
+PathLMS is paused while this happens. Measured here: about half a minute, plus
+about a tenth of a second for every megabyte of database. A 356 megabyte
+database paused for 57 seconds.
+
+The old database is not deleted. It sits on your disk until you remove it
+yourself.
+
+## When an update moves the cache to a new version
+
+The cache holds sign-ins and a few counters. Nothing in it is yours and nothing
+in it is permanent: everything there can be rebuilt by people signing in again.
+
+Going forward costs nothing. People stay signed in.
+
+Going back to an older PathLMS across a new cache version signs everybody out
+once. They sign in again and carry on. Nothing anybody saved is affected.
+
+There is one thing to know if you do that by hand. The older cache cannot read
+the file the newer one wrote, so it refuses to start, and PathLMS cannot sign
+anybody in while that is true. `scripts/rollback.sh` handles this for you: it
+moves that file aside, starts the cache, and tells you it did. If you went back
+by editing your settings file instead, and PathLMS does not come back, this is
+almost certainly why. The cache says so in its own log:
+
+    docker compose logs redis --tail 20
+
+Look for "Can't handle RDB format version". The cure is to move the `.rdb` file
+in your data folder's `cache` directory out of the way and start again. Nothing
+in that file is yours.
 
 ## Knowing an update exists
 
@@ -112,8 +168,18 @@ cannot use.
 
 ## Going back
 
-Put the three previous image addresses back in `.env` and run
-`docker compose up -d` again. That undoes the software.
+Put the previous image addresses back in `.env` and run `docker compose up -d`
+again. That undoes the software. Every version you have updated from is still
+on the machine, so this does not need a download and works with the internet
+unplugged.
+
+Those old versions take about one and a half gigabytes of disk each. This
+clears the ones you are not using, and always keeps the two most recent so the
+way back stays:
+
+    bash scripts/remove-old-images.sh
+
+It says what it would remove and removes nothing until you add `--yes`.
 
 The data usually will not go back on its own. A newer version can change the
 database, and running older software against a newer database is not safe to
