@@ -15,7 +15,7 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.123.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.124.0** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 **[Download the latest release →](https://github.com/Path-LMS/PathLMS/releases/latest)**
@@ -127,11 +127,11 @@ of this to run it.
 
 | Part | What it is |
 | --- | --- |
-| Application | Node.js 24 and TypeScript, serving a GraphQL interface |
+| Application | Node.js 26 and TypeScript, serving a GraphQL interface |
 | Browser | React 19, built with Vite |
 | Web server | nginx with security headers and rate limits |
 | Database | PostgreSQL 18 with enforced row-level security |
-| Cache | Valkey 8 |
+| Cache | Valkey 9 |
 | Files | S3-compatible object storage on your own disk |
 | Sign-in | Ed25519 tokens, Argon2id passwords, authenticator apps, OIDC and SAML |
 | Deployment | Docker Compose across isolated container networks |
