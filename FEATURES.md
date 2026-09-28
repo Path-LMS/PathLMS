@@ -13,8 +13,9 @@ done. The [README](README.md) has the short version.
 - Build a whole course using only the keyboard.
 - Run quizzes and keep each score on the learner's record.
 - Choose the pass mark for a quiz.
+- Ask learners to hand in work for an assignment: some writing, a file, or both. A reviewer accepts it or sends it back with a note. Accepting finishes that step for the learner.
 - Give out printable certificates for any course that has them turned on.
-- A standard installation is prepared for uploaded courses. They start off, and an administrator can turn them on.
+- Run uploaded SCORM courses, made in another tool. They start off, and an administrator can turn them on.
 - Put courses in order as a learning path, and choose which ones must be done first.
 - Add a word list to a course or learning path. Learners see what a word means in that course, right where it appears.
 - Copy a word list in from a Moodle file in a few minutes. You see every word before anything is added.
@@ -26,6 +27,8 @@ done. The [README](README.md) has the short version.
 - Let people sign themselves up from the catalog.
 - Hide a course from the catalog while it stays published.
 - Stop people signing themselves up for a course, so only an administrator or manager can enroll them.
+- Choose who reviews handed-in work. An administrator can. So can a manager, for the people in their groups, and the course's author. An administrator can also give an instructor courses and groups to review. Nobody reviews their own work.
+- Reviewers find everything waiting on them on one page, Work to Review.
 
 ## Keep required training current
 
@@ -75,7 +78,6 @@ This list is long on purpose. Read it once and you will know whether PathLMS fit
 
 ### Course content
 
-- Learners cannot hand in work for an assignment. An assignment can hold instructions only.
 - Quizzes have three kinds of question: pick one, pick several, and true or false. There is no written answer, no matching and no number answer.
 - Nobody can mark work against a rubric or a marking guide.
 - There is no forum and no way for people to talk to each other inside a course.
