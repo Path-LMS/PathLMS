@@ -22,7 +22,7 @@ done. The [README](README.md) has the short version.
 
 ## Get training to people
 
-- Put people into groups, and groups inside groups, to match your teams and departments.
+- Put people into groups, and groups inside groups, to match how your organization is arranged.
 - Enroll people or whole groups in several courses at once. PathLMS tells you about anyone it could not enroll, and why.
 - Let people sign themselves up from the catalog.
 - Hide a course from the catalog while it stays published.
@@ -32,7 +32,7 @@ done. The [README](README.md) has the short version.
 
 ## Keep required training current
 
-- Set up training that must be done again, such as every year. PathLMS gives it out again by itself, to everyone or to one team. You see who will get it before you save.
+- Set up training that must be done again, such as every year. PathLMS gives it out again by itself, to everyone or to one group. You see who will get it before you save.
 - Warn people once before their training goes out of date, at a normal hour where they live.
 - Set a finish-by day. When it passes, an unfinished attempt closes.
 - Let a learner whose attempt closed press Start again.
