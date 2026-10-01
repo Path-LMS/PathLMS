@@ -26,9 +26,9 @@ courses into them, the way you would sort papers into drawers. Folders are for
 you and the people who build training. A learner never has to understand your
 folders.
 
-**You want a team to do a set of courses, and you do not care what order.** Put
-the team on a folder. Everyone in the folder gets every course in it, and anyone
-who joins the team later gets them too, without you lifting a finger.
+**You want a group of people to do a set of courses, and you do not care what order.** Put
+the group on a folder. Everyone in the folder gets every course in it, and anyone
+who joins the group later gets them too, without you lifting a finger.
 
 **You want people to do courses in a set order, building on each other.** Make a
 learning path. This is the one to reach for when the order matters: coffee
@@ -74,14 +74,14 @@ can build a filing system as deep as you need.
 
 The second job is delivery. You can put a group of people onto a folder, and
 every course in that folder lands on every one of them. This is what a lot of
-people mean when they say "course group": a folder with a team attached to it.
+people mean when they say "course group": a folder with a group attached to it.
 
 ![A folder opened on the Courses screen, showing the courses filed inside it](images/courses-folder-open.png)
 
 ### Make a folder and file courses into it
 
 Why: a tidy library is faster to work in, and a folder is the thing you later
-attach a team to.
+attach a group to.
 
 1. On the **Courses** screen, press **New folder**.
 2. Give it a name that describes what goes in it, like "New Barista Onboarding"
@@ -96,7 +96,7 @@ Recommendation: do not build a deep stack of folders when a shallow one will do.
 Two levels is plenty for most libraries. The deeper you nest, the more clicks it
 takes you and everyone else to find a course.
 
-### Put a team on a folder
+### Put a group on a folder
 
 Why: this is the fast way to give a whole group the same set of courses, and to
 keep giving it to them. It is a standing arrangement, not a one-time push. Add a
@@ -228,8 +228,8 @@ never quietly taken back. Once someone has finished, they stay finished.
 
 - **Just teach one thing.** A course.
 - **Keep my library tidy.** Folders.
-- **Give a team a bundle of courses, order not important, and keep giving it as
-  the team changes.** Put the team on a folder.
+- **Give a group a bundle of courses, order not important, and keep giving it as
+  the group changes.** Put the group on a folder.
 - **Walk people through courses in a set order, as a journey, with a finish
   line.** A learning path.
 
