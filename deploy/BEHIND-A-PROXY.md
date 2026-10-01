@@ -623,4 +623,6 @@ assume comes along with it.
 
 - [Running PathLMS on Unraid](UNRAID.md), which is where most people reading this
   page will have come from.
+- [Running PathLMS behind BunkerWeb, with ModSecurity and the OWASP rules on](BUNKERWEB-WAF.md),
+  if the proxy in front is BunkerWeb with its filter switched on.
 - `INSTALL.md`, which came with the same release, for the install itself.
