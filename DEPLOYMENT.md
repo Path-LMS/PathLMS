@@ -117,7 +117,9 @@ certificate and passes traffic through to PathLMS. It is the standard way to run
 any web application, and if you already run other sites you probably have one.
 The exact steps, a copyable configuration for Caddy and nginx, and how to prove
 it worked, are on their own page: **[Putting PathLMS behind a proxy you already
-run](deploy/BEHIND-A-PROXY.md)**.
+run](deploy/BEHIND-A-PROXY.md)**. If the proxy is BunkerWeb with its web
+filter switched on, read [Running PathLMS behind BunkerWeb](deploy/BUNKERWEB-WAF.md)
+as well.
 
 **Or let PathLMS hold the certificate itself.** There is nothing extra to
 install. Once you are signed in, go to **Settings**, then **Network**, then
