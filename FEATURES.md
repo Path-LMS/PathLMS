@@ -84,7 +84,7 @@ This list is long on purpose. Read it once and you will know whether PathLMS fit
 - There are no announcements of their own. People get notifications instead.
 - There is no wiki.
 - There are no surveys and no feedback forms.
-- You can take a course out of PathLMS as a file. You cannot bring one in.
+- You can take a course out of PathLMS as a file. The only course you can bring in is a SCORM package from another tool.
 
 ### People
 
