@@ -89,8 +89,9 @@ once. They sign in again and carry on. Nothing anybody saved is affected.
 
 There is one thing to know if you do that by hand. The older cache cannot read
 the file the newer one wrote, so it refuses to start, and PathLMS cannot sign
-anybody in while that is true. `scripts/rollback.sh` handles this for you: it
-moves that file aside, starts the cache, and tells you it did. If you went back
+anybody in while that is true. `rollback.sh`, one of the files on the release
+page, handles this for you: it moves that file aside, starts the cache, and
+tells you it did. If you went back
 by editing your settings file instead, and PathLMS does not come back, this is
 almost certainly why. The cache says so in its own log:
 
@@ -122,11 +123,18 @@ cache and file store all answer, there is disk space free, your backup
 destination can be reached, and no upgrade is already running), and a record
 of what happened last time.
 
-Pressing the button asks for your password, because an update outlives the
-page you started it from. It runs the safety checks and writes down that you
-pressed it. It does not take a backup and it does not touch your deployment.
-The real backup happens in step 3 above, when you run the update, unless you
-turn on the automatic updater below.
+The button is under "Start an update". It reads "Update to version" and the
+number when a newer one exists. It opens a box that says what will happen, then
+asks for your password, and for a code from your authenticator app if you have
+one, because an update outlives the page you started it from.
+
+With the automatic updater below switched on, "Start the update now" pauses
+PathLMS, takes two backups (everything saved, and the uploaded files), reads
+both back, installs the new version and reloads the page. You can close the
+browser. The update carries on.
+
+Without the automatic updater, the button is switched off. The screen names the
+two settings that turn it on. Until then you update by hand, as above.
 
 ## The automatic updater
 
@@ -137,6 +145,9 @@ With this on, pressing the button in Settings is the whole update:
     COMPOSE_PROFILES=updater
     PATHLMS_UPDATER_ENABLED=yes
 
+The settings file that comes with each release has both lines switched on.
+Nothing updates until somebody presses the button.
+
 Turning this on means whoever publishes PathLMS images can change your
 deployment, with nobody here approving it first. If you would rather do the
 swap yourself every time, remove or comment out either line and run
@@ -144,6 +155,13 @@ swap yourself every time, remove or comment out either line and run
 
 To check which mode you are in, run `check-my-settings.sh` next to your
 compose file. It answers in one sentence.
+
+Before each update, the updater writes a line starting "Compose file:" to its
+log. It says whether your compose file is still one a release shipped, or has
+been edited. It only reports this. It changes nothing because of it. Read it
+with:
+
+    docker compose logs updater --tail 50
 
 ## The "Back in a moment" page
 
@@ -169,17 +187,22 @@ cannot use.
 ## Going back
 
 Put the previous image addresses back in `.env` and run `docker compose up -d`
-again. That undoes the software. Every version you have updated from is still
-on the machine, so this does not need a download and works with the internet
+again. That undoes the software. The version you updated from is still on the
+machine, so this does not need a download and works with the internet
 unplugged.
 
-Those old versions take about one and a half gigabytes of disk each. This
-clears the ones you are not using, and always keeps the two most recent so the
-way back stays:
+When you update with the button, the updater clears older PathLMS images
+afterwards. It keeps the version now running and the one you just left, and
+never touches an image a container is using.
 
-    bash scripts/remove-old-images.sh
+When you update by hand, nothing is cleared. Each old version takes about one
+and a half gigabytes of disk. This clears the ones you are not using, and
+always keeps the two most recent so the way back stays:
 
-It says what it would remove and removes nothing until you add `--yes`.
+    bash remove-old-images.sh
+
+Run it from the folder holding your compose file. It says what it would
+remove, and removes nothing until you add `--yes`.
 
 The data usually will not go back on its own. A newer version can change the
 database, and running older software against a newer database is not safe to
