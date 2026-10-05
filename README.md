@@ -15,7 +15,7 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.127.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.128.0** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 **[Download the latest release →](https://github.com/Path-LMS/PathLMS/releases/latest)**
@@ -88,7 +88,7 @@ once and know whether it fits before you install anything.
 - Quizzes have three question types: pick one, pick several, and true or false. There is no written answer.
 - Nobody can mark work against a rubric.
 - You cannot load a list of people from a spreadsheet. Accounts are made one at a time.
-- You can take a course out of PathLMS, but you cannot bring one in.
+- You can take a course out of PathLMS. The only course you can bring in is a SCORM package from another tool.
 - Nothing takes a payment.
 - People cannot sign themselves up for an account. Somebody makes it for them; they can then enroll themselves on a course.
 - PathLMS is in English only.
