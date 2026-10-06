@@ -1,7 +1,18 @@
 # Setting up email
 
-PathLMS sends one kind of message: the link somebody follows to set a new
-password after forgetting theirs. Nothing else sends email to anybody.
+PathLMS sends four kinds of message. Each one goes to one person.
+
+- A link to choose a new password, after somebody forgets theirs.
+- A short note telling somebody who signs in through their company to use
+  the company button. They get it when they ask for a password reset.
+- A link to choose a PathLMS password, when an administrator takes a company
+  sign-in off their account.
+- A link to choose a first password, for each person added from a
+  spreadsheet. It works once and lasts seven days.
+
+Nothing else sends email to anybody. Set mail up before you add people from a
+spreadsheet. Without it nobody is emailed. You can send the emails later from
+Past imports.
 
 **With no mail server configured, PathLMS runs normally.** The "forgot your
 password" page tells people to ask an administrator instead. Setting mail up is
