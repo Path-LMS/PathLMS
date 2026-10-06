@@ -1,8 +1,8 @@
 # Running PathLMS behind BunkerWeb, with ModSecurity and the OWASP rules on
 
 BunkerWeb holds your certificate and filters every request before PathLMS sees
-it. Two of its default protections and three of its filter rules mistake normal
-PathLMS use for an attack. Switch off the two protections, add three narrow
+it. Two of its default protections and four of its filter rules mistake normal
+PathLMS use for an attack. Switch off the two protections, add four narrow
 exceptions for the rules, and leave the filter itself on and blocking.
 
 That is the whole job, and this page is the long version of it. It builds on
@@ -87,6 +87,9 @@ fixes a cause instead.
 USE_LIMIT_REQ=no
 ```
 
+Set this on the `lms.example.com` service only. Do not set it for the whole
+installation, or every other site BunkerWeb protects loses it too.
+
 ### What goes wrong
 
 People see pages that half load. A course list appears with gaps, a save seems
@@ -133,6 +136,9 @@ PathLMS knows where BunkerWeb is. That is step two of section 5 in
 ```
 USE_BAD_BEHAVIOR=no
 ```
+
+Set this on the `lms.example.com` service only. Do not set it for the whole
+installation, or every other site BunkerWeb protects loses it too.
 
 ### What goes wrong
 
@@ -188,7 +194,7 @@ stopping real injection attacks on every other path.
 
 ---
 
-## 6. The three false alarms, and the exceptions that fix them
+## 6. Three false alarms, and the exceptions that fix them
 
 ### What goes wrong
 
@@ -291,11 +297,119 @@ opens very little.
 
 ---
 
+## 6A. Passwords and codes: the fourth false alarm
+
+### What goes wrong
+
+Somebody types a password into a PathLMS box and gets a plain "Forbidden". It
+happens when they sign in, change their password, or start an update. The same
+page works for most people. It fails only for passwords that happen to contain
+certain characters, such as `${`, a semicolon followed by a word, `<script>`, or
+a quote followed by `OR`. The person did nothing wrong. They chose a strong
+password, and the filter read it as an attack.
+
+BunkerWeb's log names the field and the rule, for example:
+
+```
+Matched Data: <script> found within ARGS:json.variables.currentPassword
+```
+
+The rule numbers vary with the password (`932130`, `932380`, `933135`, `941100`,
+`942100` and `944150` all showed up in testing). The part to look for is the
+field name at the end of the line.
+
+### Why it happens
+
+**The filter reads every value in the request, and a password is a value.** It
+cannot tell a password from a command. A good password has symbols in it, and
+symbols are what the attack rules look for.
+
+**A password is never run.** PathLMS compares it with a scrambled copy and then
+forgets it. It is not put in a web page, a command or a database question. So
+the attack rules have nothing to protect here, and the same goes for
+second-step codes, recovery codes and company sign-in secrets.
+
+### The configuration
+
+One more custom configuration, of type `modsec-crs`, attached to the
+`lms.example.com` service only. Use the same steps as in section 6. This is the
+content, exactly:
+
+```
+# Passwords, second-step codes, recovery codes and client secrets are never run.
+# Stop the OWASP rules reading these exact fields, and nothing else.
+SecRule REQUEST_URI "@unconditionalMatch" \
+    "id:1001003,\
+    phase:1,\
+    pass,\
+    nolog,\
+    t:none,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;REQUEST_HEADERS:x-second-step-code"
+
+SecRule REQUEST_URI "@unconditionalMatch" \
+    "id:1001004,\
+    phase:2,\
+    pass,\
+    nolog,\
+    t:none,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.currentPassword,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.newPassword,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.secondStepCode,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.recoveryCode,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.code,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.clientSecret,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.password,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.secondStepCode,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.recoveryCode,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.clientSecret,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.confirm.password,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.variables.input.confirm.code,\
+    ctl:ruleRemoveTargetByTag=OWASP_CRS;ARGS:json.password"
+```
+
+### What it says
+
+For every request, the OWASP rules skip these boxes and nothing else:
+
+| Where the value travels | Name |
+| --- | --- |
+| Sign in (`/graphql`) | `input.password`, `input.secondStepCode`, `input.recoveryCode` |
+| Confirm it is you, start an update, change address, forget me, and the other steps that ask for your password (`/graphql`) | `currentPassword`, `secondStepCode` |
+| Change or reset a password (`/graphql`) | `newPassword` |
+| Finish setting up the authenticator app (`/graphql`) | `code` |
+| Company sign-in set up and its connection test (`/graphql`) | `clientSecret`, `input.clientSecret` |
+| Post an announcement that reaches many people (`/graphql`) | `input.confirm.password`, `input.confirm.code` |
+| Linking a company account to a PathLMS account (`/auth/oidc/link`) | `password` |
+| Linking a SAML account while a second step is on (a header) | `x-second-step-code` |
+
+### What this does not give up
+
+- **Every other box is still filtered.** A course title, a search, a name or an
+  email address that carries the same text is still refused. This was tested
+  with the same strings.
+- **No operation name is needed.** The exception follows the box, not the
+  screen, so a new screen that asks for a password is covered the day it ships.
+- **The list is of exact names, on purpose.** There is no wildcard. A box
+  that is not on the list is filtered like any other.
+- **PathLMS still checks the password itself.** A wrong one is turned down, and
+  too many wrong ones lock the account.
+
+### When a new version adds a password box
+
+If a future version of PathLMS adds a box with a new name, a password containing
+symbols will be refused there and the log will name the field. Add that one name
+to the list. Do not widen the list with a pattern.
+
+---
+
 ## 7. Let PathLMS answer its own maintenance page: `REVERSE_PROXY_INTERCEPT_ERRORS`
 
 ```
 REVERSE_PROXY_INTERCEPT_ERRORS=no
 ```
+
+Set this on the `lms.example.com` service only. Do not set it for the whole
+installation, or every other site BunkerWeb protects loses it too.
 
 ### What goes wrong
 
@@ -349,6 +463,7 @@ the page that reloads itself.
 ## 8. The state to finish in
 
 This is the whole configuration in one place. If yours matches it, you are done.
+Every setting in this table goes on the `lms.example.com` service only.
 
 | Setting | Value |
 | --- | --- |
@@ -361,6 +476,7 @@ This is the whole configuration in one place. If yours matches it, you are done.
 | `REVERSE_PROXY_INTERCEPT_ERRORS` | `no` |
 | Rules `932235` and `942290` | Excepted on `/graphql` only, in a `modsec` configuration |
 | Rule `920420` | Excepted on `/api/csp-report` only, in a `modsec-crs` configuration |
+| Passwords and codes (`id:1001003` and `id:1001004`) | Fields left unchecked by name, in a `modsec-crs` configuration |
 
 ### What to switch off, and what never to
 
