@@ -209,6 +209,24 @@ To see who is on a path and how far each person has got, open the path and switc
 to its **People** side. (Administrators and managers see this. An author who
 builds paths does not manage who is on them.)
 
+### Give a badge for finishing a learning path
+
+Why: a finished learning path is worth marking. A badge is something a person
+can see on their record and keep.
+
+1. Open the learning path. The **Badge** section is under the list of courses.
+2. Type a **Badge name**. Add a description if you like.
+3. Pick a **Picture** and a **Color**.
+4. Click **Make the badge**.
+
+What happens: everybody who finishes the path gets the badge once, with the
+date. People who finished before you made it get it too, dated the day they
+finished. Nobody is sent a notice about that.
+
+To stop giving it, click **Retire this badge**. People who already earned it
+keep it, and nobody new gets it. To give a new one for the same path, click
+**Make a new badge for this path**.
+
 ### What happens to progress when you change a path
 
 This is the part people worry about, so here it is plainly.
