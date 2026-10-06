@@ -597,6 +597,12 @@ assume comes along with it.
   expiring.
 - **It does not close the open port.** Section 7 is a separate job and nothing
   does it for you.
+- **It must let one cookie through.** PathLMS sets a single cookie,
+  `pathlms_proof`, for ten minutes at most, only while somebody proves it is
+  them through their company sign-in. It travels only to `/auth/oidc/callback`
+  and `/auth/saml/callback`. A proxy that strips or rewrites cookies on those
+  two addresses makes that proof fail. Your privacy notice should name it. It
+  is needed for security and holds nothing about the person.
 - **It does not change the address PathLMS uses in links and in mail.** That
   comes from `PATHLMS_PUBLIC_URL` and from nothing else, so a proxy set up
   perfectly with that setting wrong still produces recovery mail nobody can use.
