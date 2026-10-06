@@ -219,6 +219,23 @@ Recommendation: reach for Group rollup when you are answering "how is my
 team doing", and reach for a single course's Gradebook when you are
 answering "how did this person do on this quiz".
 
+## Posting an announcement
+
+Why: you need to tell the people you look after something, all at once.
+
+1. In the sidebar, click **Announcements**, then **Post an announcement**. You
+   can also click **Post an announcement** on a group's panel.
+2. In **Who is it for**, choose a group, a course or a learning path. The page
+   tells you how many people it will reach.
+3. Write a **Title** and a **Message**.
+4. Choose **Show until**, a day within the next year.
+5. Click **Send**.
+
+What happens: everybody it reaches sees it on their Announcements page and in
+their notifications. If it reaches a lot of people, PathLMS asks for your
+password first, and the code from your authenticator app if you have one. You
+can take your own announcement down later.
+
 ## Related guides
 
 - [Courses, folders and learning paths](courses-folders-and-paths.md), for
