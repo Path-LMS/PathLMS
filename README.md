@@ -15,7 +15,7 @@ You still get the things an organization needs: branding, reporting, audit histo
 **Simple for learners. Efficient for administrators. Yours to run.**
 
 <!-- version -->
-**Version 0.128.0** · [Releases](https://github.com/path-lms/pathlms/releases)
+**Version 0.129.0** · [Releases](https://github.com/path-lms/pathlms/releases)
 <!-- /version -->
 
 **[Download the latest release →](https://github.com/Path-LMS/PathLMS/releases/latest)**
@@ -64,7 +64,7 @@ PathLMS is designed around the problems that make modern LMS platforms harder th
 - **Privacy you can act on.** Delete a person's data from inside PathLMS. See exactly what was removed and what was kept.
 - **Enroll whole groups at once.** Groups sit inside groups to match your organization. Everyone gets all the courses they need in one step.
 - **Build courses in the browser.** Add lessons, topics, quizzes and certificates. No separate authoring tool needed.
-- **Company sign-in.** People use the account they already have, through OIDC or SAML.
+- **Company sign-in.** People use the account they already have, through OIDC or SAML. PathLMS sets no cookie for tracking. It sets one security cookie, only while you prove it is you through your company, and removes it within minutes.
 - **A second sign-in step.** People who use a PathLMS password can add an authenticator app and save recovery codes.
 - **Uploaded courses.** A standard installation is prepared for uploaded courses. They start off, and an administrator can turn them on.
 
@@ -83,11 +83,9 @@ It is especially well suited to organizations that want to run their own platfor
 Things PathLMS does not do yet. The list is deliberately full, so you can read it
 once and know whether it fits before you install anything.
 
-- Learners cannot hand in work for an assignment. An assignment can hold instructions only.
 - There is no forum and no way for people to talk to each other.
 - Quizzes have three question types: pick one, pick several, and true or false. There is no written answer.
 - Nobody can mark work against a rubric.
-- You cannot load a list of people from a spreadsheet. Accounts are made one at a time.
 - You can take a course out of PathLMS. The only course you can bring in is a SCORM package from another tool.
 - Nothing takes a payment.
 - People cannot sign themselves up for an account. Somebody makes it for them; they can then enroll themselves on a course.
