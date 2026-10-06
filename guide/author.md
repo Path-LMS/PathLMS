@@ -35,7 +35,8 @@ through the catalogue for it.
 
 What happens: this list is yours. It shows what you have authored, whatever
 state it is in, so a half-finished draft is never lost simply because it has
-not been published yet.
+not been published yet. Courses other authors made are not listed, and you
+cannot open them.
 
 ## Creating a course
 
@@ -86,8 +87,8 @@ decides the shape of what a learner experiences.
      lesson, inside a lesson, or inside another topic, which makes it useful
      for breaking a long lesson into smaller pieces without making each piece
      its own lesson.
-   - **Assignment** gives instructions only. A learner cannot hand work in
-     through PathLMS; use this for something they do outside the system.
+   - **Assignment** asks a learner to hand in some writing, a file, or both.
+     A reviewer accepts it or sends it back with a note.
    - **Quiz** checks what a learner has understood. See below for how to build
      one.
    - **Resource** and **Discussion** round things out, though Discussion is a
@@ -235,6 +236,15 @@ can then be placed into a course's outline as an **Uploaded course** item, at
 the top level or inside a Module or Section.
 
 ---
+
+## Posting an announcement
+
+Why: you need to tell the people on your course or learning path something.
+
+In the sidebar, click **Announcements**, then **Post an announcement**. Choose
+one of your own courses or learning paths in **Who is it for**, write a
+**Title** and a **Message**, choose **Show until**, and click **Send**. The page
+tells you how many people it will reach before you send it.
 
 ## A few recommendations
 
