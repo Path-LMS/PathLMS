@@ -16,8 +16,10 @@ What to do, in a few minutes:
 
 1. Keep the password in a password manager, not in your head or a file on the
    same machine.
-2. Create a second administrator account that somebody else controls. Two
-   administrators means one can always restore the other.
+2. Make a second administrator that somebody else controls. Pick **Admin**,
+   not Administrator of one group. Pick somebody who signs in with a PathLMS
+   password, not through your company. Two administrators means one can
+   always restore the other.
 3. Add an authenticator app to your own account: My settings, then
    Authenticator app, then Set up. The button that updates this installation
    asks for one, so do this before your first update, not during it.
@@ -35,9 +37,27 @@ It makes a new password, prints it once, and signs that account out
 everywhere. Copy the password before you close the window: it is not stored
 and will not be shown again. Then sign in and change it.
 
-It also removes that account's company sign-in link, if it had one, because
-that sign-in method does not ask for an authenticator app. If the account was
-suspended, it makes it active again.
+It also removes that account's company sign-in links and any password reset
+link that was waiting, because neither one asks for an authenticator app. If
+the account was suspended, it makes it active again.
+
+If the account was made by a company sign-in, the command stops and changes
+nothing. PathLMS gives no password to anybody who signs in through their
+company. To free that account so it can have a PathLMS password, add
+`--free-from-company`:
+
+    docker exec -it pathlms-api pathlms-rescue you@your-company.example --free-from-company --yes
+
+It takes the company sign-in off, signs the person out everywhere, and emails
+them a link to choose a password. If the email cannot be sent, the command
+prints the link. It works once and lasts an hour.
+
+If the company sign-in itself was switched off and nobody can get in to
+switch it back on, run this on the same machine:
+
+    docker exec -it pathlms-api pathlms-switch-on-sign-in "Your Company Name" --yes
+
+It switches that sign-in on and nothing else.
 
 If the phone is the problem, add `--forget-the-phone`. That clears their
 authenticator app and recovery codes so they can set up a new one.
