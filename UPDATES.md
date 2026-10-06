@@ -136,6 +136,15 @@ browser. The update carries on.
 Without the automatic updater, the button is switched off. The screen names the
 two settings that turn it on. Until then you update by hand, as above.
 
+If you press Update just after another update, you may read **The updater is
+busy finishing earlier work. Nothing has been started. Please wait a minute and
+press Update again.** The updater is not broken. It is clearing old copies of
+PathLMS. Wait a minute and press again.
+
+If it says the updater was last seen busy and has not reported since, wait a few
+minutes. Only look at `docker compose logs updater --tail 50` if it stays that
+way.
+
 ## The automatic updater
 
 Two lines near the bottom of your `.env`, when both are present and
