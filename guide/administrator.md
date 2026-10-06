@@ -14,6 +14,9 @@ With this role you can:
   with it.
 - Manage general settings, network settings, and updates.
 
+When you sign in, PathLMS opens **Admin Home**. It has a **Get Started**
+checklist for a new site, and the sidebar links to everything below.
+
 ## Creating an account
 
 Why: everyone needs an account before they can sign in and be enrolled on
@@ -25,15 +28,43 @@ administrator itself.
 1. In the sidebar, click **People**.
 2. Click **Add Person**.
 3. Fill in their first name, last name and email address.
-4. Choose a **Role**: Learner, Author, or Manager.
+4. Choose a **Role**: Learner, Author, or Manager. If you choose Manager, a
+   **Group** box appears. Pick the group they will look after.
 5. Click **Add Person**.
 
 What happens: a password is generated automatically and shown to you once,
-so you can pass it on to them. They can sign in straight away.
+so you can pass it on to them. They sign in with it, and PathLMS asks them to
+choose a password of their own before anything else.
 
 You will notice Admin is not offered here. There is no "create an
 administrator" form. Instead, you make someone an administrator by
 changing an existing person's role, covered next.
+
+## Adding many people from a file
+
+Why: typing fifty accounts one at a time is slow. A file does it in one go.
+Only an administrator for the whole site can do this.
+
+1. In the sidebar, click **People**.
+2. Click **Add from a spreadsheet**.
+3. Click **Download an example file**, fill it in, and save it as a CSV file.
+   The file can be up to 2 MB.
+4. Choose the file. PathLMS shows what will happen to every row. Nothing is
+   saved yet. Click **Next**.
+5. Choose one **Role** for everybody in the file, and a **Group** if you want
+   one. Click **Next**.
+6. Check the summary, then click the button that adds them. It asks for your
+   password and the code from your authenticator app.
+
+What happens: each new person gets an account with no password. If mail is set
+up, each one is emailed a link to choose their own. The link works once and
+lasts seven days. If mail is not set up, nobody is told yet, and you can send
+the emails later. Anyone who already has an account is left as they are.
+
+To see what you added, click **Past imports**, beside Add from a spreadsheet.
+Each import there has **Send the set-up emails now** and **Undo this import**.
+Undo removes the people that import added. It keeps anyone somebody else has
+since done something with.
 
 ## Changing someone's role
 
@@ -44,17 +75,20 @@ there is no separate form for it, you promote an existing account.
 ![A person's detail panel with the role dropdown open](images/admin-change-role.png)
 
 1. On the People screen, click a person's row to open their detail panel.
-2. Open the role control and choose the new role.
-3. If you choose Manager, you will be asked which group they take charge
-   of.
-4. Confirm the change.
+2. In the Role line, click **Change**. A list of six roles opens, each with
+   one line saying what it can do.
+3. Choose the new role. If you choose Manager, pick the group they will look
+   after and click **Make them a manager**. If you choose Administrator of
+   one group, pick the group they will run and click **Make them a group
+   admin**.
+4. If PathLMS asks, confirm the change.
 
 What happens matters more here than anywhere else on this screen, so read
 it carefully.
 
-**Important.** Making someone an administrator, or creating one by promoting
-an account, asks you to prove it is really you: your current password, and
-the code from your authenticator app. This is not the usual click-and-done.
+**Important.** Making someone an administrator, or an administrator of one
+group, asks you to prove it is really you: your current password, and the
+code from your authenticator app. This is not the usual click-and-done.
 An administrator can do anything on the whole installation, and that power
 outlives the browser session it was granted from, so a plain "are you sure"
 is not enough to stop someone else pressing the button on your signed-in
@@ -79,16 +113,71 @@ knowing their old password.
 4. Confirm.
 
 What happens: a new password is generated and shown to you once. Their old
-password stops working immediately.
+password stops working immediately. The next time they sign in, PathLMS asks
+them to choose a password of their own. You do not need to tell them to
+change it.
 
-## The five roles
+## Putting people in a group
 
-Learner, Author, Manager, Administrator, and Instructor exist as roles in
-PathLMS. Instructor is worth calling out on its own: it can be assigned,
-but today it works exactly like a learner. There is nothing an instructor
-can do that a learner cannot. For the full one-line summary of what each
+Why: a group decides which training people get and which manager looks after
+them.
+
+1. In the sidebar, click **Groups**, then click the group.
+2. In the panel that opens, click **Add people**, beside the number of members.
+3. Type in **Find a person** to narrow the list, and tick each person.
+4. Click **Add people**.
+
+The same panel has **Enroll this group**, **Post an announcement** and **Add a
+group inside this one**.
+
+## The roles
+
+Learner, Author, Manager, Instructor, Administrator of one group, and Admin
+are the choices PathLMS offers. An instructor reviews handed-in work for the
+courses and groups you give them. Everything else works as it does for a
+learner. An administrator of one group looks after one group and the groups
+under it. They see and change only the people in those groups. On the People
+list they show as Group admin. For the full one-line summary of what each
 role is for, see [the note on the roles](README.md#a-note-on-the-roles) in
 the guide index.
+
+## Forgetting a person, and giving them a copy of their data
+
+Why: somebody leaves, or asks you to remove what PathLMS keeps about them.
+Their training records stay, so course records and reports stay true. Their
+name and email address are taken off them.
+
+1. In the sidebar, click **People**, then click the person.
+2. Open **More Actions** and choose **Forget this person**.
+3. Type the person's email address where the box asks for it.
+4. Type your password and the code from your authenticator app.
+5. Click **Forget this person**.
+
+What happens: their name, email address and settings are removed, and they
+are signed out everywhere. What they completed is kept. This cannot be undone.
+
+A person can also ask to be forgotten from their own Settings. When they do,
+every administrator gets a notice. Open the person and either forget them or
+write back with a reason. They see your reason.
+
+To give a person a copy of everything PathLMS keeps about them, open
+**More Actions** and choose **Download their data**. It asks for your password
+and code. Your name and the time are written in the activity log.
+
+## Taking a badge back
+
+Why: a badge was given by mistake.
+
+1. On the People screen, click the person, then open their record.
+2. In the **Badges** section, click **Take this badge back** beside the badge.
+3. Write why it is being taken back. Write facts only: the person can see this
+   in the copy of their data they can download.
+4. Type your password and the code from your authenticator app, then click
+   **Take badge back**.
+
+What happens: the badge stops showing on their record. PathLMS keeps a note of
+who took it back, when and why. To fix the reason later, find the badge under
+**Badges taken back** on the same record and click **Correct the reason**.
 
 ## The authenticator app, and resetting one for someone
 
@@ -183,8 +272,13 @@ courses.
 ![The Settings screen with General, Network and Sign-in tabs](images/admin-settings-general.png)
 
 1. In the sidebar, click **Settings**.
-2. The **General** tab holds your organization's basic details and the
-   **Updates** section, where you start a platform update. See
+2. The **General** tab has four sections. **Your organization** holds the
+   organization name, the contact email, the address of your privacy notice,
+   and how many people an announcement can reach before PathLMS asks the
+   person posting it for their password. **Completion certificates** turns
+   certificates on or off. **Uploaded courses** holds the settings for
+   courses made in other tools. **Updates** is where you start a platform
+   update. See
    [UPDATES.md](../UPDATES.md) for the full walkthrough of what an update
    does and the safety checks it runs before anything changes.
 3. The **Network** tab holds the address, ports and encryption this
