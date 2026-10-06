@@ -99,7 +99,8 @@ else. It takes two minutes and saves you an unpleasant afternoon.
 
 Two things on that page matter on day one: set up a code from an app on your
 phone, because administrator screens ask for one, and note the rescue command,
-which is how you get back in if you are ever locked out.
+which is how you get back in if you are ever locked out. If your
+administrators sign in through a company, read the rescue section there first.
 
 That is the whole install. Everything below is here when you want it.
 
