@@ -28,6 +28,11 @@ Why: you need to be signed in before PathLMS will show you anything of your own.
 
 What happens: you land on your Dashboard, signed in.
 
+If your organization lets you sign in with your work account, the sign-in page
+also shows a button under **Or sign in with**, named after your company. Click
+it and sign in at your company instead. If you sign in that way, you have no
+PathLMS password, so the forgotten password steps below do not apply to you.
+
 If you have forgotten your password, press **Forgot your password?** on the
 sign-in screen. Whether or not mail is set up for this deployment, the screen
 tells you honestly what to do next: either a reset link is sent to you, or you
@@ -143,6 +148,9 @@ meet them:
 - A quiz. You must pass it before your Mark Complete press is accepted. See the
   next section.
 
+PathLMS records a finished course, a finished learning path and your quiz score
+itself. You cannot change them by hand.
+
 Recommendation: if a course lets you jump around, resist the urge to skip
 straight to the end. The order was chosen by whoever built it, usually for a
 reason, and skipping ahead is how people end up passing a quiz on a guess
@@ -213,8 +221,10 @@ never edited or removed.
 4. On the certificate page, press **Print or save as PDF** to get a copy you
    can keep or hand to somebody who needs proof.
 
-What happens: nothing on Your record is ever edited or removed, even if the
-course itself is later changed or taken down. An administrator can see all of
+What happens: nothing on Your record is changed by editing the course, even if
+the course is later changed or taken down. The only changes are made by an
+administrator: forgetting you takes your name off it, and taking a badge back
+stops it showing. An administrator can see all of
 it; the people who manage you can see the courses your organization put you
 on, but not the ones you chose for yourself.
 
@@ -250,6 +260,17 @@ What happens: simply opening this page is treated as reading what it shows, so
 the unread count on the bell clears the moment you look at it, the same way it
 would if you read every message individually.
 
+## Announcements
+
+Why: your organization may need to tell you something that is not about your
+own courses.
+
+In the sidebar, click **Announcements**. It lists what people have sent you,
+newest first. An announcement also arrives in your notifications.
+
+What happens: an announcement shows until its end date, or until the person
+who posted it takes it down. After its end date it moves to Earlier.
+
 ## Managing your account and your devices
 
 Why: your name, your password, and which devices are currently signed in as
@@ -262,6 +283,18 @@ you are all things you are entitled to see and control yourself.
 3. To see and manage your signed-in devices, go to **Settings**, then
    **Devices**, or directly to `/settings/sessions`, headed "Devices you are
    signed in on".
+
+Further down the same page:
+
+- **Privacy notice** links to what your organization keeps about you and why.
+- **Your data** lets you download a copy of everything PathLMS keeps about you.
+  Type your password and press **Download my data**.
+- **Closing your account** lets you ask to be forgotten. Type your password,
+  and the code from your authenticator app if you have one, then press **Ask to
+  be forgotten**. An administrator decides, and you can see their answer here.
+
+If you sign in through your company, you have no PathLMS password to type, so
+ask an administrator to download your data or to forget you.
 
 What happens: you can end a session on any device that is not the one you are
 using, which is the right thing to do if you ever sign in somewhere you should
