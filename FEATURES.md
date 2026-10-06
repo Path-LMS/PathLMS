@@ -29,6 +29,8 @@ done. The [README](README.md) has the short version.
 - Stop people signing themselves up for a course, so only an administrator or manager can enroll them.
 - Choose who reviews handed-in work. An administrator can. So can a manager, for the people in their groups, and the course's author. An administrator can also give an instructor courses and groups to review. Nobody reviews their own work.
 - Reviewers find everything waiting on them on one page, Work to Review.
+- Post an announcement to everyone, a group, a course or a learning path. People see it from the bell and the Announcements page.
+- Add many people at once from a CSV file. Each person is emailed a link to choose their own password.
 
 ## Keep required training current
 
@@ -44,6 +46,7 @@ done. The [README](README.md) has the short version.
 - List the people who did not finish in time.
 - Export reports as CSV, Excel or PDF. Names and email addresses are left out unless you ask for them.
 - Keep a record of important actions that shows if anyone tampers with it.
+- Give a badge for finishing a learning path. The person keeps it, with the date.
 
 ## Look after people's data
 
@@ -59,7 +62,7 @@ done. The [README](README.md) has the short version.
 ## Sign-in and security
 
 - Let people sign in with the company account they already have, through OIDC or SAML.
-- Give each person one of five roles: administrator, manager, instructor, author or learner.
+- Give each person a role: administrator, administrator of one group, manager, instructor, author or learner.
 - People who use a PathLMS password can add an authenticator app and save recovery codes.
 - An installation administrator can reset somebody's authenticator app.
 
@@ -81,16 +84,13 @@ This list is long on purpose. Read it once and you will know whether PathLMS fit
 - Quizzes have three kinds of question: pick one, pick several, and true or false. There is no written answer, no matching and no number answer.
 - Nobody can mark work against a rubric or a marking guide.
 - There is no forum and no way for people to talk to each other inside a course.
-- There are no announcements of their own. People get notifications instead.
 - There is no wiki.
 - There are no surveys and no feedback forms.
 - You can take a course out of PathLMS as a file. The only course you can bring in is a SCORM package from another tool.
 
 ### People
 
-- You cannot load a list of people from a spreadsheet. Accounts are made one at a time.
 - People cannot sign themselves up for an account. Somebody has to make it for them. Once they have one, they can put themselves on a course.
-- There are no badges and no achievements.
 - There are no competency frameworks.
 - There is no calendar and there are no events.
 
