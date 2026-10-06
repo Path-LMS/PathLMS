@@ -6,8 +6,8 @@ the screen and the exact steps.
 
 ## Find your guide
 
-PathLMS gives each person one of five roles, and what you see depends on which
-one you hold. Start with the guide for your role.
+PathLMS gives each person a role, and what you see depends on which one you
+hold. Start with the guide for your role.
 
 - **[The learner guide](learner.md)**. You are here to take training. Find a
   course, work through it, pass a quiz, see what you have finished, and print a
@@ -37,9 +37,11 @@ together:
   run.
 - **Author** builds courses and paths.
 - **Learner** takes training.
-- **Instructor** is a role you can assign, but today it works exactly like a
-  learner. There is nothing it does that a learner does not, so if you are an
-  instructor, follow the learner guide.
+- **Instructor** reviews the handed-in work of the courses and groups an
+  administrator gives them. Everything else works as it does for a learner, so
+  follow the learner guide for the rest.
+- **Administrator of one group** can do what an administrator does, for the
+  people in one group and the groups under it, and nowhere else.
 
 ## How to read these guides
 
