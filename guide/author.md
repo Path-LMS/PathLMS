@@ -19,24 +19,24 @@ fits into a folder or a learning path, see
 only points at the glossary rather than covering it fully: see
 [the glossary](glossary.md) for that.
 
-## Where your work lives: the Content Library
+## Where your work lives: the Courses page
 
 Why: once you have written more than one or two courses, you need one place
 that shows you everything you have made, drafts included, rather than hunting
 through the catalogue for it.
 
-![The Content Library screen, with tabs for All, Courses, Items, Quizzes and Terms](images/author-content-library.png)
+1. In the sidebar, click **Courses**. The address is `/admin/courses`.
+2. Use the **All**, **Published**, **Draft** and **Archived** buttons to
+   narrow the list.
+3. Press **Edit** on a course to open it in Course Builder, or **Details** to
+   see its details.
 
-1. In the sidebar, click **Content Library**. The address is `/content`.
-2. Switch between the tabs to narrow what you see: **Courses**, **Items** (the
-   lessons, topics and other pieces inside your courses), **Quizzes**, or
-   **Terms** (your glossary words).
-3. Click anything in the list to open its editor.
+To find a lesson or a quiz inside a course, search for it on the Browse page.
+Authors see a **Lessons and quizzes** section there. Clicking one opens it in
+Course Builder.
 
-What happens: this list is yours. It shows what you have authored, whatever
-state it is in, so a half-finished draft is never lost simply because it has
-not been published yet. Courses other authors made are not listed, and you
-cannot open them.
+What happens: drafts are listed alongside published courses, so a
+half-finished draft is not lost just because it is not published.
 
 ## Creating a course
 
@@ -45,7 +45,7 @@ learning paths, certificates, is built around it.
 
 ![The Create New Course dialog, with fields for the course name and a folder picker](images/author-create-course.png)
 
-1. Press **Create Course**, either in the sidebar or from the Content Library.
+1. On the **Courses** page, press **New course**.
 2. In the **Create New Course** dialog, give it a name. A plain, specific name
    helps everyone later: "Espresso Machine Safety" tells people what it is,
    "Module 3" tells them nothing.
@@ -139,8 +139,9 @@ simply having scrolled past it.
 ![The assessment editor at /assessments/:assessmentId/edit, with a question list, a pass mark and a Publish button](images/author-quiz-editor.png)
 
 1. Build and edit the quiz's own questions and settings at
-   `/assessments/:assessmentId/edit`, reachable by opening it from the
-   **Quizzes** tab in the Content Library. Add your questions, set the
+   `/assessments/:assessmentId/edit`, reachable from Course Builder: select
+   the Quiz item and click **Open this quiz's questions** under its
+   **Quiz Settings** box. Add your questions, set the
    **Pass mark**, and press **Publish** when it is ready.
 2. Back in Course Builder, add a **Quiz** item to your outline where you want
    the learner to meet it.
@@ -206,6 +207,10 @@ see it as a learner would before that day comes.
    progress.
 4. Press **Export** to take a copy of the course out as a file, for example to
    hand to somebody running a different system.
+5. After a course is published, your edits wait. Learners keep seeing the
+   published course. When you are ready, press **Publish changes**. PathLMS
+   asks "Publish your changes?" Confirm, and learners see all of them at once.
+   Everyone on the course keeps their place and what they have finished.
 
 What happens: publishing and unpublishing both ask you to confirm before
 anything changes, so neither one is a single accidental click away.
@@ -254,7 +259,7 @@ tells you how many people it will reach before you send it.
 - **Write a quiz to confirm learning, not to trick people.** The point is to
   find out whether the lesson worked, not to catch someone out.
 - **Give a course a plain, specific name.** It is the first thing anyone reads
-  about it, on the catalogue card and in your own Content Library.
+  about it, on the catalogue card and on your Courses page.
 - **Keep a course in draft until it is genuinely ready.** Publishing is one
   click and easy to undo, but a half-built course in the catalogue teaches
   people the wrong thing before you have finished writing it.
