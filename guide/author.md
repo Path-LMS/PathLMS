@@ -32,8 +32,11 @@ through the catalogue for it.
    see its details.
 
 To find a lesson or a quiz inside a course, search for it on the Browse page.
-Authors see a **Lessons and quizzes** section there. Clicking one opens it in
-Course Builder.
+Authors see a **Lessons and quizzes** section there. It lists each match with
+its course. Clicking one opens it in Course Builder. Learners do not see this
+section.
+
+![The Browse page after typing a word in the search box, with a Lessons and quizzes section listing each match and its course](images/author-browse-lessons-and-quizzes.png)
 
 What happens: drafts are listed alongside published courses, so a
 half-finished draft is not lost just because it is not published.
@@ -136,23 +139,28 @@ in the player sees exactly what you wrote, with any glossary terms live.
 Why: a quiz confirms a learner actually understood something, rather than
 simply having scrolled past it.
 
-![The assessment editor at /assessments/:assessmentId/edit, with a question list, a pass mark and a Publish button](images/author-quiz-editor.png)
+![A Quiz item in the course editor with the words This item has no quiz yet and a Make a new quiz button](images/author-make-a-quiz.png)
 
-1. Build and edit the quiz's own questions and settings at
-   `/assessments/:assessmentId/edit`, reachable from Course Builder: select
-   the Quiz item and click **Open this quiz's questions** under its
-   **Quiz Settings** box. Add your questions, set the
-   **Pass mark**, and press **Publish** when it is ready.
-2. Back in Course Builder, add a **Quiz** item to your outline where you want
-   the learner to meet it.
-3. Select the Quiz item, and in its **Quiz Settings** box, give it the
-   identifying code of the quiz you built, in the form
-   `{"assessment_id": "..."}`. You can find that code in the address bar while
-   editing the quiz.
+1. Add a **Quiz** item to your outline where you want the learner to meet it.
+2. Select the Quiz item. It says "This item has no quiz yet." Press
+   **Make a new quiz**. PathLMS makes the quiz, names it after the item, and
+   connects the two.
+
+![A Quiz item in the course editor with a link, Open this quiz's questions, under the title and description](images/author-open-quiz-questions.png)
+
+3. Click **Open this quiz's questions**. This opens the quiz editor. Add your
+   questions, set the **Pass mark**, and press **Publish** when it is ready.
+
+![The quiz editor, showing a list of questions, the pass mark and the number of attempts](images/author-quiz-editor.png)
 
 What happens: the quiz item in your course now leads to that quiz. A learner
 who reaches it must pass it, against the pass mark you set, before the course
 lets them mark it finished.
+
+If the quiz already exists, you can point the item at it instead. Under the
+item, open **Show the quiz code** and put the quiz's code in the box, in the
+form `{"assessment_id": "..."}`. You can find that code in the address bar
+while editing the quiz.
 
 Recommendation: write a quiz to confirm learning, not to trick people. A
 question that hinges on a wording trap or an obscure exception tells you
