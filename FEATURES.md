@@ -13,6 +13,8 @@ done. The [README](README.md) has the short version.
 - Build a whole course using only the keyboard.
 - Run quizzes and keep each score on the learner's record.
 - Choose the pass mark for a quiz.
+- Make a new quiz from the course editor with one button, and open its questions from the same place.
+- Find a lesson or a quiz by searching on the Browse page, as an author.
 - Ask learners to hand in work for an assignment: some writing, a file, or both. A reviewer accepts it or sends it back with a note. Accepting finishes that step for the learner.
 - Give out printable certificates for any course that has them turned on.
 - Run uploaded SCORM courses, made in another tool. They start off, and an administrator can turn them on.
@@ -31,6 +33,8 @@ done. The [README](README.md) has the short version.
 - Reviewers find everything waiting on them on one page, Work to Review.
 - Post an announcement to everyone, a group, a course or a learning path. People see it from the bell and the Announcements page.
 - Add many people at once from a CSV file. Each person is emailed a link to choose their own password.
+- Let people make their own account from the sign-in page, if you switch it on. You choose which email endings may sign up. Each person gets a link by email, and it lasts 24 hours.
+- On the People page, filter by how each person joined: added by an administrator, from a spreadsheet, signed up themselves, or company sign-in.
 
 ## Keep required training current
 
@@ -63,6 +67,7 @@ done. The [README](README.md) has the short version.
 
 - Let people sign in with the company account they already have, through OIDC or SAML.
 - Give each person a role: administrator, administrator of one group, manager, instructor, author or learner.
+- Making someone a manager asks the administrator for their password and authenticator code.
 - People who use a PathLMS password can add an authenticator app and save recovery codes.
 - An installation administrator can reset somebody's authenticator app.
 
@@ -90,7 +95,7 @@ This list is long on purpose. Read it once and you will know whether PathLMS fit
 
 ### People
 
-- People cannot sign themselves up for an account. Somebody has to make it for them. Once they have one, they can put themselves on a course.
+- People can make their own account only if an administrator switches that on. It is off until then, and everyone who does is a learner.
 - There are no competency frameworks.
 - There is no calendar and there are no events.
 
