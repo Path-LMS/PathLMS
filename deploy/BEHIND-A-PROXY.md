@@ -213,22 +213,31 @@ ignored, it was not. Anything else is treated as unset, `Yes` and `On` included.
 address survives the hop:
 
 ```
-PATHLMS_TRUST_FORWARDED_ADDRESS_FROM=172.18.0.0/16
+PATHLMS_TRUST_FORWARDED_ADDRESS_FROM=192.0.2.5
 ```
 
-**Write the address your proxy comes from, not the address people type and not
-this machine's own address.** On a stack like this one the proxy usually
-arrives over a Docker network, so a whole network is the honest answer.
+**Write your proxy's own address, not the address people type and not this
+machine's own address.** Write one address, never a range. A range such as
+`172.18.0.0/16` is refused, and PathLMS then trusts nobody. The reason: Docker's
+own gateway sits inside that range, so a stranger reaching port 3001 directly
+could choose the address recorded for them.
 
-The range shown above is the one Docker gives its own networks by default, so it
-is a good guess rather than yours. This command prints yours:
+The address shown above is only an example. If your proxy is a container, give
+it a fixed address in its own compose file, or the setting stops matching the
+next time the proxy is recreated. This command prints the address it has now:
 
 ```
-docker network inspect pathlms_frontend --format '{{range .IPAM.Config}}{{.Subnet}}{{end}}'
+docker inspect <your proxy container> --format '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}'
 ```
 
-Several are allowed, separated by commas or spaces. A single address works too,
-such as `PATHLMS_TRUST_FORWARDED_ADDRESS_FROM=192.0.2.5`.
+Several addresses are allowed, separated by commas or spaces.
+
+**If your proxy runs on this same machine, outside Docker,** PathLMS sees it
+arriving from Docker's own gateway, an address ending in `.1`. A stranger
+reaching port 3001 directly arrives from that same address. So PathLMS believes
+the gateway only once both web ports are open to this machine alone, with the
+two lines in section 7, "The thing that goes wrong most". Until then it trusts nobody, and the web
+container's start-up log says so and names the line to add.
 
 **Without this, section 2 step 4 does nothing**, and the two costs described
 there are what your deployment has: one shared rate-limit budget for everybody,
@@ -370,10 +379,10 @@ believe**, in the same log and for the same reason:
 docker compose logs web | grep "visitor address"
 ```
 
-Right answer, naming the network you actually wrote:
+Right answer, naming the address you actually wrote:
 
 ```
-visitor address: trusting a forwarded address from 172.18.0.0/16. A visitor's
+visitor address: trusting a forwarded address from 192.0.2.5. A visitor's
 own address now decides which rate-limit budget they spend, and is what this
 deployment records.
 ```
