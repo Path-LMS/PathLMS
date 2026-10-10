@@ -25,7 +25,13 @@ unless you manage all of it.
 1. In the sidebar, click **People**.
 2. Use the search box to find someone by name or email.
 3. Click a filter pill, such as **Active** or **Learner**, to narrow the list.
-4. Click a row to open that person's detail panel, which slides out from the
+4. To see how people joined, open the box that says **Any way of joining**
+   and choose one. The choices are **Added by an administrator**, **From a
+   spreadsheet**, **Signed up themselves** and **Company sign-in**.
+
+   ![The People screen with the Any way of joining box open, showing four ways a person can have joined](images/manager-people-how-they-joined.png)
+
+5. Click a row to open that person's detail panel, which slides out from the
    right.
 
 What happens: the list and the panel only ever hold people from the groups
