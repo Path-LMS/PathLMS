@@ -33,6 +33,24 @@ also shows a button under **Or sign in with**, named after your company. Click
 it and sign in at your company instead. If you sign in that way, you have no
 PathLMS password, so the forgotten password steps below do not apply to you.
 
+If you do not have an account yet, look under the sign-in form. If it says
+"New here? Make an account", your organization lets you make your own.
+
+![The sign-in screen with the words New here? Make an account under the Forgot your password link](images/learner-sign-in-make-an-account.png)
+
+Press **Make an account** and type your email address. Then press **Send me
+the link**.
+
+![The Make an account screen, with a box for your email address and a Send me the link button](images/learner-make-an-account.png)
+
+PathLMS emails you a link. The link lasts 24 hours. It opens a page where you
+type your first name, last name and a password. Press **Finish and sign in**.
+
+![The Finish making your account screen, with boxes for first name, last name and password](images/learner-finish-making-your-account.png)
+
+If the page says signing up is not open, ask your administrator to make your
+account.
+
 If you have forgotten your password, press **Forgot your password?** on the
 sign-in screen. Whether or not mail is set up for this deployment, the screen
 tells you honestly what to do next: either a reset link is sent to you, or you
