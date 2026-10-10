@@ -30,7 +30,9 @@ administrator itself.
 3. Fill in their first name, last name and email address.
 4. Choose a **Role**: Learner, Author, or Manager. If you choose Manager, a
    **Group** box appears. Pick the group they will look after.
-5. Click **Add Person**.
+5. Click **Add Person**. If you chose Manager, PathLMS now asks for your own
+   password and the code from your authenticator app. Type them and click
+   **Add them as a manager**.
 
 What happens: a password is generated automatically and shown to you once,
 so you can pass it on to them. They sign in with it, and PathLMS asks them to
@@ -81,19 +83,21 @@ there is no separate form for it, you promote an existing account.
    after and click **Make them a manager**. If you choose Administrator of
    one group, pick the group they will run and click **Make them a group
    admin**.
-4. If PathLMS asks, confirm the change.
+4. If PathLMS asks, confirm the change. For Manager, Administrator of one
+   group and Admin it asks for your password and code.
 
 What happens matters more here than anywhere else on this screen, so read
 it carefully.
 
-**Important.** Making someone an administrator, or an administrator of one
-group, asks you to prove it is really you: your current password, and the
-code from your authenticator app. This is not the usual click-and-done.
-An administrator can do anything on the whole installation, and that power
-outlives the browser session it was granted from, so a plain "are you sure"
-is not enough to stop someone else pressing the button on your signed-in
-screen. Ordinary account work, like adding a person or turning an account
-on, does not ask for anything extra.
+**Important.** Making someone a manager, an administrator, or an
+administrator of one group, asks you to prove it is really you: your current
+password, and the code from your authenticator app. Adding a new person as a
+manager asks the same. This is not the usual click-and-done. These roles
+give a person real power over other people, and that power outlives the
+browser session it was granted from, so a plain "are you sure" is not enough
+to stop someone else pressing the button on your signed-in screen. Ordinary
+account work, like adding a learner or an author, or turning an account on,
+does not ask for anything extra.
 
 If the change is refused, for example because the password was wrong, the
 person keeps the role they already had. Nothing changes until the server
@@ -108,8 +112,9 @@ knowing their old password.
 ![A person's detail panel with the Reset Password action open](images/admin-reset-password.png)
 
 1. On the People screen, open the person's detail panel.
-2. Choose **Reset Password** from the panel's actions.
-3. Prove it is you with your current password.
+2. Open **More Actions** and choose **Reset Password**.
+3. Prove it is you: type your own password and the code from your
+   authenticator app.
 4. Confirm.
 
 What happens: a new password is generated and shown to you once. Their old
@@ -258,6 +263,12 @@ exists to check that it has not been.
 What happens: Activity shows you a chronological list you can search and
 export. Security tells you plainly whether every entry checks out, or
 whether something in the chain has been altered.
+
+Security also counts **Values set aside**. A set-aside value is a saved
+secret that no key on this server can open. A sign-in provider password and
+a certificate key are examples. PathLMS keeps it and stops using it, so
+nothing else fails. If you upload the certificate again with a working key,
+it comes back.
 
 Recommendation: if you ever suspect an account has been compromised, check
 Security first. It tells you whether you can trust what Activity is about
