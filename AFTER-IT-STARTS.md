@@ -194,6 +194,14 @@ The script compares what came back against an inventory taken at backup time
 and tells you what it checked. That check exists because a restore of this
 database once lost a piece of it and reported success anyway.
 
+It also checks that this server's keys open the saved secrets in the backup,
+such as authenticator app secrets and company sign-in passwords. If they do
+not, the restore stops before anything is replaced, and says what to put
+back: the key folder and the settings file in use when the backup was taken.
+If that key is gone for good, the message gives the one command that goes
+ahead anyway. Those secrets are then set aside, not deleted, and the people
+who used them sign in another way.
+
 Two more things to arrange while you are here:
 
 - Copy the backups off the machine. Until you do, they sit on the same
