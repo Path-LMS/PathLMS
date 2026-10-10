@@ -257,7 +257,7 @@ Roughly, most people go:
 
 ## Set up email early if real people will use this
 
-Without it, nobody can reset their own password, including you.
+Without it, nobody can reset their own password, including you. Nobody can make their own account either, if you want to allow that.
 
 There is no screen for this. Email is set in the same `.env` settings file as
 everything else, and takes effect when you recreate the containers with
