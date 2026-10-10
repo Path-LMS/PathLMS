@@ -1,6 +1,6 @@
 # Setting up email
 
-PathLMS sends four kinds of message. Each one goes to one person.
+PathLMS sends five kinds of message. Each one goes to one person.
 
 - A link to choose a new password, after somebody forgets theirs.
 - A short note telling somebody who signs in through their company to use
@@ -9,6 +9,10 @@ PathLMS sends four kinds of message. Each one goes to one person.
   sign-in off their account.
 - A link to choose a first password, for each person added from a
   spreadsheet. It works once and lasts seven days.
+- A link to finish making an account, for somebody who signed up themselves.
+  It lasts 24 hours. This only happens if an administrator has switched on
+  "People can make their own account". That switch stays greyed out until
+  email is set up.
 
 Nothing else sends email to anybody. Set mail up before you add people from a
 spreadsheet. Without it nobody is emailed. You can send the emails later from
