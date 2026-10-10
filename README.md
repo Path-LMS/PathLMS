@@ -88,7 +88,7 @@ once and know whether it fits before you install anything.
 - Nobody can mark work against a rubric.
 - You can take a course out of PathLMS. The only course you can bring in is a SCORM package from another tool.
 - Nothing takes a payment.
-- People cannot sign themselves up for an account. Somebody makes it for them; they can then enroll themselves on a course.
+- People can make their own account only if an administrator switches that on. It is off until then. Everyone who does is a learner.
 - PathLMS is in English only.
 - There is no phone app. The website works on a phone.
 - There is no way for anyone else to extend PathLMS.
