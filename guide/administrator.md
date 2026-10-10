@@ -215,7 +215,7 @@ Okta or Azure AD, you can let people sign in with it instead of a PathLMS
 password. This is one less password for everyone to remember, and one
 less place a leaked password can be used.
 
-![The Sign-in tab in Settings, showing a list of providers](images/admin-settings-signin.png)
+![The Sign-in tab in Settings: the company sign-in section, the section for letting people make their own account, and the password rules](images/admin-settings-signin.png)
 
 1. In the sidebar, click **Settings**.
 2. Click the **Sign-in** tab.
@@ -227,6 +227,50 @@ less place a leaked password can be used.
 What happens: people signing in see the provider you added as an option,
 in the order you set. You can turn any provider off again without
 deleting it.
+
+## Letting people make their own account
+
+Why: if you do not want to add everyone yourself, people can make their own
+account from the sign-in page. It is off until you switch it on.
+
+Two things must be set up first. The link is sent by email, so your settings
+file needs the email lines. See [Setting up email](../deploy/EMAIL.md). And
+people must be able to read your privacy notice before they sign up, so its
+address must be filled in on the **General** tab. Until both are done, the
+switch is greyed out and the section says what is missing.
+
+1. In the sidebar, click **Settings**, then the **Sign-in** tab.
+2. Open the section **People can make their own account**.
+
+   ![The People can make their own account section, with the switch, the box for email endings and one ending added](images/admin-sign-up-settings.png)
+
+3. Under **Email endings allowed**, type the ending people must have, such as
+   your company's, and press **Add**. Only people whose email ends this way can
+   sign up. Add as many as you need.
+4. Under **New people join this group**, choose a group, or leave it on
+   **No group**.
+5. Under **Most new accounts in one hour**, keep the number or change it. It
+   is a whole number from 1 to 200.
+6. Switch on **Let people make their own account**.
+7. Type your password and the code from your authenticator app, then press
+   **Save**.
+
+   ![The lower half of the section, with the group, the hourly number, and the boxes for your password and authenticator code](images/admin-sign-up-settings-save.png)
+
+What happens: the sign-in page now says "New here? Make an account". A person
+types their email address and gets a link. The link lasts 24 hours. It opens a
+page where they type their name and choose a password. Then they are signed in.
+Everyone who signs up this way is a learner.
+
+You can see who joined this way on the **People** screen. Open the box
+that says **Any way of joining** and choose **Signed up themselves**.
+
+Switching it off, taking an ending away and lowering the hourly number never
+ask for your password. Opening it, adding an ending, changing the group and
+raising the number do.
+
+Recommendation: do not turn this on if children could use it to sign up. The
+law in many places needs a parent's agreement first.
 
 ## Branding the site
 
@@ -297,8 +341,10 @@ courses.
    [DEPLOYMENT.md](../DEPLOYMENT.md) and
    [BEHIND-A-PROXY.md](../deploy/BEHIND-A-PROXY.md) for what these
    settings mean and how to change them safely.
-4. The **Sign-in** tab is covered above, in
-   [Setting up company sign-in](#setting-up-company-sign-in).
+4. The **Sign-in** tab holds company sign-in, covered above in
+   [Setting up company sign-in](#setting-up-company-sign-in), the switch for
+   [letting people make their own account](#letting-people-make-their-own-account),
+   and **Password rules**.
 
 For branding, which General points to rather than duplicating, see
 [Branding the site](#branding-the-site) above.
