@@ -329,8 +329,10 @@ courses.
 1. In the sidebar, click **Settings**.
 2. The **General** tab has four sections. **Your organization** holds the
    organization name, the contact email, the address of your privacy notice,
-   and how many people an announcement can reach before PathLMS asks the
-   person posting it for their password. **Completion certificates** turns
+   the address of your refund policy, and how many people an announcement
+   can reach before PathLMS asks the person posting it for their password.
+   The **Refund policy address** box is for a later version. Nobody can buy a
+   course yet, so filling it in changes nothing today. **Completion certificates** turns
    certificates on or off. **Uploaded courses** holds the settings for
    courses made in other tools. **Updates** is where you start a platform
    update. See
