@@ -278,13 +278,18 @@ Why: you can send a link to a course to anybody, even somebody with no
 account here. They see the course and its price, make an account and buy it.
 
 It works only when selling is fully set up on the **Settings** > **Selling**
-tab and the Stripe key is a live key. With a test key, the link says the
+tab (see [Setting up selling](#setting-up-selling)) and the Stripe key is a
+live key. With a test key, the link says the
 course is not for sale. Email must be set up too. See [Setting up
 email](../deploy/EMAIL.md). The link to finish making an account is sent by
 email.
 
-1. Open the course, then its **Settings** tab.
+1. In the sidebar, click **Courses**, click the course's name, then open its
+   **Settings** tab.
 2. Under **Price**, type the price and press **Save price**.
+
+   ![The Price box on a course's Settings tab, saying nobody can buy yet until selling is set up](images/admin-course-price.png)
+
 3. Under the price, in **What buyers read before they sign up**, type a
    sentence or two, up to 300 characters, and press **Save the words**.
 4. Press **Copy the buy link**, and send that link to the people you want to
@@ -305,6 +310,10 @@ glossary.
 You can see who joined this way on the **People** screen. Open **Any way of
 joining** and choose **Pressed Buy**.
 
+A folder or a learning path with a price has its own buy link in the same way.
+See [Putting one price on a folder or a learning
+path](#putting-one-price-on-a-folder-or-a-learning-path).
+
 If somebody makes an account this way and never buys anything, never has a
 course and does not sign in for 12 months, PathLMS forgets them by itself.
 Buyers are told this before they type their address.
@@ -316,6 +325,179 @@ them that course and keeps the limits.
 At most 30 new accounts can be made this way in one hour. If more people try,
 they are told to try again later, and their email link still works for 24
 hours.
+
+## Setting up selling
+
+Why: you can charge for a course, a folder of courses, or a learning path.
+Stripe takes the payment, so no card number ever reaches PathLMS.
+
+**Selling has not been tried with a real Stripe account yet.** It was tested
+with made-up replies written the way Stripe writes them. So follow the steps
+below in order, make your test purchase, and check it in Stripe before you
+turn selling on.
+
+Only an administrator of the whole installation sees the **Selling** tab.
+
+1. In the sidebar, click **Settings**, then the **Selling** tab.
+2. Work down the seven steps. A step says **Not done yet** until you finish
+   it.
+
+   ![The first step on the Selling tab, with the seller name, contact email and refund policy address filled in](images/admin-selling-who-is-selling.png)
+
+   - **Step 1, Who is selling.** The name, contact email and refund policy
+     address buyers see before they pay. The refund policy address used to be
+     on the **General** tab. It moved here, with the same address in it.
+   - **Step 2, Connect a Stripe test key.** You make a restricted key in
+     Stripe's test mode and paste it in. The step lists the exact
+     permissions to give it.
+   - **Step 3, Choose your currency.** Every price is in this one currency.
+   - **Step 4, Connect Stripe, then make a test purchase.** You buy one of
+     your own courses with Stripe's pretend card. The steps tick as it
+     works.
+
+     ![Step 4, which says it is not done yet and asks you to do step 2 first](images/admin-selling-connect-stripe.png)
+
+   - **Step 5, Turn selling on.** Nobody else can buy until you do this, and
+     you can only do it after the test purchase. Turning selling off again is
+     always one press.
+
+     ![Step 5, which says selling is off and asks you to do step 2 first](images/admin-selling-turn-on.png)
+
+   - **Step 6, Go live.** You paste in your live key, which takes real money.
+   - **Step 7, Turn on receipts in Stripe.** PathLMS emails each buyer to say
+     they have the course. It does not send a payment receipt. Stripe can, if
+     you switch on **Successful payments** in Stripe's customer email
+     settings. There is nothing to save in this step.
+
+What happens: changing who is selling, saving a key, connecting Stripe and
+turning selling on each ask for your password and a code from your
+authenticator app. If you have not set up an authenticator app, the tab tells
+you and links to where. Selling only works when the address you use to open
+PathLMS starts with `https://`.
+
+## Choosing the ways people can pay
+
+Why: you decide whether buyers can pay by card, by a bank payment, or by
+whatever Stripe offers each of them.
+
+On the **Selling** tab, find **Ways to pay**.
+
+![The Ways to pay section, with Let Stripe choose and a tick box for card, Link and bank payments](images/admin-selling-ways-to-pay.png)
+
+1. Either tick **Let Stripe choose**, so Stripe decides which ways each buyer
+   sees, or tick the ways you want, one by one. Use one or the other.
+2. A way that does not work in your selling currency is greyed out, with a
+   sentence saying so.
+
+What happens: before a way is turned on, PathLMS asks Stripe whether it is
+turned on for your account. If every way is off, the section says nobody can
+buy.
+
+Under each course's price you can see how buyers can pay for it, and change it
+for that course alone. With a bank payment, the buyer is told the money can
+take 3 to 5 working days, and gets their place when it arrives. If a bank
+payment fails, the buyer is told in PathLMS and can try again.
+
+## Money off for courses people already own
+
+Why: somebody who already paid for a course should not pay full price for a
+folder or learning path that holds it.
+
+On the **Selling** tab, find **Money off for courses people already own**.
+
+![The Money off section, with four choices for how much comes off, a box for the least anybody pays, and the password and code boxes](images/admin-selling-money-off.png)
+
+1. Under **How much comes off**, choose one:
+   - what they paid for the course, but never more than the course costs now;
+   - what the course costs now;
+   - a share of the folder or learning path's price, which shows a box for
+     the share;
+   - no money off.
+2. In **The least anybody pays**, keep the number or change it. It is a
+   percentage of the full price. Money off never takes the price below it.
+3. Type your password and the code from your authenticator app, then press
+   **Save**.
+
+What happens: it applies to purchases started after you save. The buyer sees
+the full price, each course they already own with what comes off for it, and
+what they pay. A course with no price of its own takes nothing off.
+
+## Putting one price on a folder or a learning path
+
+Why: you can sell a whole set of courses with one payment. Paying gives the
+person every course in it, and every course added to it later.
+
+Only an administrator of the whole installation can do this.
+
+**For a folder:**
+
+![The Selling this folder box on a folder's panel, with a price box and a Save price button](images/courses-folder-price.png)
+
+1. In the sidebar, click **Courses**.
+2. On the folder's row, click **Order and people**.
+3. Under **Selling this folder**, type the price and press **Save price**.
+4. To stop selling it, empty the box and press **Save price**.
+
+**For a learning path:**
+
+![The Selling this learning path box on a learning path's screen](images/learning-path-price.png)
+
+1. In the sidebar, click **Learning Paths**, then click the learning path.
+2. Under **Selling this learning path**, type the price and press **Save
+   price**.
+3. To stop selling it, empty the box and press **Save price**.
+
+What happens: a folder or a learning path with a price has its own buy link,
+like a course. On a learning path's own page, a learner sees **Buy this
+learning path**, with the price, where **Join** was. Paying for a learning path
+puts the person on it as well as giving every course in it.
+
+A course inside a folder can still have its own price and be sold alone. A
+course inside with no price of its own stays free to join.
+
+While a folder or learning path has a price, or somebody has bought it, only
+an administrator of the whole installation can add a course to it, take one
+out, or remove it. For a learning path, that includes renaming it. People who
+bought it keep every course they already have. People already on a learning
+path before its price was set keep their place.
+
+## The Orders page
+
+Why: you can see everything people have started to buy, and whether it
+reached them.
+
+Only an administrator of the whole installation can open it.
+
+![The Orders page, with its search box, filters and a list of orders](images/admin-orders.png)
+
+1. In the sidebar, click **Settings**, then click **Orders**, beside the tabs.
+2. Use the search box and the filters to narrow the list. You can filter by
+   **Status**, by **What was bought**, by **Payment company** and by the dates
+   an order started.
+3. Click an order to open it. It shows what the order gave, and what happened
+   to it.
+
+What happens: once a day, PathLMS checks each order against Stripe. If the two
+disagree, the page says so at the top, under **Needs a look**, with what to
+do, and you are told once. Orders are kept for 7 years as tax records.
+
+## Places for a group
+
+Why: an organization can buy a number of places on a course, a folder or a
+learning path for one of its groups.
+
+1. In the sidebar, click **Groups**, then click the group.
+2. In the **Places** panel, press **Buy places**.
+3. Choose what the places are for and how many, and enter the organization's
+   billing details.
+4. When the payment is done, the **Places** panel shows how many are left.
+   Press **Give a place** to put a member on it straight away.
+
+A place can be taken back only before the person has opened anything. If you
+name members before buying, courses they already have can lower the price. The
+organization sees how many of those courses each person already has, never
+what they paid. Each look is recorded, once an hour at most for the same
+person, and the person sees it when they download their data.
 
 ## Branding the site
 
@@ -363,13 +545,13 @@ Recommendation: if you ever suspect an account has been compromised, check
 Security first. It tells you whether you can trust what Activity is about
 to show you.
 
-## Settings: General, Network and Sign-in
+## Settings: General, Network, Sign-in and Selling
 
-Why: these three tabs hold the administration that keeps the platform
+Why: these tabs hold the administration that keeps the platform
 running, separate from the day-to-day work of managing people and
 courses.
 
-![The Settings screen with General, Network and Sign-in tabs](images/admin-settings-general.png)
+![The Settings screen with General, Network, Sign-in and Selling tabs and the Orders link](images/admin-settings-general.png)
 
 1. In the sidebar, click **Settings**.
 2. The **General** tab has four sections. **Your organization** holds the
@@ -390,11 +572,9 @@ courses.
    [Setting up company sign-in](#setting-up-company-sign-in), the switch for
    [letting people make their own account](#letting-people-make-their-own-account),
    and **Password rules**.
-5. The **Selling** tab is where you set up selling courses with Stripe. It
-   has six steps, done in order, starting with the seller name, contact email
-   and refund policy address that buyers see before they pay. Changing those,
-   saving a Stripe key and switching selling on each ask for your password and
-   a code from your authenticator app.
+5. The **Selling** tab is where you set up selling courses with Stripe. See
+   [Setting up selling](#setting-up-selling) below. Next to the tabs there is
+   also an **Orders** link, covered in [The Orders page](#the-orders-page).
 
 For branding, which General points to rather than duplicating, see
 [Branding the site](#branding-the-site) above.
