@@ -32,7 +32,7 @@ done. The [README](README.md) has the short version.
 - Choose who reviews handed-in work. An administrator can. So can a manager, for the people in their groups, and the course's author. An administrator can also give an instructor courses and groups to review. Nobody reviews their own work.
 - Reviewers find everything waiting on them on one page, Work to Review.
 - Post an announcement to everyone, a group, a course or a learning path. People see it from the bell and the Announcements page.
-- Add many people at once from a CSV file. Each person is emailed a link to choose their own password.
+- Add many people at once from a CSV or Excel file. Each person is emailed a link to choose their own password.
 - Let people make their own account from the sign-in page, if you switch it on. You choose which email endings may sign up. Each person gets a link by email, and it lasts 24 hours.
 - On the People page, filter by how each person joined: added by an administrator, from a spreadsheet, signed up themselves, or company sign-in.
 
