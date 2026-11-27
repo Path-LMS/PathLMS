@@ -96,6 +96,15 @@ Recommendation: do not build a deep stack of folders when a shallow one will do.
 Two levels is plenty for most libraries. The deeper you nest, the more clicks it
 takes you and everyone else to find a course.
 
+### Put a price on a folder
+
+A folder can be sold. One payment gives the person every course in the
+folder, and every course added to it later. Only an administrator of the whole
+installation can set the price. The steps are in the [administrator
+guide](administrator.md#putting-one-price-on-a-folder-or-a-learning-path).
+
+![The Selling this folder box on a folder's panel](images/courses-folder-price.png)
+
 ### Put a group on a folder
 
 Why: this is the fast way to give a whole group the same set of courses, and to
@@ -155,6 +164,15 @@ built for it: it is a thing a learner can see, enroll in, and work down, with it
 own page and its own finish line.
 
 ![A learning path open on the Learning Paths screen, showing its courses in order](images/learning-path-panel.png)
+
+### Put a price on a learning path
+
+A learning path can be sold too. Paying puts the person on it and gives them
+every course in it, and every course added later. Only an administrator of the
+whole installation can set the price. The steps are in the [administrator
+guide](administrator.md#putting-one-price-on-a-folder-or-a-learning-path).
+
+![The Selling this learning path box on a learning path's screen](images/learning-path-price.png)
 
 ### Make a learning path
 
