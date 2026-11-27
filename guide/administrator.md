@@ -49,8 +49,8 @@ Only an administrator for the whole site can do this.
 
 1. In the sidebar, click **People**.
 2. Click **Add from a spreadsheet**.
-3. Click **Download an example file**, fill it in, and save it as a CSV file.
-   The file can be up to 2 MB.
+3. Click **Download an example file**, fill it in, and save it. A CSV file or
+   an Excel file (.xlsx) both work. The file can be up to 2 MB.
 4. Choose the file. PathLMS shows what will happen to every row. Nothing is
    saved yet. Click **Next**.
 5. Choose one **Role** for everybody in the file, and a **Group** if you want
@@ -272,6 +272,51 @@ raising the number do.
 Recommendation: do not turn this on if children could use it to sign up. The
 law in many places needs a parent's agreement first.
 
+## Selling a course to people who have no account
+
+Why: you can send a link to a course to anybody, even somebody with no
+account here. They see the course and its price, make an account and buy it.
+
+It works only when selling is fully set up on the **Settings** > **Selling**
+tab and the Stripe key is a live key. With a test key, the link says the
+course is not for sale. Email must be set up too. See [Setting up
+email](../deploy/EMAIL.md). The link to finish making an account is sent by
+email.
+
+1. Open the course, then its **Settings** tab.
+2. Under **Price**, type the price and press **Save price**.
+3. Under the price, in **What buyers read before they sign up**, type a
+   sentence or two, up to 300 characters, and press **Save the words**.
+4. Press **Copy the buy link**, and send that link to the people you want to
+   buy.
+
+What happens: somebody who opens the link sees the course name, your words
+and the price. They type their email address and press **Send me the link**.
+The email link lasts 24 hours. It opens a page where they type their name and
+choose a password. Then they sign in and land on the course, ready to pay.
+They pay on Stripe's own page.
+
+People who already have an account are sent to sign in instead.
+
+An account made this way is a learner who sees only the courses on sale and
+the courses they hold. They do not see announcements, programs or the
+glossary.
+
+You can see who joined this way on the **People** screen. Open **Any way of
+joining** and choose **Pressed Buy**.
+
+If somebody makes an account this way and never buys anything, never has a
+course and does not sign in for 12 months, PathLMS forgets them by itself.
+Buyers are told this before they type their address.
+
+Giving one of these people any role except learner ends these limits. They
+then see what any person with that role sees. Putting them on a course gives
+them that course and keeps the limits.
+
+At most 30 new accounts can be made this way in one hour. If more people try,
+they are told to try again later, and their email link still works for 24
+hours.
+
 ## Branding the site
 
 Why: a training platform that looks like your own organization, rather
@@ -329,10 +374,8 @@ courses.
 1. In the sidebar, click **Settings**.
 2. The **General** tab has four sections. **Your organization** holds the
    organization name, the contact email, the address of your privacy notice,
-   the address of your refund policy, and how many people an announcement
-   can reach before PathLMS asks the person posting it for their password.
-   The **Refund policy address** box is for a later version. Nobody can buy a
-   course yet, so filling it in changes nothing today. **Completion certificates** turns
+   and how many people an announcement can reach before PathLMS asks the
+   person posting it for their password. **Completion certificates** turns
    certificates on or off. **Uploaded courses** holds the settings for
    courses made in other tools. **Updates** is where you start a platform
    update. See
@@ -347,6 +390,11 @@ courses.
    [Setting up company sign-in](#setting-up-company-sign-in), the switch for
    [letting people make their own account](#letting-people-make-their-own-account),
    and **Password rules**.
+5. The **Selling** tab is where you set up selling courses with Stripe. It
+   has six steps, done in order, starting with the seller name, contact email
+   and refund policy address that buyers see before they pay. Changing those,
+   saving a Stripe key and switching selling on each ask for your password and
+   a code from your authenticator app.
 
 For branding, which General points to rather than duplicating, see
 [Branding the site](#branding-the-site) above.
