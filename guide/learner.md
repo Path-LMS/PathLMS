@@ -118,6 +118,39 @@ and a locked course shows a padlock instead of letting you in early.
 
 ---
 
+## Buying a course
+
+Why: some courses, folders of courses and learning paths cost money. If the
+person running PathLMS has set up selling, you pay for them here.
+
+1. Open the course, or the link somebody sent you. A course with a price shows
+   **Buy this course** and the price.
+2. If there is a link to how refunds work, you can read it before you pay.
+3. If you can pay in more than one way, choose one.
+4. Tick the box that says you want to start now. It also says you cannot
+   cancel once you start.
+5. Press the button to pay. You pay on Stripe's own page. PathLMS never sees
+   your card number.
+
+What happens: you get the course when the payment goes through. If you pay by
+bank, the money can take 3 to 5 working days, and you get your place when it
+arrives. If a bank payment fails, PathLMS tells you and you can try again.
+
+A learning path with a price shows **Buy this learning path** where **Join**
+would be. Paying puts you on the learning path and gives you every course in
+it, including any added later. A folder with a price works the same way for
+the courses in it.
+
+If you already paid for some of the courses in a folder or learning path, the
+page shows the full price, each course you already own with what comes off for
+it, and what you pay.
+
+If a course is held back from you, for example by a folder taken in order,
+you cannot pay for it or join it, even with its link. The page says it is not
+available.
+
+---
+
 ## Your list of courses: My Learning
 
 Why: My Learning is where you go to pick up where you left off. Browse is for
