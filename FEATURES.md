@@ -33,8 +33,9 @@ done. The [README](README.md) has the short version.
 - Reviewers find everything waiting on them on one page, Work to Review.
 - Post an announcement to everyone, a group, a course or a learning path. People see it from the bell and the Announcements page.
 - Add many people at once from a CSV or Excel file. Each person is emailed a link to choose their own password.
+- Sell a course, a folder of courses or a learning path with Stripe, with a buy link for each. Choose how people can pay, and see every order on the Orders page. Selling has not been tried with a real Stripe account yet.
 - Let people make their own account from the sign-in page, if you switch it on. You choose which email endings may sign up. Each person gets a link by email, and it lasts 24 hours.
-- On the People page, filter by how each person joined: added by an administrator, from a spreadsheet, signed up themselves, or company sign-in.
+- On the People page, filter by how each person joined: added by an administrator, from a spreadsheet, signed up themselves, made an account from a buy link, or company sign-in.
 
 ## Keep required training current
 
@@ -101,7 +102,7 @@ This list is long on purpose. Read it once and you will know whether PathLMS fit
 
 ### Money
 
-- Nothing takes a payment. You cannot charge for a course.
+- Selling courses with Stripe is built, but it has not been tried with a real Stripe account yet. It was tested with made-up replies written the way Stripe writes them. Make a test purchase, and check it in Stripe, before you turn selling on.
 
 ### Running it
 
