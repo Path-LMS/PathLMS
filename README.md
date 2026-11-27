@@ -87,7 +87,7 @@ once and know whether it fits before you install anything.
 - Quizzes have three question types: pick one, pick several, and true or false. There is no written answer.
 - Nobody can mark work against a rubric.
 - You can take a course out of PathLMS. The only course you can bring in is a SCORM package from another tool.
-- Nothing takes a payment.
+- Selling courses is built but has not been tried with a real Stripe account yet. It was tested with made-up replies written the way Stripe writes them. Make a test purchase, and check it in Stripe, before you turn it on.
 - People can make their own account only if an administrator switches that on. It is off until then. Everyone who does is a learner.
 - PathLMS is in English only.
 - There is no phone app. The website works on a phone.
