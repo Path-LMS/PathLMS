@@ -27,7 +27,8 @@ unless you manage all of it.
 3. Click a filter pill, such as **Active** or **Learner**, to narrow the list.
 4. To see how people joined, open the box that says **Any way of joining**
    and choose one. The choices are **Added by an administrator**, **From a
-   spreadsheet**, **Signed up themselves** and **Company sign-in**.
+   spreadsheet**, **Signed up themselves**, **Pressed Buy** (they made an
+   account from a buy link) and **Company sign-in**.
 
    ![The People screen with the Any way of joining box open, showing four ways a person can have joined](images/manager-people-how-they-joined.png)
 
